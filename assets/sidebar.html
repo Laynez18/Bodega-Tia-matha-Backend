@@ -1,0 +1,321 @@
+<!-- ============ SIDEBAR COMPARTIDO ============ -->
+<aside
+  class="sidebar-desktop d-none d-md-flex flex-column flex-shrink-0 bg-dark text-white p-3"
+  style="width: 250px; height: 100vh; overflow-y: auto"
+>
+  <!-- Logo / Nombre -->
+  <a
+    href="/inicio/inicio.html"
+    class="d-flex align-items-center mb-3 mb-md-0 text-white text-decoration-none"
+  >
+    <i class="bi bi-shop fs-4 me-2"></i>
+    <span class="fs-5 fw-semibold">Mini Market</span>
+  </a>
+  <hr />
+
+  <!-- Inicio (no gestiona tablas, por eso no es un contenedor) -->
+  <ul class="nav nav-pills flex-column mb-2">
+    <li class="nav-item">
+      <a href="/inicio/inicio.html" class="nav-link text-white">
+        <i class="bi bi-house me-2"></i>
+        Inicio
+      </a>
+    </li>
+  </ul>
+
+  <!-- Contenedores por módulo -->
+  <div class="accordion" id="accordionProcesos">
+    <!-- Seguridad -->
+    <div class="accordion-item bg-transparent border-0 mb-2">
+      <h2 class="accordion-header mb-0">
+        <button class="accordion-button collapsed bg-transparent text-white text-start w-100" type="button" data-bs-toggle="collapse" data-bs-target="#grupoSeguridad" aria-expanded="false" aria-controls="grupoSeguridad">
+          <i class="bi bi-shield-lock me-2"></i> Seguridad <i class="bi bi-chevron-down float-end"></i>
+        </button>
+      </h2>
+      <div id="grupoSeguridad" class="accordion-collapse collapse">
+        <div class="accordion-body p-2">
+          <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+              <a href="/seguridad/seguridad.html#pane-usuarios" class="nav-link text-white">
+                <i class="bi bi-people me-2"></i>
+                Usuarios
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/seguridad/seguridad.html#pane-roles" class="nav-link text-white">
+                <i class="bi bi-person-badge me-2"></i>
+                Roles
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/seguridad/seguridad.html#pane-permisos" class="nav-link text-white">
+                <i class="bi bi-key me-2"></i>
+                Permisos
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/seguridad/seguridad.html#pane-auditoria" class="nav-link text-white">
+                <i class="bi bi-clock-history me-2"></i>
+                Auditoría
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mantenimiento -->
+    <div class="accordion-item bg-transparent border-0 mb-2">
+      <h2 class="accordion-header mb-0">
+        <button class="accordion-button collapsed bg-transparent text-white text-start w-100" type="button" data-bs-toggle="collapse" data-bs-target="#grupoMantenimiento" aria-expanded="false" aria-controls="grupoMantenimiento">
+          <i class="bi bi-gear me-2"></i> Mantenimiento <i class="bi bi-chevron-down float-end"></i>
+        </button>
+      </h2>
+      <div id="grupoMantenimiento" class="accordion-collapse collapse">
+        <div class="accordion-body p-2">
+          <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+              <a href="/mantenimiento/mantenimiento.html#pane-productos" class="nav-link text-white">
+                <i class="bi bi-box-seam me-2"></i>
+                Productos
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/mantenimiento/mantenimiento.html#pane-empleados" class="nav-link text-white">
+                <i class="bi bi-person-vcard me-2"></i>
+                Empleados
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/mantenimiento/mantenimiento.html#pane-clientes" class="nav-link text-white">
+                <i class="bi bi-person me-2"></i>
+                Clientes
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/mantenimiento/mantenimiento.html#pane-proveedores" class="nav-link text-white">
+                <i class="bi bi-truck me-2"></i>
+                Proveedores
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/mantenimiento/mantenimiento.html#pane-categorias" class="nav-link text-white">
+                <i class="bi bi-tags me-2"></i>
+                Categorías
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Compras -->
+    <div class="accordion-item bg-transparent border-0 mb-2">
+      <h2 class="accordion-header mb-0">
+        <button class="accordion-button collapsed bg-transparent text-white text-start w-100" type="button" data-bs-toggle="collapse" data-bs-target="#grupoCompras" aria-expanded="false" aria-controls="grupoCompras">
+          <i class="bi bi-truck me-2"></i> Compras <i class="bi bi-chevron-down float-end"></i>
+        </button>
+      </h2>
+      <div id="grupoCompras" class="accordion-collapse collapse">
+        <div class="accordion-body p-2">
+          <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+              <a href="/compras/compras.html#pane-compras" class="nav-link text-white">
+                <i class="bi bi-bag-check me-2"></i>
+                Compras
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/compras/compras.html#pane-proveedores" class="nav-link text-white">
+                <i class="bi bi-people me-2"></i>
+                Proveedores
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/compras/compras.html#pane-ordenes" class="nav-link text-white">
+                <i class="bi bi-clipboard-check me-2"></i>
+                Órdenes de Compra
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inventario -->
+    <div class="accordion-item bg-transparent border-0 mb-2">
+      <h2 class="accordion-header mb-0">
+        <button class="accordion-button collapsed bg-transparent text-white text-start w-100" type="button" data-bs-toggle="collapse" data-bs-target="#grupoInventario" aria-expanded="false" aria-controls="grupoInventario">
+          <i class="bi bi-boxes me-2"></i> Inventario <i class="bi bi-chevron-down float-end"></i>
+        </button>
+      </h2>
+      <div id="grupoInventario" class="accordion-collapse collapse">
+        <div class="accordion-body p-2">
+          <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+              <a href="/inventario/inventario.html#pane-stock" class="nav-link text-white">
+                <i class="bi bi-boxes me-2"></i>
+                Stock
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/inventario/inventario.html#pane-lotes" class="nav-link text-white">
+                <i class="bi bi-upc-scan me-2"></i>
+                Lotes
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/inventario/inventario.html#pane-kardex" class="nav-link text-white">
+                <i class="bi bi-journal-text me-2"></i>
+                Kardex
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ventas -->
+    <div class="accordion-item bg-transparent border-0 mb-2">
+      <h2 class="accordion-header mb-0">
+        <button class="accordion-button collapsed bg-transparent text-white text-start w-100" type="button" data-bs-toggle="collapse" data-bs-target="#grupoVentas" aria-expanded="false" aria-controls="grupoVentas">
+          <i class="bi bi-basket me-2"></i> Ventas <i class="bi bi-chevron-down float-end"></i>
+        </button>
+      </h2>
+      <div id="grupoVentas" class="accordion-collapse collapse">
+        <div class="accordion-body p-2">
+          <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+              <a href="/ventas/ventas.html#pane-pdv" class="nav-link text-white">
+                <i class="bi bi-cart me-2"></i>
+                Punto de Venta
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/ventas/ventas.html#pane-comprobantes" class="nav-link text-white">
+                <i class="bi bi-receipt me-2"></i>
+                Comprobantes
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Créditos -->
+    <div class="accordion-item bg-transparent border-0 mb-2">
+      <h2 class="accordion-header mb-0">
+        <button class="accordion-button collapsed bg-transparent text-white text-start w-100" type="button" data-bs-toggle="collapse" data-bs-target="#grupoCreditos" aria-expanded="false" aria-controls="grupoCreditos">
+          <i class="bi bi-hand-index-thumb me-2"></i> Créditos <i class="bi bi-chevron-down float-end"></i>
+        </button>
+      </h2>
+      <div id="grupoCreditos" class="accordion-collapse collapse">
+        <div class="accordion-body p-2">
+          <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+              <a href="/creditos/creditos.html#pane-ctas" class="nav-link text-white">
+                <i class="bi bi-cash-stack me-2"></i>
+                Cuentas por cobrar
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/creditos/creditos.html#pane-cobros" class="nav-link text-white">
+                <i class="bi bi-cash-coin me-2"></i>
+                Cobros
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Caja -->
+    <div class="accordion-item bg-transparent border-0 mb-2">
+      <h2 class="accordion-header mb-0">
+        <button class="accordion-button collapsed bg-transparent text-white text-start w-100" type="button" data-bs-toggle="collapse" data-bs-target="#grupoCaja" aria-expanded="false" aria-controls="grupoCaja">
+          <i class="bi bi-cash-coin me-2"></i> Caja <i class="bi bi-chevron-down float-end"></i>
+        </button>
+      </h2>
+      <div id="grupoCaja" class="accordion-collapse collapse">
+        <div class="accordion-body p-2">
+          <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+              <a href="/caja/caja.html#pane-apertura" class="nav-link text-white">
+                <i class="bi bi-safe me-2"></i>
+                Apertura/Cierre
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/caja/caja.html#pane-movimientos" class="nav-link text-white">
+                <i class="bi bi-arrow-left-right me-2"></i>
+                Movimientos
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reportes -->
+    <div class="accordion-item bg-transparent border-0 mb-2">
+      <h2 class="accordion-header mb-0">
+        <button class="accordion-button collapsed bg-transparent text-white text-start w-100" type="button" data-bs-toggle="collapse" data-bs-target="#grupoReportes" aria-expanded="false" aria-controls="grupoReportes">
+          <i class="bi bi-bar-chart me-2"></i> Reportes <i class="bi bi-chevron-down float-end"></i>
+        </button>
+      </h2>
+      <div id="grupoReportes" class="accordion-collapse collapse">
+        <div class="accordion-body p-2">
+          <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+              <a href="/reportes/reportes.html#pane-ventas" class="nav-link text-white">
+                <i class="bi bi-graph-up me-2"></i>
+                Ventas
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/reportes/reportes.html#pane-inventario" class="nav-link text-white">
+                <i class="bi bi-clipboard-data me-2"></i>
+                Inventario
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+
+  <!-- Usuario -->
+  <div class="dropdown">
+    <a
+      href="#"
+      class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      <i class="bi bi-person-circle fs-4 me-2"></i>
+      <strong>ADMIN</strong>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-dark">
+      <li>
+        <a
+          class="dropdown-item"
+          href="#"
+          data-bs-toggle="modal"
+          data-bs-target="#modalConfiguracion"
+          ><i class="bi bi-gear me-2"></i>Configuración</a
+        >
+      </li>
+      <li><hr class="dropdown-divider" /></li>
+      <li>
+        <a
+          href="#"
+          class="dropdown-item text-danger"
+          onclick="event.preventDefault(); cerrarSesion();"
+          ><i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión</a
+        >
+      </li>
+    </ul>
+  </div>
+</aside>
