@@ -1,8 +1,0 @@
-Necesito subir esto al render y hacer las pruebas
-
-git status
-git add .
-git commit -m "Descripción del cambio"
-git push --set-upstream origin master
- una ves colocas eso ya nomas necesitas Git push
-
