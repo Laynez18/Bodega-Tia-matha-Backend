@@ -940,12 +940,19 @@ CREATE TABLE movimiento_caja (
   12. INDICES DE RENDIMIENTO
 ==============================================================================*/
 CREATE UNIQUE INDEX ux_persona_documento   ON persona(n_documento);
+CREATE UNIQUE INDEX uq_usuario_empleado_activo
+    ON usuario(id_empleado)
+    WHERE id_empleado IS NOT NULL AND estado = '1';
 CREATE INDEX ix_persona_apellidos          ON persona(ap_paterno, ap_materno, nombre);
 CREATE UNIQUE INDEX ux_empresa_ruc         ON empresa(ruc);
 CREATE UNIQUE INDEX ux_producto_barras     ON producto(codigo_barras) WHERE codigo_barras IS NOT NULL;
 CREATE INDEX ix_producto_nombre            ON producto(n_producto);
 CREATE INDEX ix_producto_categoria         ON producto(id_categoria_producto);
 CREATE INDEX ix_producto_stock             ON producto(stock_actual, stock_minimo);
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+CREATE INDEX ix_producto_nombre_trgm       ON producto USING gin (n_producto gin_trgm_ops);
+CREATE INDEX ix_producto_estado_categoria  ON producto(estado, id_categoria_producto);
+CREATE INDEX ix_producto_estado_marca      ON producto(estado, id_marca);
 CREATE UNIQUE INDEX ux_presentacion_producto_base
     ON presentacion_producto(id_producto)
     WHERE es_unidad_base = '1' AND estado = '1';

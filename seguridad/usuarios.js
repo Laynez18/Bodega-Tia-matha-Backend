@@ -7,10 +7,9 @@ const tbody = document.querySelector("#pane-usuarios tbody");
 const selectTipo = document.getElementById("usuario-tipo");
 const selectEmpleado = document.getElementById("usuario-empleado");
 const contenedorRoles = document.getElementById("usuario-roles");
-const btnFiltroActivos = document.getElementById("tab-usuarios-activos");
-const btnFiltroInactivos = document.getElementById("tab-usuarios-inactivos");
-const contadorActivos = document.getElementById("contador-usuarios-activos");
-const contadorInactivos = document.getElementById("contador-usuarios-inactivos");
+const inputBuscarUsuarios = document.getElementById("buscar-usuarios");
+const filtroTipoUsuario = document.getElementById("filtro-usuarios-tipo");
+const filtroEstadoUsuario = document.getElementById("filtro-usuarios-estado");
 
 const alerta = document.createElement("div");
 alerta.className = "alert alert-danger d-none";
@@ -30,6 +29,26 @@ function aTexto(valor) {
     return Object.values(valor).find((v) => typeof v === "string") || "";
   }
   return valor === undefined || valor === null ? "" : String(valor);
+}
+
+function normalizarBusqueda(valor) {
+  return aTexto(valor)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+function textoBusquedaUsuario(u) {
+  const empleado = leer(u, ["empleado"]);
+  const nombre =
+    leer(u, ["nombreEmpleado"]) ||
+    (empleado && typeof empleado === "object"
+      ? nombreEmpleado(empleado)
+      : aTexto(empleado));
+  return normalizarBusqueda(
+    `${aTexto(leer(u, ["logeo"]))} ${aTexto(nombre)}`,
+  );
 }
 
 function mostrarError(mensaje) {
@@ -130,7 +149,7 @@ function filaUsuario(u, indice) {
     (activo
       ? '<button class="btn btn-sm btn-outline-primary" title="Editar" data-accion="editar"><i class="bi bi-pencil"></i></button>' +
         '<button class="btn btn-sm btn-outline-primary" title="Desactivar" data-accion="desactivar"><i class="bi bi-toggle-on"></i></button>'
-      : '<button class="btn btn-sm btn-outline-secondary" title="Desactivado" disabled><i class="bi bi-toggle-off opacity-50"></i></button>') +
+      : '<button class="btn btn-sm btn-outline-success" title="Activar" data-accion="activar"><i class="bi bi-toggle-off"></i></button>') +
     "</div>";
   tdAcciones.querySelectorAll("button").forEach((b) => {
     b.dataset.id = idUsuario;
@@ -150,53 +169,59 @@ function filaMensaje(texto) {
 
 let usuarios = [];
 let editando = null;
-let filtroUsuarios = "activos";
 let usuariosVisibles = [];
 // El backend deja de listar los desactivados; se conservan hasta recargar la página.
 const desactivados = [];
 
 function renderUsuarios() {
-  const activos = usuariosVisibles.filter(esActivo);
-  const inactivos = usuariosVisibles.filter((u) => !esActivo(u));
+  const termino = normalizarBusqueda(inputBuscarUsuarios?.value);
+  const tipo = filtroTipoUsuario?.value || "";
+  const estadoFiltro = filtroEstadoUsuario?.value || "";
+  const filtrados = usuariosVisibles.filter((u) => {
+    const coincideTexto = !termino || textoBusquedaUsuario(u).includes(termino);
+    const coincideTipo =
+      !tipo || String(leer(u, ["idTipoUsuario"]) ?? "") === tipo;
+    const activo = esActivo(u);
+    const coincideEstado =
+      !estadoFiltro || (estadoFiltro === "1" ? activo : !activo);
+    return coincideTexto && coincideTipo && coincideEstado;
+  });
 
-  if (contadorActivos) {
-    contadorActivos.textContent = activos.length;
-  }
-  if (contadorInactivos) {
-    contadorInactivos.textContent = inactivos.length;
-  }
-
-  const lista = filtroUsuarios === "inactivos" ? inactivos : activos;
-  if (!lista.length) {
-    tbody.replaceChildren(
-      filaMensaje(
-        filtroUsuarios === "inactivos"
-          ? "No hay usuarios inactivos."
-          : "No hay usuarios activos.",
-      ),
-    );
+  if (!usuariosVisibles.length) {
+    tbody.replaceChildren(filaMensaje("No hay usuarios registrados."));
     return;
   }
-  tbody.replaceChildren(...lista.map(filaUsuario));
+  if (!filtrados.length) {
+    tbody.replaceChildren(filaMensaje("No se encontraron usuarios."));
+    return;
+  }
+  tbody.replaceChildren(...filtrados.map(filaUsuario));
 }
 
-function cambiarFiltroUsuarios(filtro) {
-  filtroUsuarios = filtro;
-  if (btnFiltroActivos) {
-    btnFiltroActivos.classList.toggle("active", filtro === "activos");
-    btnFiltroActivos.setAttribute(
-      "aria-selected",
-      filtro === "activos" ? "true" : "false",
-    );
+function pintarFiltroTipos(lista) {
+  if (!filtroTipoUsuario) {
+    return;
   }
-  if (btnFiltroInactivos) {
-    btnFiltroInactivos.classList.toggle("active", filtro === "inactivos");
-    btnFiltroInactivos.setAttribute(
-      "aria-selected",
-      filtro === "inactivos" ? "true" : "false",
-    );
-  }
-  renderUsuarios();
+  const actual = filtroTipoUsuario.value;
+  const tipos = new Map();
+  lista.forEach((usuario) => {
+    const id = leer(usuario, ["idTipoUsuario"]);
+    if (id !== undefined && id !== null) {
+      tipos.set(
+        String(id),
+        aTexto(leer(usuario, ["nTipoUsuario"])) || "Tipo " + id,
+      );
+    }
+  });
+
+  const opciones = [new Option("Todos los tipos", "")];
+  tipos.forEach((texto, id) => opciones.push(new Option(texto, id)));
+  filtroTipoUsuario.replaceChildren(...opciones);
+  filtroTipoUsuario.value = [...filtroTipoUsuario.options].some(
+    (opcion) => opcion.value === actual,
+  )
+    ? actual
+    : "";
 }
 
 async function listarUsuarios() {
@@ -208,6 +233,7 @@ async function listarUsuarios() {
       ...usuarios,
       ...desactivados.filter((d) => !vigentes.has(idDe(d))),
     ].sort((a, b) => idDe(a) - idDe(b));
+    pintarFiltroTipos(usuariosVisibles);
     renderUsuarios();
   } catch (err) {
     if (!irALogin(err)) {
@@ -423,16 +449,16 @@ modal.addEventListener("hidden.bs.modal", () => {
 
 btnGuardar.addEventListener("click", guardarUsuario);
 
-if (btnFiltroActivos) {
-  btnFiltroActivos.addEventListener("click", () =>
-    cambiarFiltroUsuarios("activos"),
-  );
+if (inputBuscarUsuarios) {
+  inputBuscarUsuarios.addEventListener("input", renderUsuarios);
 }
 
-if (btnFiltroInactivos) {
-  btnFiltroInactivos.addEventListener("click", () =>
-    cambiarFiltroUsuarios("inactivos"),
-  );
+if (filtroTipoUsuario) {
+  filtroTipoUsuario.addEventListener("change", renderUsuarios);
+}
+
+if (filtroEstadoUsuario) {
+  filtroEstadoUsuario.addEventListener("change", renderUsuarios);
 }
 
 async function desactivarUsuario(u) {
@@ -454,12 +480,47 @@ async function desactivarUsuario(u) {
   }
 }
 
+async function activarUsuario(u) {
+  const nombre = leer(u, ["logeo"]);
+  if (!window.confirm(`¿Activar al usuario "${nombre}"?`)) {
+    return;
+  }
+  const id = leer(u, ["idUsuario", "id"]);
+  try {
+    if (!tieneCsrf()) {
+      await yo();
+    }
+    const actualizado = await api("PATCH", `/api/usuarios/${id}/estado`, {
+      estado: "1",
+    });
+    const i = desactivados.findIndex(
+      (x) => String(leer(x, ["idUsuario", "id"])) === String(id),
+    );
+    if (i >= 0) {
+      desactivados.splice(i, 1);
+    }
+    const j = usuarios.findIndex(
+      (x) => String(leer(x, ["idUsuario", "id"])) === String(id),
+    );
+    if (j >= 0) {
+      usuarios[j] = actualizado || { ...usuarios[j], estado: true };
+    } else if (actualizado) {
+      usuarios.push(actualizado);
+    }
+    await listarUsuarios();
+  } catch (err) {
+    if (!irALogin(err)) {
+      window.alert(err.mensaje || "No se pudo activar el usuario.");
+    }
+  }
+}
+
 tbody.addEventListener("click", (e) => {
   const boton = e.target.closest("button[data-accion]");
   if (!boton) {
     return;
   }
-  const u = usuarios.find(
+  const u = usuariosVisibles.find(
     (x) => String(leer(x, ["idUsuario", "id"])) === boton.dataset.id,
   );
   if (!u) {
@@ -468,9 +529,14 @@ tbody.addEventListener("click", (e) => {
   if (boton.dataset.accion === "editar") {
     editando = u;
     bootstrap.Modal.getOrCreateInstance(modal).show();
+  } else if (boton.dataset.accion === "activar") {
+    activarUsuario(u);
   } else {
     desactivarUsuario(u);
   }
 });
 
 listarUsuarios();
+if (window.registrarRecargaPanel) {
+  window.registrarRecargaPanel("pane-usuarios", listarUsuarios);
+}

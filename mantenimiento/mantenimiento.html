@@ -249,69 +249,125 @@
                 class="card-header bg-white d-flex flex-wrap gap-2 justify-content-between align-items-center"
               >
                 <span>Lista de Productos</span>
-                <button class="btn btn-primary btn-sm">
+                <button
+                  id="btn-nuevo-producto"
+                  class="btn btn-primary btn-sm"
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalProducto"
+                >
                   <i class="bi bi-plus-lg me-1"></i>Nuevo Producto
                 </button>
               </div>
               <div class="card-body">
+                <div
+                  id="productos-alerta"
+                  class="alert d-none"
+                  role="alert"
+                ></div>
+
+                <div class="row g-2 mb-3">
+                  <div class="col-12 col-lg-4">
+                    <div class="input-group input-group-sm">
+                      <span class="input-group-text bg-white"
+                        ><i class="bi bi-search"></i
+                      ></span>
+                      <input
+                        type="search"
+                        class="form-control"
+                        id="productos-buscar"
+                        placeholder="Buscar por nombre o código..."
+                        aria-label="Buscar producto por nombre o código"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6 col-lg-2">
+                    <select
+                      class="form-select form-select-sm"
+                      id="productos-filtro-categoria"
+                      aria-label="Filtrar por categoría"
+                    >
+                      <option value="">Todas las categorías</option>
+                    </select>
+                  </div>
+                  <div class="col-6 col-lg-2">
+                    <select
+                      class="form-select form-select-sm"
+                      id="productos-filtro-marca"
+                      aria-label="Filtrar por marca"
+                    >
+                      <option value="">Todas las marcas</option>
+                    </select>
+                  </div>
+                  <div class="col-6 col-lg-2">
+                    <select
+                      class="form-select form-select-sm"
+                      id="productos-filtro-estado"
+                      aria-label="Filtrar por estado"
+                    >
+                      <option value="">Todos los estados</option>
+                      <option value="1">Activos</option>
+                      <option value="0">Inactivos</option>
+                    </select>
+                  </div>
+                  <div class="col-6 col-lg-2 d-flex align-items-center">
+                    <div class="form-check mb-0">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="productos-filtro-stock-bajo"
+                      />
+                      <label
+                        class="form-check-label small"
+                        for="productos-filtro-stock-bajo"
+                      >
+                        Stock bajo
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="table-responsive">
-                  <table class="table table-hover align-middle">
+                  <table
+                    class="table table-hover align-middle"
+                    id="tablaProductos"
+                  >
                     <thead>
                       <tr>
                         <th>#</th>
                         <th>Código</th>
                         <th>Nombre</th>
                         <th>Categoría</th>
-                        <th>Precio</th>
+                        <th>Marca</th>
+                        <th class="text-end">Precio venta</th>
+                        <th class="text-end">Stock</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td>1</td>
-                        <td>P-001</td>
-                        <td>Arroz 1kg</td>
-                        <td>Abarrotes</td>
-                        <td>S/ 4.50</td>
-                        <td>
-                          <span class="badge text-bg-success">Activo</span>
-                        </td>
-                        <td>
-                          <button class="btn btn-outline-primary btn-sm">
-                            <i class="bi bi-pencil"></i>
-                          </button>
-                          <button
-                            class="btn btn-outline-primary btn-sm"
-                            title="Desactivar"
-                          >
-                            <i class="bi bi-toggle-on"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>2</td>
-                        <td>P-002</td>
-                        <td>Leche Gloria</td>
-                        <td>Lácteos</td>
-                        <td>S/ 3.20</td>
-                        <td>
-                          <span class="badge text-bg-success">Activo</span>
-                        </td>
-                        <td>
-                          <button class="btn btn-outline-primary btn-sm">
-                            <i class="bi bi-pencil"></i>
-                          </button>
-                          <button
-                            class="btn btn-outline-primary btn-sm"
-                            title="Desactivar"
-                          >
-                            <i class="bi bi-toggle-on"></i>
-                          </button>
+                        <td colspan="9" class="text-center text-muted">
+                          Cargando productos...
                         </td>
                       </tr>
                     </tbody>
                   </table>
+                </div>
+
+                <div
+                  class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-3"
+                >
+                  <small
+                    class="text-muted"
+                    id="productos-paginacion-info"
+                  ></small>
+                  <nav aria-label="Paginación de productos">
+                    <ul
+                      class="pagination pagination-sm mb-0"
+                      id="productos-paginacion"
+                    ></ul>
+                  </nav>
                 </div>
               </div>
             </div>
@@ -324,11 +380,41 @@
                 class="card-header bg-white d-flex flex-wrap gap-2 justify-content-between align-items-center"
               >
                 <span>Lista de Clientes</span>
-                <button class="btn btn-primary btn-sm">
+                <button
+                  class="btn btn-primary btn-sm"
+                  id="btn-nuevo-cliente"
+                >
                   <i class="bi bi-plus-lg me-1"></i>Nuevo Cliente
                 </button>
               </div>
               <div class="card-body">
+                <div class="row g-2 mb-3">
+                  <div class="col-12 col-lg-6">
+                    <div class="input-group input-group-sm">
+                      <span class="input-group-text bg-white"
+                        ><i class="bi bi-search"></i
+                      ></span>
+                      <input
+                        type="search"
+                        class="form-control"
+                        id="clientes-buscar"
+                        placeholder="Buscar por documento, nombre o teléfono..."
+                        aria-label="Buscar cliente"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6 col-lg-3">
+                    <select
+                      class="form-select form-select-sm"
+                      id="filtro-clientes-tipo"
+                      aria-label="Filtrar por tipo de cliente"
+                    >
+                      <option value="">Todos los tipos</option>
+                      <option value="N">Persona natural</option>
+                      <option value="J">Empresa</option>
+                    </select>
+                  </div>
+                </div>
                 <div class="table-responsive">
                   <table class="table table-hover align-middle">
                     <thead>
@@ -338,29 +424,11 @@
                         <th>Nombre</th>
                         <th>Teléfono</th>
                         <th>Dirección</th>
+                        <th>Estado</th>
                         <th>Acciones</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>DNI 12345678</td>
-                        <td>María López</td>
-                        <td>987654321</td>
-                        <td>Av. Lima 123</td>
-                        <td>
-                          <button class="btn btn-outline-primary btn-sm">
-                            <i class="bi bi-pencil"></i>
-                          </button>
-                          <button
-                            class="btn btn-outline-primary btn-sm"
-                            title="Desactivar"
-                          >
-                            <i class="bi bi-toggle-on"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
+                    <tbody></tbody>
                   </table>
                 </div>
               </div>
@@ -374,43 +442,60 @@
                 class="card-header bg-white d-flex flex-wrap gap-2 justify-content-between align-items-center"
               >
                 <span>Lista de Proveedores</span>
-                <button class="btn btn-primary btn-sm">
+                <button
+                  class="btn btn-primary btn-sm"
+                  id="btn-nuevo-proveedor"
+                >
                   <i class="bi bi-plus-lg me-1"></i>Nuevo Proveedor
                 </button>
               </div>
               <div class="card-body">
+                <div class="row g-2 mb-3">
+                  <div class="col-12 col-lg-6">
+                    <div class="input-group input-group-sm">
+                      <span class="input-group-text bg-white"
+                        ><i class="bi bi-search"></i
+                      ></span>
+                      <input
+                        type="search"
+                        class="form-control"
+                        id="proveedores-buscar"
+                        placeholder="Buscar por documento, nombre o contacto..."
+                        aria-label="Buscar proveedor"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6 col-lg-3 d-flex align-items-center">
+                    <div class="form-check mb-0">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="filtro-proveedores-credito"
+                      />
+                      <label
+                        class="form-check-label small"
+                        for="filtro-proveedores-credito"
+                      >
+                        Con crédito
+                      </label>
+                    </div>
+                  </div>
+                </div>
                 <div class="table-responsive">
                   <table class="table table-hover align-middle">
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>RUC</th>
-                        <th>Razón Social</th>
+                        <th>Documento</th>
+                        <th>Nombre / Razón social</th>
                         <th>Contacto</th>
                         <th>Teléfono</th>
+                        <th>Correo</th>
+                        <th>Estado</th>
                         <th>Acciones</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>20123456789</td>
-                        <td>Distribuidora Norte S.A.C.</td>
-                        <td>Carlos Ruiz</td>
-                        <td>987123456</td>
-                        <td>
-                          <button class="btn btn-outline-primary btn-sm">
-                            <i class="bi bi-pencil"></i>
-                          </button>
-                          <button
-                            class="btn btn-outline-primary btn-sm"
-                            title="Desactivar"
-                          >
-                            <i class="bi bi-toggle-on"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
+                    <tbody></tbody>
                   </table>
                 </div>
               </div>
@@ -424,56 +509,54 @@
                 class="card-header bg-white d-flex flex-wrap gap-2 justify-content-between align-items-center"
               >
                 <span>Lista de Categorías</span>
-                <button class="btn btn-primary btn-sm">
+                <button class="btn btn-primary btn-sm" id="btn-nueva-categoria">
                   <i class="bi bi-plus-lg me-1"></i>Nueva Categoría
                 </button>
               </div>
               <div class="card-body">
+                <div class="row g-2 mb-3">
+                  <div class="col-md-4">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="categorias-buscar"
+                      placeholder="Buscar por nombre o descripción"
+                    />
+                  </div>
+                  <div class="col-md-3">
+                    <select class="form-select" id="categorias-filtro-estado">
+                      <option value="">Todos los estados</option>
+                      <option value="1">Activos</option>
+                      <option value="0">Inactivos</option>
+                    </select>
+                  </div>
+                </div>
                 <div class="table-responsive">
-                  <table class="table table-hover align-middle">
+                  <table class="table table-hover align-middle" id="tablaCategorias">
                     <thead>
                       <tr>
                         <th>#</th>
                         <th>Categoría</th>
                         <th>Descripción</th>
+                        <th>Estado</th>
                         <th>Acciones</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>Abarrotes</td>
-                        <td>Alimentos de despensa</td>
-                        <td>
-                          <button class="btn btn-outline-primary btn-sm">
-                            <i class="bi bi-pencil"></i>
-                          </button>
-                          <button
-                            class="btn btn-outline-primary btn-sm"
-                            title="Desactivar"
-                          >
-                            <i class="bi bi-toggle-on"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>2</td>
-                        <td>Lácteos</td>
-                        <td>Leche, yogur y derivados</td>
-                        <td>
-                          <button class="btn btn-outline-primary btn-sm">
-                            <i class="bi bi-pencil"></i>
-                          </button>
-                          <button
-                            class="btn btn-outline-primary btn-sm"
-                            title="Desactivar"
-                          >
-                            <i class="bi bi-toggle-on"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
+                    <tbody></tbody>
                   </table>
+                </div>
+                <div
+                  class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-3"
+                >
+                  <div class="text-muted small" id="categorias-paginacion-info">
+                    Sin resultados
+                  </div>
+                  <nav>
+                    <ul
+                      class="pagination pagination-sm mb-0"
+                      id="categorias-paginacion"
+                    ></ul>
+                  </nav>
                 </div>
               </div>
             </div>
@@ -488,13 +571,49 @@
                 <span>Lista de Empleados</span>
                 <button
                   class="btn btn-primary btn-sm"
-                  data-bs-toggle="modal"
-                  data-bs-target="#modalNuevoEmpleado"
+                  id="btn-nuevo-empleado"
+                  type="button"
                 >
                   <i class="bi bi-plus-lg me-1"></i>Nuevo Empleado
                 </button>
               </div>
               <div class="card-body">
+                <div class="row g-2 mb-3">
+                  <div class="col-12 col-lg-5">
+                    <div class="input-group input-group-sm">
+                      <span class="input-group-text bg-white"
+                        ><i class="bi bi-search"></i
+                      ></span>
+                      <input
+                        type="search"
+                        class="form-control"
+                        id="empleados-buscar"
+                        placeholder="Buscar por documento, nombre o cargo..."
+                        aria-label="Buscar empleado"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6 col-lg-3">
+                    <select
+                      class="form-select form-select-sm"
+                      id="filtro-empleados-cargo"
+                      aria-label="Filtrar por cargo"
+                    >
+                      <option value="">Todos los cargos</option>
+                    </select>
+                  </div>
+                  <div class="col-6 col-lg-3">
+                    <select
+                      class="form-select form-select-sm"
+                      id="filtro-empleados-estado"
+                      aria-label="Filtrar por estado"
+                    >
+                      <option value="">Todos los estados</option>
+                      <option value="1">Activos</option>
+                      <option value="0">Inactivos</option>
+                    </select>
+                  </div>
+                </div>
                 <div class="table-responsive">
                   <table class="table table-hover align-middle">
                     <thead>
@@ -509,32 +628,7 @@
                         <th>Acciones</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>DNI 21500001</td>
-                        <td>Martha Quispe Rojas</td>
-                        <td>ADMINISTRADOR</td>
-                        <td>MANANA</td>
-                        <td>956123456</td>
-                        <td>
-                          <span class="badge text-bg-success">Activo</span>
-                        </td>
-                        <td>
-                          <div class="d-flex gap-1">
-                            <button class="btn btn-outline-primary btn-sm">
-                              <i class="bi bi-pencil"></i>
-                            </button>
-                            <button
-                              class="btn btn-outline-primary btn-sm"
-                              title="Desactivar"
-                            >
-                              <i class="bi bi-toggle-on"></i>
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
+                    <tbody></tbody>
                   </table>
                 </div>
               </div>
@@ -568,12 +662,15 @@
             ></button>
           </div>
           <div class="modal-body">
-            <form>
+            <form id="formEmpleado">
+              <div id="empleado-alerta" class="alert d-none" role="alert"></div>
+
               <h6 class="fw-bold mb-3">Datos personales</h6>
               <div class="row g-3 mb-4">
                 <div class="col-md-4">
                   <label for="empleado-tipo-doc" class="form-label"
-                    >Tipo de documento</label
+                    >Tipo de documento
+                    <span class="text-danger">*</span></label
                   >
                   <select class="form-select" id="empleado-tipo-doc" required>
                     <option value="" disabled selected>Seleccione</option>
@@ -581,7 +678,8 @@
                 </div>
                 <div class="col-md-4">
                   <label for="empleado-documento" class="form-label"
-                    >N° de documento</label
+                    >N° de documento
+                    <span class="text-danger">*</span></label
                   >
                   <input
                     type="text"
@@ -593,7 +691,7 @@
                 </div>
                 <div class="col-md-4">
                   <label for="empleado-nombre" class="form-label"
-                    >Nombres</label
+                    >Nombres <span class="text-danger">*</span></label
                   >
                   <input
                     type="text"
@@ -798,6 +896,248 @@
       </div>
     </div>
 
+    <!-- Modal Producto -->
+    <div
+      class="modal fade"
+      id="modalProducto"
+      tabindex="-1"
+      aria-labelledby="modalProductoLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalProductoLabel">Nuevo Producto</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Cerrar"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="formProducto">
+              <div id="producto-alerta" class="alert d-none" role="alert"></div>
+
+              <h6 class="fw-bold mb-3">Datos generales</h6>
+              <div class="row g-3 mb-4">
+                <div class="col-md-8">
+                  <label for="producto-nombre" class="form-label"
+                    >Nombre <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="producto-nombre"
+                    maxlength="50"
+                    required
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="producto-codigo" class="form-label"
+                    >Código de barras</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="producto-codigo"
+                    maxlength="30"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="producto-categoria" class="form-label"
+                    >Categoría <span class="text-danger">*</span></label
+                  >
+                  <select class="form-select" id="producto-categoria" required>
+                    <option value="" disabled selected>Seleccione</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="producto-marca" class="form-label">Marca</label>
+                  <select class="form-select" id="producto-marca">
+                    <option value="">Sin marca</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label for="producto-unidad" class="form-label"
+                    >Unidad base <span class="text-danger">*</span></label
+                  >
+                  <select class="form-select" id="producto-unidad" required>
+                    <option value="" disabled selected>Seleccione</option>
+                  </select>
+                </div>
+                <div class="col-md-8">
+                  <label for="producto-detalle" class="form-label"
+                    >Detalle</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="producto-detalle"
+                    maxlength="100"
+                  />
+                </div>
+                <div class="col-12">
+                  <label for="producto-imagen" class="form-label"
+                    >Imagen (URL)</label
+                  >
+                  <input
+                    type="url"
+                    class="form-control"
+                    id="producto-imagen"
+                    maxlength="200"
+                    placeholder="https://..."
+                  />
+                </div>
+              </div>
+
+              <h6 class="fw-bold mb-3">Precios</h6>
+              <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                  <label for="producto-p-compra" class="form-label"
+                    >Precio compra (S/)</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="producto-p-compra"
+                    min="0"
+                    max="99999999.99"
+                    step="0.01"
+                    value="0"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="producto-p-venta" class="form-label"
+                    >Precio venta (S/)
+                    <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="producto-p-venta"
+                    min="0"
+                    max="99999999.99"
+                    step="0.01"
+                    required
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="producto-p-mayoreo" class="form-label"
+                    >Precio mayoreo (S/)</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="producto-p-mayoreo"
+                    min="0"
+                    max="99999999.99"
+                    step="0.01"
+                    value="0"
+                  />
+                </div>
+                <div class="col-12">
+                  <div class="form-text" id="producto-precio-aviso"></div>
+                </div>
+              </div>
+
+              <h6 class="fw-bold mb-3">Stock</h6>
+              <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                  <label for="producto-stock-actual" class="form-label"
+                    >Stock inicial</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="producto-stock-actual"
+                    min="0"
+                    max="999999999.999"
+                    step="0.001"
+                    value="0"
+                  />
+                  <div class="form-text">
+                    Solo al crear. Luego se gestiona por movimientos de
+                    inventario.
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <label for="producto-stock-minimo" class="form-label"
+                    >Stock mínimo</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="producto-stock-minimo"
+                    min="0"
+                    max="999999999.999"
+                    step="0.001"
+                    value="0"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="producto-stock-maximo" class="form-label"
+                    >Stock máximo</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="producto-stock-maximo"
+                    min="0"
+                    max="999999999.999"
+                    step="0.001"
+                    value="0"
+                  />
+                </div>
+              </div>
+
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="form-check form-switch">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      id="producto-afecto-igv"
+                      checked
+                    />
+                    <label class="form-check-label" for="producto-afecto-igv"
+                      >Afecto a IGV</label
+                    >
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-check form-switch">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      id="producto-perecible"
+                    />
+                    <label class="form-check-label" for="producto-perecible"
+                      >Producto perecible</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-primary" id="btn-guardar-producto">
+              <i class="bi bi-save me-1"></i>Guardar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Modal Configuración -->
     <div
       class="modal fade"
@@ -860,10 +1200,505 @@
       </div>
     </div>
 
+    <!-- Modal Cliente -->
+    <div
+      class="modal fade"
+      id="modalCliente"
+      tabindex="-1"
+      aria-labelledby="modalClienteLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalClienteLabel">Nuevo Cliente</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Cerrar"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="formCliente">
+              <div id="cliente-alerta" class="alert d-none" role="alert"></div>
+
+              <h6 class="fw-bold mb-3">Datos personales</h6>
+              <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                  <label for="cliente-tipo-doc" class="form-label"
+                    >Tipo de documento
+                    <span class="text-danger">*</span></label
+                  >
+                  <select class="form-select" id="cliente-tipo-doc" required>
+                    <option value="" disabled selected>Seleccione</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label for="cliente-documento" class="form-label"
+                    >N° de documento
+                    <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cliente-documento"
+                    maxlength="15"
+                    required
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="cliente-nombre" class="form-label"
+                    >Nombres <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cliente-nombre"
+                    maxlength="80"
+                    required
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="cliente-ap-paterno" class="form-label"
+                    >Apellido paterno
+                    <small class="text-muted">(opcional)</small></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cliente-ap-paterno"
+                    maxlength="80"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="cliente-ap-materno" class="form-label"
+                    >Apellido materno
+                    <small class="text-muted">(opcional)</small></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cliente-ap-materno"
+                    maxlength="80"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="cliente-nacimiento" class="form-label"
+                    >Fecha de nacimiento
+                    <small class="text-muted">(opcional)</small></label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="cliente-nacimiento"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="cliente-genero" class="form-label"
+                    >Género <small class="text-muted">(opcional)</small></label
+                  >
+                  <select class="form-select" id="cliente-genero">
+                    <option value="" selected>Seleccione</option>
+                    <option value="M">Masculino</option>
+                    <option value="F">Femenino</option>
+                    <option value="O">Otro</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label for="cliente-celular" class="form-label"
+                    >Celular <small class="text-muted">(opcional)</small></label
+                  >
+                  <input
+                    type="tel"
+                    class="form-control"
+                    id="cliente-celular"
+                    maxlength="9"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="cliente-email" class="form-label"
+                    >Correo <small class="text-muted">(opcional)</small></label
+                  >
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="cliente-email"
+                    maxlength="50"
+                  />
+                </div>
+                <div class="col-12">
+                  <label for="cliente-direccion" class="form-label"
+                    >Dirección
+                    <small class="text-muted">(opcional)</small></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cliente-direccion"
+                    maxlength="100"
+                  />
+                </div>
+              </div>
+
+              <h6 class="fw-bold mb-3">Datos del cliente</h6>
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <label for="cliente-codigo" class="form-label"
+                    >Código de cliente
+                    <small class="text-muted">(opcional)</small></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="cliente-codigo"
+                    maxlength="20"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="cliente-limite" class="form-label"
+                    >Límite de crédito (S/)</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="cliente-limite"
+                    min="0"
+                    max="9999999999.99"
+                    step="0.01"
+                    value="0"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="cliente-puntos" class="form-label"
+                    >Puntos</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="cliente-puntos"
+                    min="0"
+                    max="2147483647"
+                    step="1"
+                    value="0"
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-primary">
+              <i class="bi bi-person-plus me-1"></i>Guardar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Proveedor -->
+    <div
+      class="modal fade"
+      id="modalProveedor"
+      tabindex="-1"
+      aria-labelledby="modalProveedorLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalProveedorLabel">
+              Nuevo Proveedor
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Cerrar"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="formProveedor">
+              <div id="proveedor-alerta" class="alert d-none" role="alert"></div>
+
+              <h6 class="fw-bold mb-3">Datos personales</h6>
+              <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                  <label for="proveedor-tipo-doc" class="form-label"
+                    >Tipo de documento
+                    <span class="text-danger">*</span></label
+                  >
+                  <select class="form-select" id="proveedor-tipo-doc" required>
+                    <option value="" disabled selected>Seleccione</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label for="proveedor-documento" class="form-label"
+                    >N° de documento
+                    <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="proveedor-documento"
+                    maxlength="15"
+                    required
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="proveedor-nombre" class="form-label"
+                    >Nombres / Razón social
+                    <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="proveedor-nombre"
+                    maxlength="80"
+                    required
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="proveedor-ap-paterno" class="form-label"
+                    >Apellido paterno
+                    <small class="text-muted">(opcional)</small></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="proveedor-ap-paterno"
+                    maxlength="80"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="proveedor-ap-materno" class="form-label"
+                    >Apellido materno
+                    <small class="text-muted">(opcional)</small></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="proveedor-ap-materno"
+                    maxlength="80"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="proveedor-nacimiento" class="form-label"
+                    >Fecha de nacimiento
+                    <small class="text-muted">(opcional)</small></label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="proveedor-nacimiento"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="proveedor-genero" class="form-label"
+                    >Género <small class="text-muted">(opcional)</small></label
+                  >
+                  <select class="form-select" id="proveedor-genero">
+                    <option value="" selected>Seleccione</option>
+                    <option value="M">Masculino</option>
+                    <option value="F">Femenino</option>
+                    <option value="O">Otro</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label for="proveedor-celular" class="form-label"
+                    >Celular <small class="text-muted">(opcional)</small></label
+                  >
+                  <input
+                    type="tel"
+                    class="form-control"
+                    id="proveedor-celular"
+                    maxlength="9"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="proveedor-email" class="form-label"
+                    >Correo <small class="text-muted">(opcional)</small></label
+                  >
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="proveedor-email"
+                    maxlength="50"
+                  />
+                </div>
+                <div class="col-12">
+                  <label for="proveedor-direccion" class="form-label"
+                    >Dirección
+                    <small class="text-muted">(opcional)</small></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="proveedor-direccion"
+                    maxlength="100"
+                  />
+                </div>
+              </div>
+
+              <h6 class="fw-bold mb-3">Datos del proveedor</h6>
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <label for="proveedor-codigo" class="form-label"
+                    >Código de proveedor
+                    <small class="text-muted">(opcional)</small></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="proveedor-codigo"
+                    maxlength="20"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="proveedor-contacto" class="form-label"
+                    >Persona de contacto
+                    <small class="text-muted">(opcional)</small></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="proveedor-contacto"
+                    maxlength="80"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="proveedor-telefono-contacto" class="form-label"
+                    >Teléfono de contacto
+                    <small class="text-muted">(opcional)</small></label
+                  >
+                  <input
+                    type="tel"
+                    class="form-control"
+                    id="proveedor-telefono-contacto"
+                    maxlength="15"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="proveedor-email-contacto" class="form-label"
+                    >Correo de contacto
+                    <small class="text-muted">(opcional)</small></label
+                  >
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="proveedor-email-contacto"
+                    maxlength="50"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label for="proveedor-dias-credito" class="form-label"
+                    >Días de crédito</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="proveedor-dias-credito"
+                    min="0"
+                    max="2147483647"
+                    step="1"
+                    value="0"
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-primary">
+              <i class="bi bi-person-plus me-1"></i>Guardar
+            </button>
+          </div>
+        </div>
+        <!-- Modal Categoría -->
+        <div
+          class="modal fade"
+          id="modalCategoria"
+          tabindex="-1"
+          aria-labelledby="modalCategoriaLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="modalCategoriaLabel">Nueva Categoría</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Cerrar"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <form id="formCategoria" novalidate>
+                  <div id="categoria-alerta" class="alert d-none" role="alert"></div>
+                  <div class="mb-3">
+                    <label for="categoria-nombre" class="form-label"
+                      >Nombre <span class="text-danger">*</span></label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="categoria-nombre"
+                      maxlength="50"
+                      required
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="categoria-descripcion" class="form-label"
+                      >Descripción <small class="text-muted">(opcional)</small></label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="categoria-descripcion"
+                      maxlength="100"
+                    />
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Cancelar
+                </button>
+                <button type="button" class="btn btn-primary" id="btn-guardar-categoria">
+                  Guardar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="../assets/theme.js"></script>
     <script src="../assets/inject-sidebar.js"></script>
     <script src="../assets/navegacion-persistente.js"></script>
     <script type="module" src="./empleados.js"></script>
+    <script type="module" src="./productos.js"></script>
+    <script type="module" src="./clientes.js"></script>
+    <script type="module" src="./proveedores.js"></script>
+    <script type="module" src="./categorias.js"></script>
   
     <script>
       // El acordeón se gestiona desde assets/inject-sidebar.js

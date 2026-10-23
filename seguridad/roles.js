@@ -8,6 +8,9 @@ const titulo = document.getElementById("modalNuevoRolLabel");
 const inputNombre = document.getElementById("rol-nombre");
 const inputDescripcion = document.getElementById("rol-descripcion");
 const selectNivel = document.getElementById("rol-nivel");
+const inputBuscarRoles = document.getElementById("roles-buscar");
+const filtroNivelRoles = document.getElementById("filtro-roles-nivel");
+const filtroEstadoRoles = document.getElementById("filtro-roles-estado");
 
 const alerta = document.createElement("div");
 alerta.className = "alert alert-danger d-none";
@@ -32,6 +35,14 @@ function irALogin(err) {
     return true;
   }
   return false;
+}
+
+function normalizarBusqueda(valor) {
+  return String(valor ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
 }
 
 const TEXTO_NIVEL = { 1: "Superior", 2: "Operativo", 3: "Restringido" };
@@ -112,14 +123,36 @@ function filaMensaje(texto) {
   return tr;
 }
 
+function renderRoles() {
+  const termino = normalizarBusqueda(inputBuscarRoles?.value);
+  const nivel = filtroNivelRoles?.value || "";
+  const estado = filtroEstadoRoles?.value || "";
+  const visibles = roles.filter((rol) => {
+    const activo = rol.estado !== false && rol.estado !== "0";
+    const texto = normalizarBusqueda(
+      `${rol.nRol ?? ""} ${rol.descripcion ?? ""}`,
+    );
+    const coincideTexto = !termino || texto.includes(termino);
+    const coincideNivel = !nivel || String(rol.nivel ?? "") === nivel;
+    const coincideEstado = !estado || (estado === "1" ? activo : !activo);
+    return coincideTexto && coincideNivel && coincideEstado;
+  });
+
+  if (!roles.length) {
+    tbody.replaceChildren(filaMensaje("No hay roles registrados."));
+    return;
+  }
+  if (!visibles.length) {
+    tbody.replaceChildren(filaMensaje("No se encontraron roles."));
+    return;
+  }
+  tbody.replaceChildren(...visibles.map(filaRol));
+}
+
 export async function listarRoles() {
   try {
     roles = (await api("GET", "/api/roles")) || [];
-    if (!roles.length) {
-      tbody.replaceChildren(filaMensaje("No hay roles registrados."));
-      return;
-    }
-    tbody.replaceChildren(...roles.map(filaRol));
+    renderRoles();
   } catch (err) {
     if (!irALogin(err)) {
       tbody.replaceChildren(filaMensaje(err.mensaje || "No se pudo cargar."));
@@ -209,6 +242,9 @@ modal.addEventListener("hidden.bs.modal", () => {
   form.reset();
 });
 btnGuardar.addEventListener("click", guardarRol);
+inputBuscarRoles.addEventListener("input", renderRoles);
+filtroNivelRoles.addEventListener("change", renderRoles);
+filtroEstadoRoles.addEventListener("change", renderRoles);
 
 tbody.addEventListener("click", (e) => {
   const boton = e.target.closest("button[data-accion]");
@@ -228,3 +264,6 @@ tbody.addEventListener("click", (e) => {
 });
 
 listarRoles();
+if (window.registrarRecargaPanel) {
+  window.registrarRecargaPanel("pane-roles", listarRoles);
+}

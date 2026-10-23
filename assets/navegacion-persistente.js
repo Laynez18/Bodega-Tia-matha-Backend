@@ -3,6 +3,15 @@
   var GLOBAL_SRC = /bootstrap|theme\.js|navegacion-persistente|inject-sidebar/;
   var EVENTO_CAMBIO = 'navegacion-persistente-cambio';
 
+  // Registro de funciones que recargan los datos de un panel (pestaña).
+  // Cada módulo registra su función con window.registrarRecargaPanel.
+  var panelesRecargables = {};
+
+  window.registrarRecargaPanel = function (paneId, fn) {
+    if (!paneId || typeof fn !== 'function') return;
+    panelesRecargables[String(paneId).replace(/^#/, '')] = fn;
+  };
+
   function extraerDeHTML(htmlTexto) {
     var parser = new DOMParser();
     var doc = parser.parseFromString(htmlTexto, 'text/html');
@@ -15,15 +24,25 @@
     };
   }
 
-  function ejecutarScripts(scripts) {
+  function ejecutarScripts(scripts, baseUrl) {
     scripts.forEach(function (original) {
       if (original.src && GLOBAL_SRC.test(original.src)) return;
       var s = document.createElement('script');
       Array.from(original.attributes).forEach(function (attr) {
         s.setAttribute(attr.name, attr.value);
       });
-      if (original.src) s.src = original.src;
-      else s.text = original.textContent;
+      if (original.src) {
+        var src = original.getAttribute('src');
+        // Resolver contra la página destino (no contra la actual) y forzar
+        // una URL única para que los módulos se vuelvan a evaluar.
+        var absoluta = src;
+        try {
+          absoluta = new URL(src, new URL(baseUrl, window.location.href)).href;
+        } catch (e) {}
+        s.src = absoluta + (absoluta.indexOf('?') === -1 ? '?' : '&') + 'spa=' + Date.now();
+      } else {
+        s.text = original.textContent;
+      }
       s.setAttribute('data-persistente', 'true');
       document.head.appendChild(s);
       if (!original.src) {
@@ -69,6 +88,9 @@
     // Si solo cambia la pestaña de la página actual, no hace falta recargar el main
     if (ruta === window.location.pathname && !window.location.search && hash) {
       if (!desdePopstate) history.pushState(null, '', ruta + hash);
+      if (window.navegacionSidebar && window.navegacionSidebar.actualizarSidebar) {
+        window.navegacionSidebar.actualizarSidebar();
+      }
       activarHash(hash);
       actualizarActivo();
       window.dispatchEvent(new CustomEvent(EVENTO_CAMBIO, { detail: { url: ruta + hash } }));
@@ -89,7 +111,7 @@
       .then(function (html) {
         var extraido = extraerDeHTML(html);
 
-        // Solo reemplazar el <main>. El sidebar (<aside>) nunca se toca.
+        // Solo reemplazar el <main>; el sidebar se refresca aparte si cambió.
         var mainActual = document.querySelector('main');
         if (mainActual) {
           mainActual.remove();
@@ -109,9 +131,14 @@
         document.body.querySelectorAll('.modal').forEach(function (m) { m.remove(); });
         extraido.modales.forEach(function (m) { document.body.appendChild(m); });
 
+        // Refrescar el sidebar si assets/sidebar.html cambió
+        if (window.navegacionSidebar && window.navegacionSidebar.actualizarSidebar) {
+          window.navegacionSidebar.actualizarSidebar();
+        }
+
         // Ejecutar scripts de la página destino (menos los globales)
-        document.body.querySelectorAll('script[data-persistente="true"]').forEach(function (s) { s.remove(); });
-        ejecutarScripts(extraido.scripts);
+        document.querySelectorAll('script[data-persistente="true"]').forEach(function (s) { s.remove(); });
+        ejecutarScripts(extraido.scripts, ruta);
 
         // Restaurar scroll del sidebar
         var scrollGuardado = sessionStorage.getItem('mmSidebarScroll');
@@ -142,6 +169,17 @@
 
   function inicializar() {
     actualizarActivo();
+
+    // Al mostrar una pestaña, recargar sus datos desde la API.
+    document.addEventListener('shown.bs.tab', function (evento) {
+      var objetivo =
+        evento.target.getAttribute('data-bs-target') ||
+        evento.target.getAttribute('href') ||
+        '';
+      if (objetivo.charAt(0) !== '#') return;
+      var recargar = panelesRecargables[objetivo.slice(1)];
+      if (recargar) recargar();
+    });
 
     document.body.addEventListener('click', function (e) {
       var enlace = e.target.closest('aside a[href], #menuMovil a[href]');

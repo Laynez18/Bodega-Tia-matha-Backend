@@ -250,44 +250,42 @@
                 </button>
               </div>
               <div class="card-body">
-                <ul
-                  class="nav nav-tabs mb-3"
-                  id="tabUsuariosEstado"
-                  role="tablist"
-                >
-                  <li class="nav-item" role="presentation">
-                    <button
-                      class="nav-link active"
-                      id="tab-usuarios-activos"
-                      type="button"
-                      role="tab"
-                      aria-selected="true"
+                <div class="row g-2 mb-3">
+                  <div class="col-12 col-lg-5">
+                    <div class="input-group input-group-sm">
+                      <span class="input-group-text bg-white"
+                        ><i class="bi bi-search"></i
+                      ></span>
+                      <input
+                        type="search"
+                        class="form-control"
+                        id="buscar-usuarios"
+                        placeholder="Buscar por usuario o empleado..."
+                        aria-label="Buscar usuario por logeo o empleado"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6 col-lg-2">
+                    <select
+                      class="form-select form-select-sm"
+                      id="filtro-usuarios-tipo"
+                      aria-label="Filtrar por tipo de usuario"
                     >
-                      Activos
-                      <span
-                        class="badge text-bg-success ms-1"
-                        id="contador-usuarios-activos"
-                        >0</span
-                      >
-                    </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <button
-                      class="nav-link"
-                      id="tab-usuarios-inactivos"
-                      type="button"
-                      role="tab"
-                      aria-selected="false"
+                      <option value="">Todos los tipos</option>
+                    </select>
+                  </div>
+                  <div class="col-6 col-lg-2">
+                    <select
+                      class="form-select form-select-sm"
+                      id="filtro-usuarios-estado"
+                      aria-label="Filtrar por estado"
                     >
-                      Inactivos
-                      <span
-                        class="badge text-bg-secondary ms-1"
-                        id="contador-usuarios-inactivos"
-                        >0</span
-                      >
-                    </button>
-                  </li>
-                </ul>
+                      <option value="">Todos los estados</option>
+                      <option value="1">Activos</option>
+                      <option value="0">Inactivos</option>
+                    </select>
+                  </div>
+                </div>
                 <div class="table-responsive">
                   <table class="table table-hover align-middle">
                     <thead>
@@ -412,6 +410,45 @@
                 </button>
               </div>
               <div class="card-body">
+                <div class="row g-2 mb-3">
+                  <div class="col-12 col-lg-5">
+                    <div class="input-group input-group-sm">
+                      <span class="input-group-text bg-white"
+                        ><i class="bi bi-search"></i
+                      ></span>
+                      <input
+                        type="search"
+                        class="form-control"
+                        id="roles-buscar"
+                        placeholder="Buscar por rol o descripción..."
+                        aria-label="Buscar rol"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6 col-lg-2">
+                    <select
+                      class="form-select form-select-sm"
+                      id="filtro-roles-nivel"
+                      aria-label="Filtrar por nivel"
+                    >
+                      <option value="">Todos los niveles</option>
+                      <option value="1">Nivel 1</option>
+                      <option value="2">Nivel 2</option>
+                      <option value="3">Nivel 3</option>
+                    </select>
+                  </div>
+                  <div class="col-6 col-lg-2">
+                    <select
+                      class="form-select form-select-sm"
+                      id="filtro-roles-estado"
+                      aria-label="Filtrar por estado"
+                    >
+                      <option value="">Todos los estados</option>
+                      <option value="1">Activos</option>
+                      <option value="0">Inactivos</option>
+                    </select>
+                  </div>
+                </div>
                 <div class="table-responsive">
                   <table class="table table-hover align-middle">
                     <thead>
@@ -532,6 +569,31 @@
                 </button>
               </div>
               <div class="card-body">
+                <div class="row g-2 mb-3">
+                  <div class="col-12 col-lg-5">
+                    <div class="input-group input-group-sm">
+                      <span class="input-group-text bg-white"
+                        ><i class="bi bi-search"></i
+                      ></span>
+                      <input
+                        type="search"
+                        class="form-control"
+                        id="permisos-buscar"
+                        placeholder="Buscar permiso por clave o nombre..."
+                        aria-label="Buscar permiso"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6 col-lg-3">
+                    <select
+                      class="form-select form-select-sm"
+                      id="filtro-permisos-modulo"
+                      aria-label="Filtrar por módulo"
+                    >
+                      <option value="">Todos los módulos</option>
+                    </select>
+                  </div>
+                </div>
                 <div class="table-responsive">
                   <table
                     id="tablaPermisos"
@@ -1391,42 +1453,75 @@
                 <span>Registro de Auditoria</span>
               </div>
               <div class="card-body">
-                <div class="row g-3 mb-3">
-                  <div class="col-md-3">
-                    <label class="form-label" for="auditoriaUsuario"
-                      >Usuario</label
+                <div
+                  id="auditoria-alerta"
+                  class="alert alert-danger d-none"
+                  role="alert"
+                ></div>
+                <div class="row g-2 mb-3">
+                  <div class="col-12 col-lg-4">
+                    <div class="input-group input-group-sm">
+                      <span class="input-group-text bg-white"
+                        ><i class="bi bi-search"></i
+                      ></span>
+                      <input
+                        type="search"
+                        class="form-control"
+                        id="auditoriaTexto"
+                        placeholder="Buscar en el detalle..."
+                        autocomplete="off"
+                        aria-label="Buscar en auditoría"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-6 col-lg-2">
+                    <select
+                      class="form-select form-select-sm"
+                      id="auditoriaUsuario"
                     >
-                    <select class="form-select" id="auditoriaUsuario">
                       <option value="">Todos los usuarios</option>
-                      <option>admin</option>
                     </select>
                   </div>
-                  <div class="col-md-3">
-                    <label class="form-label" for="auditoriaModulo"
-                      >Modulo</label
+                  <div class="col-6 col-lg-2">
+                    <select
+                      class="form-select form-select-sm"
+                      id="auditoriaTabla"
                     >
-                    <select class="form-select" id="auditoriaModulo">
-                      <option value="">Todos los modulos</option>
-                      <option>Seguridad</option>
-                      <option>Inventario</option>
-                      <option>Ventas</option>
+                      <option value="">Todas las tablas</option>
                     </select>
                   </div>
-                  <div class="col-md-3">
-                    <label class="form-label" for="auditoriaDesde">Desde</label>
+                  <div class="col-6 col-lg-2">
+                    <select
+                      class="form-select form-select-sm"
+                      id="auditoriaAccion"
+                    >
+                      <option value="">Todas las acciones</option>
+                    </select>
+                  </div>
+                  <div class="col-6 col-lg-2">
                     <input
-                      class="form-control"
+                      class="form-control form-control-sm"
                       id="auditoriaDesde"
                       type="date"
+                      title="Desde"
                     />
                   </div>
-                  <div class="col-md-3">
-                    <label class="form-label" for="auditoriaHasta">Hasta</label>
+                  <div class="col-6 col-lg-2">
                     <input
-                      class="form-control"
+                      class="form-control form-control-sm"
                       id="auditoriaHasta"
                       type="date"
+                      title="Hasta"
                     />
+                  </div>
+                  <div class="col-12 col-lg-2">
+                    <button
+                      type="button"
+                      class="btn btn-outline-secondary btn-sm w-100"
+                      id="auditoria-limpiar"
+                    >
+                      <i class="bi bi-eraser me-1"></i>Limpiar
+                    </button>
                   </div>
                 </div>
                 <div class="table-responsive">
@@ -1435,46 +1530,19 @@
                       <tr>
                         <th>Fecha y hora</th>
                         <th>Usuario</th>
-                        <th>Modulo</th>
+                        <th>Tabla</th>
                         <th>Accion</th>
+                        <th>Registro</th>
                         <th>Detalle</th>
                         <th>IP / Equipo</th>
+                        <th class="text-end">Ver</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="auditoria-tabla">
                       <tr>
-                        <td>04/09/2026 09:15</td>
-                        <td>admin</td>
-                        <td>Inventario</td>
-                        <td>
-                          <span class="badge text-bg-success"
-                            >Actualizacion</span
-                          >
+                        <td colspan="8" class="text-center text-muted py-4">
+                          Cargando registros...
                         </td>
-                        <td>
-                          PRODUCTO #3: stock actualizado por registro de compra.
-                        </td>
-                        <td>127.0.0.1 / T001</td>
-                      </tr>
-                      <tr>
-                        <td>04/09/2026 08:40</td>
-                        <td>admin</td>
-                        <td>Seguridad</td>
-                        <td>
-                          <span class="badge text-bg-primary">Registro</span>
-                        </td>
-                        <td>USUARIO #4: usuario registrado en el sistema.</td>
-                        <td>127.0.0.1 / T001</td>
-                      </tr>
-                      <tr>
-                        <td>03/09/2026 18:22</td>
-                        <td>admin</td>
-                        <td>Ventas</td>
-                        <td>
-                          <span class="badge text-bg-warning">Consulta</span>
-                        </td>
-                        <td>VENTA #125: comprobante consultado.</td>
-                        <td>127.0.0.1 / T001</td>
                       </tr>
                     </tbody>
                   </table>
@@ -1553,7 +1621,7 @@
                     class="form-control"
                     id="usuario-clave2"
                     placeholder="Repetir contraseña"
-                    required  
+                    required
                   />
                 </div>
                 <div class="col-md-12">
@@ -1665,6 +1733,94 @@
         </div>
       </div>
     </div>
+    <!-- Modal Detalle Auditoria -->
+    <div
+      class="modal fade"
+      id="modalDetalleAuditoria"
+      tabindex="-1"
+      aria-labelledby="modalDetalleAuditoriaLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalDetalleAuditoriaLabel">
+              <i class="bi bi-clock-history me-2"></i>Detalle de Auditoria
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Cerrar"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="text-muted small">ID de auditoria</div>
+                <div id="auditoria-detalle-id" class="fw-semibold"></div>
+              </div>
+              <div class="col-md-6">
+                <div class="text-muted small">Fecha y hora</div>
+                <div id="auditoria-detalle-fecha" class="fw-semibold"></div>
+              </div>
+              <div class="col-md-6">
+                <div class="text-muted small">Usuario</div>
+                <div id="auditoria-detalle-usuario" class="fw-semibold"></div>
+              </div>
+              <div class="col-md-6">
+                <div class="text-muted small">Tabla</div>
+                <div id="auditoria-detalle-tabla" class="fw-semibold"></div>
+              </div>
+              <div class="col-md-6">
+                <div class="text-muted small">Accion</div>
+                <div id="auditoria-detalle-accion" class="fw-semibold"></div>
+              </div>
+              <div class="col-md-6">
+                <div class="text-muted small">ID del registro afectado</div>
+                <div id="auditoria-detalle-registro" class="fw-semibold"></div>
+              </div>
+              <div class="col-md-6">
+                <div class="text-muted small">IP</div>
+                <div id="auditoria-detalle-ip" class="fw-semibold"></div>
+              </div>
+              <div class="col-md-6">
+                <div class="text-muted small">Equipo / terminal</div>
+                <div
+                  id="auditoria-detalle-terminal"
+                  class="fw-semibold text-break"
+                ></div>
+              </div>
+            </div>
+            <div class="mt-4">
+              <div class="text-muted small mb-1">Valor anterior</div>
+              <pre
+                id="auditoria-detalle-anterior"
+                class="bg-light border rounded p-2 mb-0 text-break"
+                style="white-space: pre-wrap"
+              ></pre>
+            </div>
+            <div class="mt-3">
+              <div class="text-muted small mb-1">Valor nuevo</div>
+              <pre
+                id="auditoria-detalle-nuevo"
+                class="bg-light border rounded p-2 mb-0 text-break"
+                style="white-space: pre-wrap"
+              ></pre>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Modal Configuración -->
     <div
       class="modal fade"
@@ -1733,12 +1889,12 @@
     <script type="module" src="./usuarios.js"></script>
     <script type="module" src="./roles.js"></script>
     <script type="module" src="./permisos.js"></script>
-  
+    <script type="module" src="./auditoria.js"></script>
+
     <script>
       // El acordeón se gestiona desde assets/inject-sidebar.js
     </script>
-    
-    
+
     <script type="module" src="../assets/sesion.js"></script>
     <script type="module" src="../assets/verificar-sesion.js"></script>
   </body>

@@ -12,7 +12,9 @@
    ============================================ */
 html,
 body {
-  overflow-x: hidden;
+  /* clip (en vez de hidden) evita scroll horizontal sin crear un
+     contenedor de scroll que rompa position: sticky del sidebar. */
+  overflow-x: clip;
   max-width: 100%;
 }
 
@@ -34,6 +36,14 @@ body {
   #sidebar-contenedor {
     width: 250px;
     min-width: 250px;
+  }
+
+  /* El sidebar permanece fijo en pantalla aunque el contenido
+     del main sea mucho más largo y la página haga scroll. */
+  .sidebar-desktop {
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
   }
 }
 

@@ -6,13 +6,16 @@
       return;
     }
 
-    var res = await fetch('/assets/sidebar.html');
-    if (!res.ok) throw new Error('No se pudo cargar sidebar.html');
-    var html = await res.text();
-    contenedor.innerHTML = html;
-
     var STORAGE_KEY = 'mmAccordionEstado';
     var SCROLL_KEY = 'mmSidebarScroll';
+    var sidebarHTMLOriginal = null;
+
+    function cargarSidebarHTML() {
+      return fetch('/assets/sidebar.html', { cache: 'no-store' }).then(function(res) {
+        if (!res.ok) throw new Error('No se pudo cargar sidebar.html');
+        return res.text();
+      });
+    }
 
     function guardarEstado(clave, abierto) {
       var estado = {};
@@ -186,23 +189,57 @@
       }
     }
 
+    function restaurarScroll(valor) {
+      var aside = document.querySelector('aside');
+      if (aside && valor !== null && valor !== undefined) {
+        aside.scrollTop = parseInt(valor, 10);
+      }
+    }
+
+    function renderizarSidebar(html) {
+      contenedor.innerHTML = html;
+      sidebarHTMLOriginal = html;
+      inyectarMenuMovil(html);
+      initAcordeon();
+      restaurarAcordeon();
+      marcarEnlaceActivo();
+      activarTabDesdeHash(window.location.hash);
+    }
+
+    // Vuelve a leer sidebar.html y solo reemplaza el menú si su contenido cambió.
+    // Así los cambios se ven al navegar entre vistas sin recargar la página.
+    function actualizarSidebar() {
+      return cargarSidebarHTML()
+        .then(function(html) {
+          if (html === sidebarHTMLOriginal) return false;
+
+          var asideActual = document.querySelector('aside');
+          var scroll = asideActual ? asideActual.scrollTop : null;
+
+          renderizarSidebar(html);
+          restaurarScroll(scroll);
+          return true;
+        })
+        .catch(function(e) {
+          console.error('Error actualizando sidebar:', e);
+          return false;
+        });
+    }
+
     // Expone utilidades para que navegacion-persistente las use tras cada navegación
     window.navegacionSidebar = {
       marcarEnlaceActivo: marcarEnlaceActivo,
-      activarTabDesdeHash: activarTabDesdeHash
+      activarTabDesdeHash: activarTabDesdeHash,
+      actualizarSidebar: actualizarSidebar
     };
 
-    inyectarMenuMovil(html);
-    initAcordeon();
-    restaurarAcordeon();
-    marcarEnlaceActivo();
-    activarTabDesdeHash(window.location.hash);
+    var htmlInicial = await cargarSidebarHTML();
+    renderizarSidebar(htmlInicial);
 
     // Restaurar scroll guardado
     var scrollGuardado = sessionStorage.getItem(SCROLL_KEY);
     if (scrollGuardado !== null) {
-      var aside = document.querySelector('aside');
-      if (aside) aside.scrollTop = parseInt(scrollGuardado, 10);
+      restaurarScroll(scrollGuardado);
       sessionStorage.removeItem(SCROLL_KEY);
     }
 
