@@ -17,9 +17,11 @@ import com.bodeguita.bodeguita_backend.repository.ContratoRepository;
 public class ContratoService {
 
     private final ContratoRepository contratoRepository;
+    private final AuditoriaService auditoriaService;
 
-    public ContratoService(ContratoRepository contratoRepository) {
+    public ContratoService(ContratoRepository contratoRepository, AuditoriaService auditoriaService) {
         this.contratoRepository = contratoRepository;
+        this.auditoriaService = auditoriaService;
     }
 
     public List<ContratoDto> listar() {
@@ -37,19 +39,26 @@ public class ContratoService {
         Contrato contrato = new Contrato();
         contrato.setNContrato(request.nContrato().trim());
         contrato.setEstado(Boolean.TRUE);
-        return aDto(contratoRepository.save(contrato));
+        Contrato guardado = contratoRepository.save(contrato);
+        auditoriaService.registrar("contrato", "INSERT", guardado.getIdContrato(), null, resumen(guardado));
+        return aDto(guardado);
     }
 
     @Transactional
     public ContratoDto actualizar(Long idContrato, ContratoRequest request) {
         Contrato contrato = buscarActivo(idContrato);
+        String anterior = resumen(contrato);
         contrato.setNContrato(request.nContrato().trim());
+        auditoriaService.registrar("contrato", "UPDATE", idContrato, anterior, resumen(contrato));
         return aDto(contrato);
     }
 
     @Transactional
     public void desactivar(Long idContrato) {
-        buscarActivo(idContrato).setEstado(Boolean.FALSE);
+        Contrato contrato = buscarActivo(idContrato);
+        String anterior = resumen(contrato);
+        contrato.setEstado(Boolean.FALSE);
+        auditoriaService.registrar("contrato", "DESACTIVAR", idContrato, anterior, resumen(contrato));
     }
 
     private Contrato buscarActivo(Long idContrato) {
@@ -59,6 +68,11 @@ public class ContratoService {
 
     private ContratoDto aDto(Contrato contrato) {
         return new ContratoDto(contrato.getIdContrato(), contrato.getNContrato());
+    }
+
+    private String resumen(Contrato contrato) {
+        return "nContrato=" + contrato.getNContrato()
+                + "; estado=" + (Boolean.TRUE.equals(contrato.getEstado()) ? "1" : "0");
     }
 
     private ResponseStatusException noEncontrado(Long idContrato) {

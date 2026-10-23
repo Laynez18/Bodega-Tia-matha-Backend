@@ -42,6 +42,6 @@ class BodeguitaBackendApplicationTests {
     @Test
     void consultasDeEmpleadosYUsuariosSeEjecutan() {
         empleadoRepository.findAllActivosConRelaciones();
-        usuarioRepository.findAllActivosConRelaciones();
+        usuarioRepository.findAllConRelaciones();
     }
 }

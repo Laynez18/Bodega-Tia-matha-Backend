@@ -18,10 +18,28 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
             LEFT JOIN FETCH empleado.persona
             LEFT JOIN FETCH usuario.roles usuarioRol
             LEFT JOIN FETCH usuarioRol.rol
-            WHERE usuario.estado = TRUE
-            ORDER BY usuario.logeo ASC
+            ORDER BY usuario.id ASC
             """)
-    List<Usuario> findAllActivosConRelaciones();
+    List<Usuario> findAllConRelaciones();
+
+    @Query("""
+            SELECT usuario FROM Usuario usuario
+            LEFT JOIN FETCH usuario.empleado empleado
+            LEFT JOIN FETCH empleado.persona
+            ORDER BY usuario.logeo
+            """)
+    List<Usuario> findAllParaFiltro();
+
+    @Query("""
+            SELECT DISTINCT usuario FROM Usuario usuario
+            JOIN FETCH usuario.tipoUsuario
+            LEFT JOIN FETCH usuario.empleado empleado
+            LEFT JOIN FETCH empleado.persona
+            LEFT JOIN FETCH usuario.roles usuarioRol
+            LEFT JOIN FETCH usuarioRol.rol
+            WHERE usuario.id = :idUsuario
+            """)
+    Optional<Usuario> findConRelaciones(@Param("idUsuario") Long idUsuario);
 
     @Query("""
             SELECT DISTINCT usuario FROM Usuario usuario
@@ -37,4 +55,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     boolean existsByLogeo(String logeo);
 
     boolean existsByLogeoAndIdNot(String logeo, Long id);
+
+    boolean existsByEmpleado_IdEmpleadoAndEstadoTrue(Long idEmpleado);
+
+    boolean existsByEmpleado_IdEmpleadoAndEstadoTrueAndIdNot(Long idEmpleado, Long id);
 }

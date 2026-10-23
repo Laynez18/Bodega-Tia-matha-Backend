@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.bodeguita.bodeguita_backend.dto.EstadoRequest;
 import com.bodeguita.bodeguita_backend.dto.RolResumenDto;
 import com.bodeguita.bodeguita_backend.dto.TipoUsuarioDto;
 import com.bodeguita.bodeguita_backend.dto.UsuarioDto;
@@ -38,6 +40,7 @@ public class UsuarioService {
     private final RolRepository rolRepository;
     private final UsuarioRolRepository usuarioRolRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuditoriaService auditoriaService;
 
     public UsuarioService(
             UsuarioRepository usuarioRepository,
@@ -45,17 +48,19 @@ public class UsuarioService {
             EmpleadoRepository empleadoRepository,
             RolRepository rolRepository,
             UsuarioRolRepository usuarioRolRepository,
-            PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder,
+            AuditoriaService auditoriaService) {
         this.usuarioRepository = usuarioRepository;
         this.tipoUsuarioRepository = tipoUsuarioRepository;
         this.empleadoRepository = empleadoRepository;
         this.rolRepository = rolRepository;
         this.usuarioRolRepository = usuarioRolRepository;
         this.passwordEncoder = passwordEncoder;
+        this.auditoriaService = auditoriaService;
     }
 
     public List<UsuarioDto> listar() {
-        return usuarioRepository.findAllActivosConRelaciones().stream().map(this::aDto).toList();
+        return usuarioRepository.findAllConRelaciones().stream().map(this::aDto).toList();
     }
 
     public UsuarioDto obtener(Long idUsuario) {
@@ -76,7 +81,7 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioDto crear(UsuarioRequest request) {
-        String logeo = request.logeo().trim();
+        String logeo = normalizarLogeo(request.logeo());
         if (usuarioRepository.existsByLogeo(logeo)) {
             throw conflicto("El logeo ya esta registrado.");
         }
@@ -84,43 +89,109 @@ public class UsuarioService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La clave es obligatoria al crear un usuario.");
         }
 
+        Empleado empleado = buscarEmpleado(request.idEmpleado());
+        validarEmpleadoSinOtroUsuarioActivo(
+                empleado == null ? null : empleado.getIdEmpleado(),
+                null,
+                "El empleado ya tiene un usuario activo.");
+
         Usuario usuario = new Usuario();
         usuario.setTipoUsuario(buscarTipoUsuario(request.idTipoUsuario()));
-        usuario.setEmpleado(buscarEmpleado(request.idEmpleado()));
+        usuario.setEmpleado(empleado);
         usuario.setLogeo(logeo);
         usuario.setClave(passwordEncoder.encode(request.clave()));
         usuario.setEstado(Boolean.TRUE);
         usuarioRepository.saveAndFlush(usuario);
         actualizarRoles(usuario, request.idsRol());
-        return obtener(usuario.getId());
+        UsuarioDto creado = obtener(usuario.getId());
+        auditoriaService.registrar("usuario", "INSERT", creado.idUsuario(), null, resumen(creado));
+        return creado;
     }
 
     @Transactional
     public UsuarioDto actualizar(Long idUsuario, UsuarioRequest request) {
         Usuario usuario = buscarActivo(idUsuario);
-        String logeo = request.logeo().trim();
+        UsuarioDto anterior = aDto(usuario);
+        String logeo = normalizarLogeo(request.logeo());
         if (usuarioRepository.existsByLogeoAndIdNot(logeo, idUsuario)) {
             throw conflicto("El logeo ya esta registrado.");
         }
 
+        Empleado empleado = buscarEmpleado(request.idEmpleado());
+        validarEmpleadoSinOtroUsuarioActivo(
+                empleado == null ? null : empleado.getIdEmpleado(),
+                idUsuario,
+                "El empleado ya tiene un usuario activo.");
+
         usuario.setTipoUsuario(buscarTipoUsuario(request.idTipoUsuario()));
-        usuario.setEmpleado(buscarEmpleado(request.idEmpleado()));
+        usuario.setEmpleado(empleado);
         usuario.setLogeo(logeo);
         if (request.clave() != null && !request.clave().isBlank()) {
             usuario.setClave(passwordEncoder.encode(request.clave()));
         }
         actualizarRoles(usuario, request.idsRol());
-        return obtener(idUsuario);
+        UsuarioDto actualizado = obtener(idUsuario);
+        auditoriaService.registrar("usuario", "UPDATE", idUsuario, resumen(anterior), resumen(actualizado));
+        return actualizado;
+    }
+
+    @Transactional
+    public UsuarioDto cambiarEstado(Long idUsuario, EstadoRequest request) {
+        Usuario usuario = usuarioRepository.findConRelaciones(idUsuario)
+                .orElseThrow(() -> noEncontrado("Usuario", idUsuario));
+        UsuarioDto anterior = aDto(usuario);
+        boolean nuevoEstado = "1".equals(request.estado());
+        if ("1".equals(request.estado()) && usuario.getEmpleado() != null) {
+            validarEmpleadoSinOtroUsuarioActivo(
+                    usuario.getEmpleado().getIdEmpleado(),
+                    idUsuario,
+                    "No se puede activar el usuario porque su empleado ya tiene otro usuario activo.");
+        }
+        if (Boolean.TRUE.equals(usuario.getEstado()) == nuevoEstado) {
+            return anterior;
+        }
+        usuario.setEstado(nuevoEstado);
+        UsuarioDto actualizado = aDto(usuario);
+        auditoriaService.registrar(
+                "usuario",
+                nuevoEstado ? "ACTIVAR" : "DESACTIVAR",
+                idUsuario,
+                resumen(anterior),
+                resumen(actualizado));
+        return actualizado;
     }
 
     @Transactional
     public void desactivar(Long idUsuario) {
-        buscarActivo(idUsuario).setEstado(Boolean.FALSE);
+        Usuario usuario = buscarActivo(idUsuario);
+        String anterior = resumen(aDto(usuario));
+        usuario.setEstado(Boolean.FALSE);
+        auditoriaService.registrar(
+                "usuario", "DESACTIVAR", idUsuario, anterior, resumen(aDto(usuario)));
     }
 
     private Usuario buscarActivo(Long idUsuario) {
         return usuarioRepository.findActivoConRelaciones(idUsuario)
                 .orElseThrow(() -> noEncontrado("Usuario", idUsuario));
+    }
+
+    private String normalizarLogeo(String logeo) {
+        return logeo.trim().toLowerCase(Locale.ROOT);
+    }
+
+    private void validarEmpleadoSinOtroUsuarioActivo(
+            Long idEmpleado,
+            Long idUsuarioExcluir,
+            String mensaje) {
+        if (idEmpleado == null) {
+            return;
+        }
+        boolean ocupado = idUsuarioExcluir == null
+                ? usuarioRepository.existsByEmpleado_IdEmpleadoAndEstadoTrue(idEmpleado)
+                : usuarioRepository.existsByEmpleado_IdEmpleadoAndEstadoTrueAndIdNot(idEmpleado, idUsuarioExcluir);
+        if (ocupado) {
+            throw conflicto(mensaje);
+        }
     }
 
     private TipoUsuario buscarTipoUsuario(Long idTipoUsuario) {
@@ -142,7 +213,10 @@ public class UsuarioService {
         for (UsuarioRol usuarioRol : usuarioRolRepository.findAllPorUsuario(usuario.getId())) {
             asignaciones.put(usuarioRol.getRol().getIdRol(), usuarioRol);
             if (!idsSolicitados.contains(usuarioRol.getRol().getIdRol()) && "1".equals(usuarioRol.getVigente())) {
+                String anterior = resumen(usuarioRol);
                 usuarioRol.setVigente("0");
+                auditoriaService.registrar(
+                        "usuario_rol", "UPDATE", usuarioRol.getIdUsuarioRol(), anterior, resumen(usuarioRol));
             }
         }
 
@@ -159,8 +233,16 @@ public class UsuarioService {
         for (Long idRol : idsSolicitados) {
             UsuarioRol existente = asignaciones.get(idRol);
             if (existente != null) {
+                boolean estabaInactivo = !"1".equals(existente.getVigente())
+                        || !Boolean.TRUE.equals(existente.getEstado());
+                if (!estabaInactivo) {
+                    continue;
+                }
+                String anterior = resumen(existente);
                 existente.setVigente("1");
                 existente.setEstado(Boolean.TRUE);
+                auditoriaService.registrar(
+                        "usuario_rol", "UPDATE", existente.getIdUsuarioRol(), anterior, resumen(existente));
                 continue;
             }
             UsuarioRol nuevo = new UsuarioRol();
@@ -169,9 +251,39 @@ public class UsuarioService {
             nuevo.setFAsignacion(LocalDateTime.now());
             nuevo.setVigente("1");
             nuevo.setEstado(Boolean.TRUE);
-            usuarioRolRepository.save(nuevo);
-            usuario.getRoles().add(nuevo);
+            UsuarioRol guardado = usuarioRolRepository.save(nuevo);
+            usuario.getRoles().add(guardado);
+            auditoriaService.registrar(
+                    "usuario_rol", "INSERT", guardado.getIdUsuarioRol(), null, resumen(guardado));
         }
+    }
+
+    private String resumen(UsuarioDto usuario) {
+        String roles = usuario.roles() == null
+                ? ""
+                : String.join(",", usuario.roles().stream()
+                        .map(rol -> rol.idRol() + ":" + rol.nRol())
+                        .toList());
+        return "logeo=" + texto(usuario.logeo())
+                + "; tipo=" + texto(usuario.nTipoUsuario())
+                + "; empleado=" + texto(usuario.idEmpleado())
+                + "; roles=" + roles
+                + "; estado=" + estado(usuario.estado());
+    }
+
+    private String resumen(UsuarioRol usuarioRol) {
+        return "usuario=" + usuarioRol.getUsuario().getId()
+                + "; rol=" + usuarioRol.getRol().getIdRol() + ":" + usuarioRol.getRol().getNRol()
+                + "; vigente=" + texto(usuarioRol.getVigente())
+                + "; estado=" + estado(usuarioRol.getEstado());
+    }
+
+    private String texto(Object valor) {
+        return valor == null ? "" : String.valueOf(valor);
+    }
+
+    private String estado(Boolean valor) {
+        return Boolean.TRUE.equals(valor) ? "1" : "0";
     }
 
     private UsuarioDto aDto(Usuario usuario) {
@@ -188,6 +300,7 @@ public class UsuarioService {
                 empleado == null ? null : empleado.getIdEmpleado(),
                 nombreEmpleado,
                 usuario.getLogeo(),
+                usuario.getEstado(),
                 roles,
                 usuario.getFecCreador());
     }

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.bodeguita.bodeguita_backend.dto.EmpleadoDto;
 import com.bodeguita.bodeguita_backend.dto.EmpleadoRequest;
+import com.bodeguita.bodeguita_backend.dto.EstadoRequest;
 import com.bodeguita.bodeguita_backend.service.EmpleadoService;
 
 import jakarta.validation.Valid;
@@ -53,6 +55,11 @@ public class EmpleadoController {
     @PutMapping("/{idEmpleado}")
     public EmpleadoDto actualizar(@PathVariable Long idEmpleado, @Valid @RequestBody EmpleadoRequest request) {
         return empleadoService.actualizar(idEmpleado, request);
+    }
+
+    @PatchMapping("/{idEmpleado}/estado")
+    public EmpleadoDto cambiarEstado(@PathVariable Long idEmpleado, @Valid @RequestBody EstadoRequest request) {
+        return empleadoService.cambiarEstado(idEmpleado, request);
     }
 
     @DeleteMapping("/{idEmpleado}")

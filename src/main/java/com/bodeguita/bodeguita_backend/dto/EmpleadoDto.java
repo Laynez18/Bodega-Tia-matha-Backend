@@ -13,5 +13,6 @@ public record EmpleadoDto(
         String turno,
         String fondoPension,
         String nHps,
-        String essalud) {
+        String essalud,
+        Boolean estado) {
 }

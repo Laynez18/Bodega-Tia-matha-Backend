@@ -17,9 +17,11 @@ import com.bodeguita.bodeguita_backend.repository.CargoRepository;
 public class CargoService {
 
     private final CargoRepository cargoRepository;
+    private final AuditoriaService auditoriaService;
 
-    public CargoService(CargoRepository cargoRepository) {
+    public CargoService(CargoRepository cargoRepository, AuditoriaService auditoriaService) {
         this.cargoRepository = cargoRepository;
+        this.auditoriaService = auditoriaService;
     }
 
     public List<CargoDto> listar() {
@@ -37,19 +39,26 @@ public class CargoService {
         Cargo cargo = new Cargo();
         cargo.setNCargo(request.nCargo().trim());
         cargo.setEstado(Boolean.TRUE);
-        return aDto(cargoRepository.save(cargo));
+        Cargo guardado = cargoRepository.save(cargo);
+        auditoriaService.registrar("cargo", "INSERT", guardado.getIdCargo(), null, resumen(guardado));
+        return aDto(guardado);
     }
 
     @Transactional
     public CargoDto actualizar(Long idCargo, CargoRequest request) {
         Cargo cargo = buscarActivo(idCargo);
+        String anterior = resumen(cargo);
         cargo.setNCargo(request.nCargo().trim());
+        auditoriaService.registrar("cargo", "UPDATE", idCargo, anterior, resumen(cargo));
         return aDto(cargo);
     }
 
     @Transactional
     public void desactivar(Long idCargo) {
-        buscarActivo(idCargo).setEstado(Boolean.FALSE);
+        Cargo cargo = buscarActivo(idCargo);
+        String anterior = resumen(cargo);
+        cargo.setEstado(Boolean.FALSE);
+        auditoriaService.registrar("cargo", "DESACTIVAR", idCargo, anterior, resumen(cargo));
     }
 
     private Cargo buscarActivo(Long idCargo) {
@@ -59,6 +68,11 @@ public class CargoService {
 
     private CargoDto aDto(Cargo cargo) {
         return new CargoDto(cargo.getIdCargo(), cargo.getNCargo());
+    }
+
+    private String resumen(Cargo cargo) {
+        return "nCargo=" + cargo.getNCargo()
+                + "; estado=" + (Boolean.TRUE.equals(cargo.getEstado()) ? "1" : "0");
     }
 
     private ResponseStatusException noEncontrado(Long idCargo) {

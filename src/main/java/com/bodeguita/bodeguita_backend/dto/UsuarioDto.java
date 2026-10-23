@@ -10,6 +10,7 @@ public record UsuarioDto(
         Long idEmpleado,
         String nombreEmpleado,
         String logeo,
+        Boolean estado,
         List<RolResumenDto> roles,
         LocalDateTime fecCre) {
 }
