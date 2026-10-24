@@ -10,3 +10,4 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     boolean existsByCodigoIgnoreCaseAndIdNot(String codigo, Long id);
 }
 
+

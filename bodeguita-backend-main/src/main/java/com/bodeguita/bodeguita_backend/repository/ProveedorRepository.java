@@ -9,3 +9,4 @@ public interface ProveedorRepository extends JpaRepository<Proveedor, Long> {
     boolean existsByPersona_IdAndEstadoTrue(Long idPersona);
 }
 
+

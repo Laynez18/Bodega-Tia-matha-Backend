@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.bodeguita.bodeguita_backend.dto.AlmacenDto;
+import com.bodeguita.bodeguita_backend.dto.AlmacenRequest;
 import com.bodeguita.bodeguita_backend.entity.Almacen;
 import com.bodeguita.bodeguita_backend.repository.AlmacenRepository;
 
@@ -32,17 +33,22 @@ public class AlmacenService {
     }
 
     @Transactional
-    public AlmacenDto crear(Almacen entidad) {
+    public AlmacenDto crear(AlmacenRequest request) {
+        Almacen entidad = new Almacen();
+        entidad.setNombre(request.nombre());
+        entidad.setDescripcion(request.descripcion());
+        entidad.setUbicacion(request.ubicacion());
+        entidad.setEsPrincipal(request.esPrincipal());
         return aDto(almacenRepository.save(entidad));
     }
 
     @Transactional
-    public AlmacenDto actualizar(Long id, Almacen entidad) {
+    public AlmacenDto actualizar(Long id, AlmacenRequest request) {
         Almacen existente = buscarActivo(id);
-        existente.setNombre(entidad.getNombre());
-        existente.setDescripcion(entidad.getDescripcion());
-        existente.setUbicacion(entidad.getUbicacion());
-        existente.setEsPrincipal(entidad.getEsPrincipal());
+        existente.setNombre(request.nombre());
+        existente.setDescripcion(request.descripcion());
+        existente.setUbicacion(request.ubicacion());
+        existente.setEsPrincipal(request.esPrincipal());
         return aDto(almacenRepository.save(existente));
     }
 

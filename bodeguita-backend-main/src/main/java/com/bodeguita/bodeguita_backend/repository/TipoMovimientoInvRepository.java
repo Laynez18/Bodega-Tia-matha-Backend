@@ -8,3 +8,4 @@ public interface TipoMovimientoInvRepository extends JpaRepository<TipoMovimient
     Optional<TipoMovimientoInv> findByIdAndEstado(Long id, String estado);
 }
 
+

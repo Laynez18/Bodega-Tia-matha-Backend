@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import com.bodeguita.bodeguita_backend.dto.EmpresaDto;
-import com.bodeguita.bodeguita_backend.entity.Empresa;
+import com.bodeguita.bodeguita_backend.dto.EmpresaRequest;
 import com.bodeguita.bodeguita_backend.security.RequierePermiso;
 import com.bodeguita.bodeguita_backend.service.EmpresaService;
 
@@ -39,14 +41,14 @@ public class EmpresaController {
 
     @RequierePermiso("empresa:crear")
     @PostMapping
-    public EmpresaDto crear(@RequestBody Empresa entidad) {
-        return empresaService.crear(entidad);
+    public EmpresaDto crear(@Valid @RequestBody EmpresaRequest request) {
+        return empresaService.crear(request);
     }
 
     @RequierePermiso("empresa:editar")
     @PutMapping("/{id}")
-    public EmpresaDto actualizar(@PathVariable Long id, @RequestBody Empresa entidad) {
-        return empresaService.actualizar(id, entidad);
+    public EmpresaDto actualizar(@PathVariable Long id, @Valid @RequestBody EmpresaRequest request) {
+        return empresaService.actualizar(id, request);
     }
 
     @RequierePermiso("empresa:eliminar")

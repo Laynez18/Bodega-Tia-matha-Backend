@@ -8,3 +8,4 @@ public interface AlmacenRepository extends JpaRepository<Almacen, Long> {
     Optional<Almacen> findByIdAndEstado(Long id, String estado);
 }
 
+

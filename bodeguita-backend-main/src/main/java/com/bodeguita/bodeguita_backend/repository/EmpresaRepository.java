@@ -8,3 +8,4 @@ public interface EmpresaRepository extends JpaRepository<Empresa, Long> {
     Optional<Empresa> findByIdAndEstado(Long id, String estado);
 }
 
+

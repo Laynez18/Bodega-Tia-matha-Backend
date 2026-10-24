@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.bodeguita.bodeguita_backend.dto.MarcaDto;
+import com.bodeguita.bodeguita_backend.dto.MarcaRequest;
 import com.bodeguita.bodeguita_backend.entity.Marca;
 import com.bodeguita.bodeguita_backend.repository.MarcaRepository;
 
@@ -32,15 +33,18 @@ public class MarcaService {
     }
 
     @Transactional
-    public MarcaDto crear(Marca entidad) {
+    public MarcaDto crear(MarcaRequest request) {
+        Marca entidad = new Marca();
+        entidad.setNombre(request.nombre());
+        entidad.setDescripcion(request.descripcion());
         return aDto(marcaRepository.save(entidad));
     }
 
     @Transactional
-    public MarcaDto actualizar(Long id, Marca entidad) {
+    public MarcaDto actualizar(Long id, MarcaRequest request) {
         Marca existente = buscarActivo(id);
-        existente.setNombre(entidad.getNombre());
-        existente.setDescripcion(entidad.getDescripcion());
+        existente.setNombre(request.nombre());
+        existente.setDescripcion(request.descripcion());
         return aDto(marcaRepository.save(existente));
     }
 

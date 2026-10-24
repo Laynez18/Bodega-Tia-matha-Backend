@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import com.bodeguita.bodeguita_backend.dto.TipoMovimientoInvDto;
-import com.bodeguita.bodeguita_backend.entity.TipoMovimientoInv;
+import com.bodeguita.bodeguita_backend.dto.TipoMovimientoInvRequest;
 import com.bodeguita.bodeguita_backend.security.RequierePermiso;
 import com.bodeguita.bodeguita_backend.service.TipoMovimientoInvService;
 
@@ -39,14 +41,14 @@ public class TipoMovimientoInvController {
 
     @RequierePermiso("tipo-movimiento-inv:crear")
     @PostMapping
-    public TipoMovimientoInvDto crear(@RequestBody TipoMovimientoInv entidad) {
-        return tipoMovimientoInvService.crear(entidad);
+    public TipoMovimientoInvDto crear(@Valid @RequestBody TipoMovimientoInvRequest request) {
+        return tipoMovimientoInvService.crear(request);
     }
 
     @RequierePermiso("tipo-movimiento-inv:editar")
     @PutMapping("/{id}")
-    public TipoMovimientoInvDto actualizar(@PathVariable Long id, @RequestBody TipoMovimientoInv entidad) {
-        return tipoMovimientoInvService.actualizar(id, entidad);
+    public TipoMovimientoInvDto actualizar(@PathVariable Long id, @Valid @RequestBody TipoMovimientoInvRequest request) {
+        return tipoMovimientoInvService.actualizar(id, request);
     }
 
     @RequierePermiso("tipo-movimiento-inv:eliminar")

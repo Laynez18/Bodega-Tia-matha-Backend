@@ -8,3 +8,4 @@ public interface AperturaCajaRepository extends JpaRepository<AperturaCaja, Long
     Optional<AperturaCaja> findByIdAndEstado(Long id, String estado);
 }
 
+

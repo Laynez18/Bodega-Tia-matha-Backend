@@ -8,3 +8,4 @@ public interface PresentacionProductoRepository extends JpaRepository<Presentaci
     Optional<PresentacionProducto> findByIdAndEstado(Long id, String estado);
 }
 
+

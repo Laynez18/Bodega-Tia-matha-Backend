@@ -8,3 +8,4 @@ public interface UnidadMedidaRepository extends JpaRepository<UnidadMedida, Long
     Optional<UnidadMedida> findByIdAndEstado(Long id, String estado);
 }
 
+

@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import com.bodeguita.bodeguita_backend.dto.UnidadMedidaDto;
-import com.bodeguita.bodeguita_backend.entity.UnidadMedida;
+import com.bodeguita.bodeguita_backend.dto.UnidadMedidaRequest;
 import com.bodeguita.bodeguita_backend.security.RequierePermiso;
 import com.bodeguita.bodeguita_backend.service.UnidadMedidaService;
 
@@ -39,14 +41,14 @@ public class UnidadMedidaController {
 
     @RequierePermiso("unidad-medida:crear")
     @PostMapping
-    public UnidadMedidaDto crear(@RequestBody UnidadMedida entidad) {
-        return unidadMedidaService.crear(entidad);
+    public UnidadMedidaDto crear(@Valid @RequestBody UnidadMedidaRequest request) {
+        return unidadMedidaService.crear(request);
     }
 
     @RequierePermiso("unidad-medida:editar")
     @PutMapping("/{id}")
-    public UnidadMedidaDto actualizar(@PathVariable Long id, @RequestBody UnidadMedida entidad) {
-        return unidadMedidaService.actualizar(id, entidad);
+    public UnidadMedidaDto actualizar(@PathVariable Long id, @Valid @RequestBody UnidadMedidaRequest request) {
+        return unidadMedidaService.actualizar(id, request);
     }
 
     @RequierePermiso("unidad-medida:eliminar")

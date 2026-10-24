@@ -9,3 +9,4 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     boolean existsByPersona_IdAndEstadoTrue(Long idPersona);
 }
 
+

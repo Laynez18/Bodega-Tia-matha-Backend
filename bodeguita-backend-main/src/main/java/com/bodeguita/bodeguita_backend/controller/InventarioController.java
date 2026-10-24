@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import com.bodeguita.bodeguita_backend.dto.InventarioDto;
-import com.bodeguita.bodeguita_backend.entity.Inventario;
+import com.bodeguita.bodeguita_backend.dto.InventarioRequest;
 import com.bodeguita.bodeguita_backend.security.RequierePermiso;
 import com.bodeguita.bodeguita_backend.service.InventarioService;
 
@@ -39,14 +41,14 @@ public class InventarioController {
 
     @RequierePermiso("inventario:crear")
     @PostMapping
-    public InventarioDto crear(@RequestBody Inventario entidad) {
-        return inventarioService.crear(entidad);
+    public InventarioDto crear(@Valid @RequestBody InventarioRequest request) {
+        return inventarioService.crear(request);
     }
 
     @RequierePermiso("inventario:editar")
     @PutMapping("/{id}")
-    public InventarioDto actualizar(@PathVariable Long id, @RequestBody Inventario entidad) {
-        return inventarioService.actualizar(id, entidad);
+    public InventarioDto actualizar(@PathVariable Long id, @Valid @RequestBody InventarioRequest request) {
+        return inventarioService.actualizar(id, request);
     }
 
     @RequierePermiso("inventario:eliminar")

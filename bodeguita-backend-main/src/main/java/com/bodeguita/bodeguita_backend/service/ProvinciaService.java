@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.bodeguita.bodeguita_backend.dto.ProvinciaDto;
+import com.bodeguita.bodeguita_backend.dto.ProvinciaRequest;
 import com.bodeguita.bodeguita_backend.entity.Departamento;
 import com.bodeguita.bodeguita_backend.entity.Provincia;
 import com.bodeguita.bodeguita_backend.repository.DepartamentoRepository;
@@ -36,15 +37,22 @@ public class ProvinciaService {
     }
 
     @Transactional
-    public ProvinciaDto crear(Provincia entidad) {
+    public ProvinciaDto crear(ProvinciaRequest request) {
+        Provincia entidad = new Provincia();
+        Departamento departamento = departamentoRepository.findByIdAndEstado(request.idDepartamento(), "1")
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Departamento no encontrado: " + request.idDepartamento() + "."));
+        entidad.setDepartamento(departamento);
+        entidad.setNombre(request.nombre());
         return aDto(provinciaRepository.save(entidad));
     }
 
     @Transactional
-    public ProvinciaDto actualizar(Long id, Provincia entidad) {
+    public ProvinciaDto actualizar(Long id, ProvinciaRequest request) {
         Provincia existente = buscarActivo(id);
-        existente.setDepartamento(entidad.getDepartamento());
-        existente.setNombre(entidad.getNombre());
+        Departamento departamento = departamentoRepository.findByIdAndEstado(request.idDepartamento(), "1")
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Departamento no encontrado: " + request.idDepartamento() + "."));
+        existente.setDepartamento(departamento);
+        existente.setNombre(request.nombre());
         return aDto(provinciaRepository.save(existente));
     }
 

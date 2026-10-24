@@ -8,3 +8,4 @@ public interface CreditoRepository extends JpaRepository<Credito, Long> {
     Optional<Credito> findByIdAndEstado(Long id, String estado);
 }
 
+

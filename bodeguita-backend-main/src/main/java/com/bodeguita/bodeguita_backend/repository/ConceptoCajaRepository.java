@@ -10,3 +10,4 @@ public interface ConceptoCajaRepository extends JpaRepository<ConceptoCaja, Long
     boolean existsByNombreIgnoreCaseAndIdNot(String nombre, Long id);
 }
 
+

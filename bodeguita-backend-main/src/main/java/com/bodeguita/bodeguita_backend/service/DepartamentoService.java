@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.bodeguita.bodeguita_backend.dto.DepartamentoDto;
+import com.bodeguita.bodeguita_backend.dto.DepartamentoRequest;
 import com.bodeguita.bodeguita_backend.entity.Departamento;
 import com.bodeguita.bodeguita_backend.repository.DepartamentoRepository;
 
@@ -32,14 +33,16 @@ public class DepartamentoService {
     }
 
     @Transactional
-    public DepartamentoDto crear(Departamento entidad) {
+    public DepartamentoDto crear(DepartamentoRequest request) {
+        Departamento entidad = new Departamento();
+        entidad.setNombre(request.nombre());
         return aDto(departamentoRepository.save(entidad));
     }
 
     @Transactional
-    public DepartamentoDto actualizar(Long id, Departamento entidad) {
+    public DepartamentoDto actualizar(Long id, DepartamentoRequest request) {
         Departamento existente = buscarActivo(id);
-        existente.setNombre(entidad.getNombre());
+        existente.setNombre(request.nombre());
         return aDto(departamentoRepository.save(existente));
     }
 

@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import com.bodeguita.bodeguita_backend.dto.ProvinciaDto;
-import com.bodeguita.bodeguita_backend.entity.Provincia;
+import com.bodeguita.bodeguita_backend.dto.ProvinciaRequest;
 import com.bodeguita.bodeguita_backend.security.RequierePermiso;
 import com.bodeguita.bodeguita_backend.service.ProvinciaService;
 
@@ -39,14 +41,14 @@ public class ProvinciaController {
 
     @RequierePermiso("provincia:crear")
     @PostMapping
-    public ProvinciaDto crear(@RequestBody Provincia entidad) {
-        return provinciaService.crear(entidad);
+    public ProvinciaDto crear(@Valid @RequestBody ProvinciaRequest request) {
+        return provinciaService.crear(request);
     }
 
     @RequierePermiso("provincia:editar")
     @PutMapping("/{id}")
-    public ProvinciaDto actualizar(@PathVariable Long id, @RequestBody Provincia entidad) {
-        return provinciaService.actualizar(id, entidad);
+    public ProvinciaDto actualizar(@PathVariable Long id, @Valid @RequestBody ProvinciaRequest request) {
+        return provinciaService.actualizar(id, request);
     }
 
     @RequierePermiso("provincia:eliminar")

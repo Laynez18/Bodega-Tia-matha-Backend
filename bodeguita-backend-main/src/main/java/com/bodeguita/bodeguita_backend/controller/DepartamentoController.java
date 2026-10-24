@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import com.bodeguita.bodeguita_backend.dto.DepartamentoDto;
-import com.bodeguita.bodeguita_backend.entity.Departamento;
+import com.bodeguita.bodeguita_backend.dto.DepartamentoRequest;
 import com.bodeguita.bodeguita_backend.security.RequierePermiso;
 import com.bodeguita.bodeguita_backend.service.DepartamentoService;
 
@@ -39,14 +41,14 @@ public class DepartamentoController {
 
     @RequierePermiso("departamento:crear")
     @PostMapping
-    public DepartamentoDto crear(@RequestBody Departamento entidad) {
-        return departamentoService.crear(entidad);
+    public DepartamentoDto crear(@Valid @RequestBody DepartamentoRequest request) {
+        return departamentoService.crear(request);
     }
 
     @RequierePermiso("departamento:editar")
     @PutMapping("/{id}")
-    public DepartamentoDto actualizar(@PathVariable Long id, @RequestBody Departamento entidad) {
-        return departamentoService.actualizar(id, entidad);
+    public DepartamentoDto actualizar(@PathVariable Long id, @Valid @RequestBody DepartamentoRequest request) {
+        return departamentoService.actualizar(id, request);
     }
 
     @RequierePermiso("departamento:eliminar")

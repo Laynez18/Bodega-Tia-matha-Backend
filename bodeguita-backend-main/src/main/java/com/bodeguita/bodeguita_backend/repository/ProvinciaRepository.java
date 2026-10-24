@@ -8,3 +8,4 @@ public interface ProvinciaRepository extends JpaRepository<Provincia, Long> {
     Optional<Provincia> findByIdAndEstado(Long id, String estado);
 }
 
+

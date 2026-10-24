@@ -8,3 +8,4 @@ public interface MarcaRepository extends JpaRepository<Marca, Long> {
     Optional<Marca> findByIdAndEstado(Long id, String estado);
 }
 
+

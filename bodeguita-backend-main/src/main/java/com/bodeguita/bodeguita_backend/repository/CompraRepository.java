@@ -17,3 +17,4 @@ public interface CompraRepository extends JpaRepository<Compra, Long> {
     List<Object[]> resumenPorFecha(LocalDateTime inicio, LocalDateTime fin);
 }
 
+

@@ -8,3 +8,4 @@ public interface DistritoRepository extends JpaRepository<Distrito, Long> {
     Optional<Distrito> findByIdAndEstado(Long id, String estado);
 }
 
+

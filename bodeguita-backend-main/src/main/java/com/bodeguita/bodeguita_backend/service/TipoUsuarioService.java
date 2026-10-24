@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.bodeguita.bodeguita_backend.dto.TipoUsuarioDto;
+import com.bodeguita.bodeguita_backend.dto.TipoUsuarioRequest;
 import com.bodeguita.bodeguita_backend.entity.TipoUsuario;
 import com.bodeguita.bodeguita_backend.repository.TipoUsuarioRepository;
 
@@ -32,14 +33,16 @@ public class TipoUsuarioService {
     }
 
     @Transactional
-    public TipoUsuarioDto crear(TipoUsuario entidad) {
+    public TipoUsuarioDto crear(TipoUsuarioRequest request) {
+        TipoUsuario entidad = new TipoUsuario();
+        entidad.setnTipoUsuario(request.nTipoUsuario());
         return aDto(tipoUsuarioRepository.save(entidad));
     }
 
     @Transactional
-    public TipoUsuarioDto actualizar(Long id, TipoUsuario entidad) {
+    public TipoUsuarioDto actualizar(Long id, TipoUsuarioRequest request) {
         TipoUsuario existente = buscarActivo(id);
-        existente.setnTipoUsuario(entidad.getnTipoUsuario());
+        existente.setnTipoUsuario(request.nTipoUsuario());
         return aDto(tipoUsuarioRepository.save(existente));
     }
 

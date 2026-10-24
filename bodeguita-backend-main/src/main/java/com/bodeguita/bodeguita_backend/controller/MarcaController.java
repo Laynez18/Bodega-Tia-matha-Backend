@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import com.bodeguita.bodeguita_backend.dto.MarcaDto;
-import com.bodeguita.bodeguita_backend.entity.Marca;
+import com.bodeguita.bodeguita_backend.dto.MarcaRequest;
 import com.bodeguita.bodeguita_backend.security.RequierePermiso;
 import com.bodeguita.bodeguita_backend.service.MarcaService;
 
@@ -39,14 +41,14 @@ public class MarcaController {
 
     @RequierePermiso("marca:crear")
     @PostMapping
-    public MarcaDto crear(@RequestBody Marca entidad) {
-        return marcaService.crear(entidad);
+    public MarcaDto crear(@Valid @RequestBody MarcaRequest request) {
+        return marcaService.crear(request);
     }
 
     @RequierePermiso("marca:editar")
     @PutMapping("/{id}")
-    public MarcaDto actualizar(@PathVariable Long id, @RequestBody Marca entidad) {
-        return marcaService.actualizar(id, entidad);
+    public MarcaDto actualizar(@PathVariable Long id, @Valid @RequestBody MarcaRequest request) {
+        return marcaService.actualizar(id, request);
     }
 
     @RequierePermiso("marca:eliminar")

@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import com.bodeguita.bodeguita_backend.dto.DistritoDto;
-import com.bodeguita.bodeguita_backend.entity.Distrito;
+import com.bodeguita.bodeguita_backend.dto.DistritoRequest;
 import com.bodeguita.bodeguita_backend.security.RequierePermiso;
 import com.bodeguita.bodeguita_backend.service.DistritoService;
 
@@ -39,14 +41,14 @@ public class DistritoController {
 
     @RequierePermiso("distrito:crear")
     @PostMapping
-    public DistritoDto crear(@RequestBody Distrito entidad) {
-        return distritoService.crear(entidad);
+    public DistritoDto crear(@Valid @RequestBody DistritoRequest request) {
+        return distritoService.crear(request);
     }
 
     @RequierePermiso("distrito:editar")
     @PutMapping("/{id}")
-    public DistritoDto actualizar(@PathVariable Long id, @RequestBody Distrito entidad) {
-        return distritoService.actualizar(id, entidad);
+    public DistritoDto actualizar(@PathVariable Long id, @Valid @RequestBody DistritoRequest request) {
+        return distritoService.actualizar(id, request);
     }
 
     @RequierePermiso("distrito:eliminar")

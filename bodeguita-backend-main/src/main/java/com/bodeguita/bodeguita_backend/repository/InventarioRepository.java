@@ -8,3 +8,4 @@ public interface InventarioRepository extends JpaRepository<Inventario, Long> {
     Optional<Inventario> findByIdAndEstado(Long id, String estado);
 }
 
+

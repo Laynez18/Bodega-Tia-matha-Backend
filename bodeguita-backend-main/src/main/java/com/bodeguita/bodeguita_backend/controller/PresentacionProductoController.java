@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import com.bodeguita.bodeguita_backend.dto.PresentacionProductoDto;
-import com.bodeguita.bodeguita_backend.entity.PresentacionProducto;
+import com.bodeguita.bodeguita_backend.dto.PresentacionProductoRequest;
 import com.bodeguita.bodeguita_backend.security.RequierePermiso;
 import com.bodeguita.bodeguita_backend.service.PresentacionProductoService;
 
@@ -39,14 +41,14 @@ public class PresentacionProductoController {
 
     @RequierePermiso("presentacion-producto:crear")
     @PostMapping
-    public PresentacionProductoDto crear(@RequestBody PresentacionProducto entidad) {
-        return presentacionProductoService.crear(entidad);
+    public PresentacionProductoDto crear(@Valid @RequestBody PresentacionProductoRequest request) {
+        return presentacionProductoService.crear(request);
     }
 
     @RequierePermiso("presentacion-producto:editar")
     @PutMapping("/{id}")
-    public PresentacionProductoDto actualizar(@PathVariable Long id, @RequestBody PresentacionProducto entidad) {
-        return presentacionProductoService.actualizar(id, entidad);
+    public PresentacionProductoDto actualizar(@PathVariable Long id, @Valid @RequestBody PresentacionProductoRequest request) {
+        return presentacionProductoService.actualizar(id, request);
     }
 
     @RequierePermiso("presentacion-producto:eliminar")

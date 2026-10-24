@@ -8,3 +8,4 @@ public interface LoteRepository extends JpaRepository<Lote, Long> {
     Optional<Lote> findByIdAndEstado(Long id, String estado);
 }
 
+

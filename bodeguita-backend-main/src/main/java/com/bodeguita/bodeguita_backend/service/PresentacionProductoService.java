@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.bodeguita.bodeguita_backend.dto.PresentacionProductoDto;
+import com.bodeguita.bodeguita_backend.dto.PresentacionProductoRequest;
 import com.bodeguita.bodeguita_backend.entity.PresentacionProducto;
 import com.bodeguita.bodeguita_backend.entity.Producto;
 import com.bodeguita.bodeguita_backend.entity.UnidadMedida;
@@ -42,17 +43,30 @@ public class PresentacionProductoService {
     }
 
     @Transactional
-    public PresentacionProductoDto crear(PresentacionProducto entidad) {
+    public PresentacionProductoDto crear(PresentacionProductoRequest request) {
+        PresentacionProducto entidad = new PresentacionProducto();
+        Producto producto = productoRepository.findByIdAndEstado(request.idProducto(), "1")
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Producto no encontrado: " + request.idProducto() + "."));
+        UnidadMedida unidadMedida = unidadMedidaRepository.findByIdAndEstado(request.idUnidadMedida(), "1")
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Unidad de medida no encontrada: " + request.idUnidadMedida() + "."));
+        entidad.setProducto(producto);
+        entidad.setUnidadMedida(unidadMedida);
+        entidad.setFactorConversion(request.factorConversion() != null ? request.factorConversion() : BigDecimal.ONE);
+        entidad.setEsUnidadBase(request.esUnidadBase());
         return aDto(presentacionProductoRepository.save(entidad));
     }
 
     @Transactional
-    public PresentacionProductoDto actualizar(Long id, PresentacionProducto entidad) {
+    public PresentacionProductoDto actualizar(Long id, PresentacionProductoRequest request) {
         PresentacionProducto existente = buscarActivo(id);
-        existente.setProducto(entidad.getProducto());
-        existente.setUnidadMedida(entidad.getUnidadMedida());
-        existente.setFactorConversion(entidad.getFactorConversion());
-        existente.setEsUnidadBase(entidad.getEsUnidadBase());
+        Producto producto = productoRepository.findByIdAndEstado(request.idProducto(), "1")
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Producto no encontrado: " + request.idProducto() + "."));
+        UnidadMedida unidadMedida = unidadMedidaRepository.findByIdAndEstado(request.idUnidadMedida(), "1")
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Unidad de medida no encontrada: " + request.idUnidadMedida() + "."));
+        existente.setProducto(producto);
+        existente.setUnidadMedida(unidadMedida);
+        existente.setFactorConversion(request.factorConversion() != null ? request.factorConversion() : BigDecimal.ONE);
+        existente.setEsUnidadBase(request.esUnidadBase());
         return aDto(presentacionProductoRepository.save(existente));
     }
 

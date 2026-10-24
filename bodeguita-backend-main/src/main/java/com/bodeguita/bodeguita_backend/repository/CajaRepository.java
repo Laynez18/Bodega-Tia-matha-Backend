@@ -10,3 +10,4 @@ public interface CajaRepository extends JpaRepository<Caja, Long> {
     boolean existsByNombreIgnoreCaseAndIdNot(String nombre, Long id);
 }
 
+

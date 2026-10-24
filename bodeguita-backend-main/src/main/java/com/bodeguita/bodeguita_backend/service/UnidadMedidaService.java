@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.bodeguita.bodeguita_backend.dto.UnidadMedidaDto;
+import com.bodeguita.bodeguita_backend.dto.UnidadMedidaRequest;
 import com.bodeguita.bodeguita_backend.entity.UnidadMedida;
 import com.bodeguita.bodeguita_backend.repository.UnidadMedidaRepository;
 
@@ -32,15 +33,18 @@ public class UnidadMedidaService {
     }
 
     @Transactional
-    public UnidadMedidaDto crear(UnidadMedida entidad) {
+    public UnidadMedidaDto crear(UnidadMedidaRequest request) {
+        UnidadMedida entidad = new UnidadMedida();
+        entidad.setNombre(request.nombre());
+        entidad.setAbreviatura(request.abreviatura());
         return aDto(unidadMedidaRepository.save(entidad));
     }
 
     @Transactional
-    public UnidadMedidaDto actualizar(Long id, UnidadMedida entidad) {
+    public UnidadMedidaDto actualizar(Long id, UnidadMedidaRequest request) {
         UnidadMedida existente = buscarActivo(id);
-        existente.setNombre(entidad.getNombre());
-        existente.setAbreviatura(entidad.getAbreviatura());
+        existente.setNombre(request.nombre());
+        existente.setAbreviatura(request.abreviatura());
         return aDto(unidadMedidaRepository.save(existente));
     }
 

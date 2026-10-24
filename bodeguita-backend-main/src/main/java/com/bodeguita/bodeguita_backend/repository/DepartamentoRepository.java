@@ -8,3 +8,4 @@ public interface DepartamentoRepository extends JpaRepository<Departamento, Long
     Optional<Departamento> findByIdAndEstado(Long id, String estado);
 }
 
+

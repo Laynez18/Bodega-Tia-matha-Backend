@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.bodeguita.bodeguita_backend.dto.DistritoDto;
+import com.bodeguita.bodeguita_backend.dto.DistritoRequest;
 import com.bodeguita.bodeguita_backend.entity.Distrito;
 import com.bodeguita.bodeguita_backend.entity.Provincia;
 import com.bodeguita.bodeguita_backend.repository.DistritoRepository;
@@ -36,15 +37,22 @@ public class DistritoService {
     }
 
     @Transactional
-    public DistritoDto crear(Distrito entidad) {
+    public DistritoDto crear(DistritoRequest request) {
+        Distrito entidad = new Distrito();
+        Provincia provincia = provinciaRepository.findByIdAndEstado(request.idProvincia(), "1")
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Provincia no encontrada: " + request.idProvincia() + "."));
+        entidad.setProvincia(provincia);
+        entidad.setdDistrito(request.dDistrito());
         return aDto(distritoRepository.save(entidad));
     }
 
     @Transactional
-    public DistritoDto actualizar(Long id, Distrito entidad) {
+    public DistritoDto actualizar(Long id, DistritoRequest request) {
         Distrito existente = buscarActivo(id);
-        existente.setProvincia(entidad.getProvincia());
-        existente.setdDistrito(entidad.getdDistrito());
+        Provincia provincia = provinciaRepository.findByIdAndEstado(request.idProvincia(), "1")
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Provincia no encontrada: " + request.idProvincia() + "."));
+        existente.setProvincia(provincia);
+        existente.setdDistrito(request.dDistrito());
         return aDto(distritoRepository.save(existente));
     }
 

@@ -20,3 +20,4 @@ public interface VentaRepository extends JpaRepository<Venta, Long> {
     List<Object[]> ventasPorDia(LocalDateTime inicio, LocalDateTime fin);
 }
 
+

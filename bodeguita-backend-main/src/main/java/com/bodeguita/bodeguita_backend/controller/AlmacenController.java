@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import com.bodeguita.bodeguita_backend.dto.AlmacenDto;
-import com.bodeguita.bodeguita_backend.entity.Almacen;
+import com.bodeguita.bodeguita_backend.dto.AlmacenRequest;
 import com.bodeguita.bodeguita_backend.security.RequierePermiso;
 import com.bodeguita.bodeguita_backend.service.AlmacenService;
 
@@ -39,14 +41,14 @@ public class AlmacenController {
 
     @RequierePermiso("almacen:crear")
     @PostMapping
-    public AlmacenDto crear(@RequestBody Almacen entidad) {
-        return almacenService.crear(entidad);
+    public AlmacenDto crear(@Valid @RequestBody AlmacenRequest request) {
+        return almacenService.crear(request);
     }
 
     @RequierePermiso("almacen:editar")
     @PutMapping("/{id}")
-    public AlmacenDto actualizar(@PathVariable Long id, @RequestBody Almacen entidad) {
-        return almacenService.actualizar(id, entidad);
+    public AlmacenDto actualizar(@PathVariable Long id, @Valid @RequestBody AlmacenRequest request) {
+        return almacenService.actualizar(id, request);
     }
 
     @RequierePermiso("almacen:eliminar")

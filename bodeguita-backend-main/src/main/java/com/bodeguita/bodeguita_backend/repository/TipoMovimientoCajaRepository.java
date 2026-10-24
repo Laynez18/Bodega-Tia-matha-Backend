@@ -10,3 +10,4 @@ public interface TipoMovimientoCajaRepository extends JpaRepository<TipoMovimien
     boolean existsByNombreIgnoreCaseAndIdNot(String nombre, Long id);
 }
 
+

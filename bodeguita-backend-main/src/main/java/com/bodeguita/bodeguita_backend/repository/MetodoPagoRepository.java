@@ -10,3 +10,4 @@ public interface MetodoPagoRepository extends JpaRepository<MetodoPago, Long> {
     boolean existsByNombreIgnoreCaseAndIdNot(String nombre, Long id);
 }
 
+

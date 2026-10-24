@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.bodeguita.bodeguita_backend.dto.TipoMovimientoInvDto;
+import com.bodeguita.bodeguita_backend.dto.TipoMovimientoInvRequest;
 import com.bodeguita.bodeguita_backend.entity.TipoMovimientoInv;
 import com.bodeguita.bodeguita_backend.repository.TipoMovimientoInvRepository;
 
@@ -32,16 +33,20 @@ public class TipoMovimientoInvService {
     }
 
     @Transactional
-    public TipoMovimientoInvDto crear(TipoMovimientoInv entidad) {
+    public TipoMovimientoInvDto crear(TipoMovimientoInvRequest request) {
+        TipoMovimientoInv entidad = new TipoMovimientoInv();
+        entidad.setNombre(request.nombre());
+        entidad.setAbreviatura(request.abreviatura());
+        entidad.setSigno(request.signo());
         return aDto(tipoMovimientoInvRepository.save(entidad));
     }
 
     @Transactional
-    public TipoMovimientoInvDto actualizar(Long id, TipoMovimientoInv entidad) {
+    public TipoMovimientoInvDto actualizar(Long id, TipoMovimientoInvRequest request) {
         TipoMovimientoInv existente = buscarActivo(id);
-        existente.setNombre(entidad.getNombre());
-        existente.setAbreviatura(entidad.getAbreviatura());
-        existente.setSigno(entidad.getSigno());
+        existente.setNombre(request.nombre());
+        existente.setAbreviatura(request.abreviatura());
+        existente.setSigno(request.signo());
         return aDto(tipoMovimientoInvRepository.save(existente));
     }
 

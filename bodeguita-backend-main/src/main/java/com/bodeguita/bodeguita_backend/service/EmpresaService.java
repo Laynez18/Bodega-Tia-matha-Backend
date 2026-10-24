@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.bodeguita.bodeguita_backend.dto.EmpresaDto;
+import com.bodeguita.bodeguita_backend.dto.EmpresaRequest;
 import com.bodeguita.bodeguita_backend.entity.Empresa;
 import com.bodeguita.bodeguita_backend.repository.EmpresaRepository;
 
@@ -32,17 +33,22 @@ public class EmpresaService {
     }
 
     @Transactional
-    public EmpresaDto crear(Empresa entidad) {
+    public EmpresaDto crear(EmpresaRequest request) {
+        Empresa entidad = new Empresa();
+        entidad.setRuc(request.ruc());
+        entidad.setRazonSocial(request.razonSocial());
+        entidad.setDireccion(request.direccion());
+        entidad.setTelefono(request.telefono());
         return aDto(empresaRepository.save(entidad));
     }
 
     @Transactional
-    public EmpresaDto actualizar(Long id, Empresa entidad) {
+    public EmpresaDto actualizar(Long id, EmpresaRequest request) {
         Empresa existente = buscarActivo(id);
-        existente.setRuc(entidad.getRuc());
-        existente.setRazonSocial(entidad.getRazonSocial());
-        existente.setDireccion(entidad.getDireccion());
-        existente.setTelefono(entidad.getTelefono());
+        existente.setRuc(request.ruc());
+        existente.setRazonSocial(request.razonSocial());
+        existente.setDireccion(request.direccion());
+        existente.setTelefono(request.telefono());
         return aDto(empresaRepository.save(existente));
     }
 

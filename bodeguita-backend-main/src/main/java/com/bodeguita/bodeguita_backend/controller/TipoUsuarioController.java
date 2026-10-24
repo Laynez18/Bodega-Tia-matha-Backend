@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import com.bodeguita.bodeguita_backend.dto.TipoUsuarioDto;
-import com.bodeguita.bodeguita_backend.entity.TipoUsuario;
+import com.bodeguita.bodeguita_backend.dto.TipoUsuarioRequest;
 import com.bodeguita.bodeguita_backend.security.RequierePermiso;
 import com.bodeguita.bodeguita_backend.service.TipoUsuarioService;
 
@@ -39,14 +41,14 @@ public class TipoUsuarioController {
 
     @RequierePermiso("tipo-usuario:crear")
     @PostMapping
-    public TipoUsuarioDto crear(@RequestBody TipoUsuario entidad) {
-        return tipoUsuarioService.crear(entidad);
+    public TipoUsuarioDto crear(@Valid @RequestBody TipoUsuarioRequest request) {
+        return tipoUsuarioService.crear(request);
     }
 
     @RequierePermiso("tipo-usuario:editar")
     @PutMapping("/{id}")
-    public TipoUsuarioDto actualizar(@PathVariable Long id, @RequestBody TipoUsuario entidad) {
-        return tipoUsuarioService.actualizar(id, entidad);
+    public TipoUsuarioDto actualizar(@PathVariable Long id, @Valid @RequestBody TipoUsuarioRequest request) {
+        return tipoUsuarioService.actualizar(id, request);
     }
 
     @RequierePermiso("tipo-usuario:eliminar")

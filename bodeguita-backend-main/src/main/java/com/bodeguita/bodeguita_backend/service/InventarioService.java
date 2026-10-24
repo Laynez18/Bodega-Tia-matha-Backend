@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.bodeguita.bodeguita_backend.dto.InventarioDto;
+import com.bodeguita.bodeguita_backend.dto.InventarioRequest;
 import com.bodeguita.bodeguita_backend.entity.Almacen;
 import com.bodeguita.bodeguita_backend.entity.Inventario;
 import com.bodeguita.bodeguita_backend.entity.Producto;
@@ -42,18 +43,32 @@ public class InventarioService {
     }
 
     @Transactional
-    public InventarioDto crear(Inventario entidad) {
+    public InventarioDto crear(InventarioRequest request) {
+        Inventario entidad = new Inventario();
+        Producto producto = productoRepository.findByIdAndEstado(request.idProducto(), "1")
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Producto no encontrado: " + request.idProducto() + "."));
+        Almacen almacen = almacenRepository.findByIdAndEstado(request.idAlmacen(), "1")
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Almacen no encontrado: " + request.idAlmacen() + "."));
+        entidad.setProducto(producto);
+        entidad.setAlmacen(almacen);
+        entidad.setStock(request.stock() != null ? request.stock() : BigDecimal.ZERO);
+        entidad.setStockReservado(request.stockReservado() != null ? request.stockReservado() : BigDecimal.ZERO);
+        entidad.setUbicacionFisica(request.ubicacionFisica());
         return aDto(inventarioRepository.save(entidad));
     }
 
     @Transactional
-    public InventarioDto actualizar(Long id, Inventario entidad) {
+    public InventarioDto actualizar(Long id, InventarioRequest request) {
         Inventario existente = buscarActivo(id);
-        existente.setProducto(entidad.getProducto());
-        existente.setAlmacen(entidad.getAlmacen());
-        existente.setStock(entidad.getStock());
-        existente.setStockReservado(entidad.getStockReservado());
-        existente.setUbicacionFisica(entidad.getUbicacionFisica());
+        Producto producto = productoRepository.findByIdAndEstado(request.idProducto(), "1")
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Producto no encontrado: " + request.idProducto() + "."));
+        Almacen almacen = almacenRepository.findByIdAndEstado(request.idAlmacen(), "1")
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Almacen no encontrado: " + request.idAlmacen() + "."));
+        existente.setProducto(producto);
+        existente.setAlmacen(almacen);
+        existente.setStock(request.stock() != null ? request.stock() : BigDecimal.ZERO);
+        existente.setStockReservado(request.stockReservado() != null ? request.stockReservado() : BigDecimal.ZERO);
+        existente.setUbicacionFisica(request.ubicacionFisica());
         return aDto(inventarioRepository.save(existente));
     }
 

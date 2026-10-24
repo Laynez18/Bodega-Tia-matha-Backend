@@ -72,6 +72,10 @@ public class VentaService {
         List<DetalleVenta> detalles = request.detalles().stream().map(d -> {
             Producto producto = productoRepository.findByIdAndEstado(d.idProducto(), "1")
                     .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Producto no encontrado: " + d.idProducto() + "."));
+            if (producto.getStock() == null || producto.getStock() < d.cantidad()) {
+                throw new ResponseStatusException(org.springframework.http.HttpStatus.BAD_REQUEST,
+                        "Stock insuficiente para el producto: " + producto.getNombre() + " (disponible: " + producto.getStock() + ")");
+            }
             DetalleVenta dv = new DetalleVenta();
             dv.setVenta(venta);
             dv.setProducto(producto);

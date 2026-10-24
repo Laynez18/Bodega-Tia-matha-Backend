@@ -8,3 +8,4 @@ public interface PersonaRepository extends JpaRepository<Persona, Long> {
     Optional<Persona> findByIdAndEstado(Long id, String estado);
 }
 
+

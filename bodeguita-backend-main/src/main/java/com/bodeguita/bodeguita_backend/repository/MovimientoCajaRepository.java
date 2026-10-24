@@ -8,3 +8,4 @@ public interface MovimientoCajaRepository extends JpaRepository<MovimientoCaja, 
     Optional<MovimientoCaja> findByIdAndEstado(Long id, String estado);
 }
 
+
