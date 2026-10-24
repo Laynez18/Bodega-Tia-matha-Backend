@@ -36,7 +36,7 @@ public class CargoService {
     public CargoDto crear(CargoRequest request) {
         Cargo cargo = new Cargo();
         cargo.setNCargo(request.nCargo().trim());
-        cargo.setEstado(Boolean.TRUE);
+        cargo.setEstado("1");
         return aDto(cargoRepository.save(cargo));
     }
 
@@ -49,7 +49,7 @@ public class CargoService {
 
     @Transactional
     public void desactivar(Long idCargo) {
-        buscarActivo(idCargo).setEstado(Boolean.FALSE);
+        buscarActivo(idCargo).setEstado("0");
     }
 
     private Cargo buscarActivo(Long idCargo) {

@@ -48,6 +48,12 @@ public class CompraController {
                 .path("/{id}").buildAndExpand(creado.id()).toUri()).body(creado);
     }
 
+    @RequierePermiso("compra:editar")
+    @PutMapping("/{id}")
+    public CompraDto actualizar(@PathVariable Long id, @Valid @RequestBody CompraRequest request) {
+        return compraService.actualizar(id, request);
+    }
+
     @RequierePermiso("compra:eliminar")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> desactivar(@PathVariable Long id) {

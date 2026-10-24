@@ -50,7 +50,7 @@ public class CompraService {
 
     @Transactional
     public CompraDto crear(CompraRequest request) {
-        Proveedor proveedor = proveedorRepository.findByIdAndEstadoTrue(request.idProveedor())
+        Proveedor proveedor = proveedorRepository.findByIdAndEstado(request.idProveedor(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Proveedor no encontrado: " + request.idProveedor() + "."));
         Compra compra = new Compra();
         compra.setProveedor(proveedor);
@@ -61,7 +61,7 @@ public class CompraService {
         BigDecimal subtotal = BigDecimal.ZERO;
         BigDecimal igv = BigDecimal.ZERO;
         List<DetalleCompra> detalles = request.detalles().stream().map(d -> {
-            Producto producto = productoRepository.findByIdAndEstadoTrue(d.idProducto())
+            Producto producto = productoRepository.findByIdAndEstado(d.idProducto(), "1")
                     .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Producto no encontrado: " + d.idProducto() + "."));
             DetalleCompra dc = new DetalleCompra();
             dc.setCompra(compra);
@@ -89,12 +89,25 @@ public class CompraService {
     }
 
     @Transactional
+    public CompraDto actualizar(Long id, CompraRequest request) {
+        Compra entidad = buscarActivo(id);
+        Proveedor proveedor = proveedorRepository.findByIdAndEstado(request.idProveedor(), "1")
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Proveedor no encontrado: " + request.idProveedor() + "."));
+        entidad.setProveedor(proveedor);
+        entidad.setNumeroDocumento(request.numeroDocumento());
+        entidad.setFCompra(request.fCompra());
+        entidad.setEstado(request.estado());
+        entidad.setObservacion(request.observacion());
+        return obtener(entidad.getId());
+    }
+
+    @Transactional
     public void desactivar(Long id) {
-        buscarActivo(id).setEstado(Boolean.FALSE);
+        buscarActivo(id).setEstado("0");
     }
 
     private Compra buscarActivo(Long id) {
-        return compraRepository.findByIdAndEstadoTrue(id)
+        return compraRepository.findByIdAndEstado(id, "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Compra no encontrada: " + id + "."));
     }
 
@@ -122,3 +135,6 @@ public class CompraService {
         );
     }
 }
+
+
+

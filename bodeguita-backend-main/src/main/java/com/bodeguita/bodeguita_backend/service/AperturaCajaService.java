@@ -43,9 +43,9 @@ public class AperturaCajaService {
 
     @Transactional
     public AperturaCajaDto crear(AperturaCajaRequest request) {
-        Caja caja = cajaRepository.findByIdAndEstadoTrue(request.idCaja())
+        Caja caja = cajaRepository.findByIdAndEstado(request.idCaja(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Caja no encontrada: " + request.idCaja() + "."));
-        Usuario usuario = usuarioRepository.findByIdAndEstadoTrue(request.idUsuario())
+        Usuario usuario = usuarioRepository.findByIdAndEstado(request.idUsuario(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Usuario no encontrado: " + request.idUsuario() + "."));
         AperturaCaja entidad = new AperturaCaja();
         entidad.setCaja(caja);
@@ -60,11 +60,11 @@ public class AperturaCajaService {
 
     @Transactional
     public void desactivar(Long id) {
-        buscarActivo(id).setEstado(Boolean.FALSE);
+        buscarActivo(id).setEstado("0");
     }
 
     private AperturaCaja buscarActivo(Long id) {
-        return aperturaCajaRepository.findByIdAndEstadoTrue(id)
+        return aperturaCajaRepository.findByIdAndEstado(id, "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Apertura de caja no encontrada: " + id + "."));
     }
 
@@ -89,3 +89,6 @@ public class AperturaCajaService {
         );
     }
 }
+
+
+

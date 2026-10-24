@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.bodeguita.bodeguita_backend.entity.AperturaCaja;
 
 public interface AperturaCajaRepository extends JpaRepository<AperturaCaja, Long> {
+    Optional<AperturaCaja> findByIdAndEstado(Long id, String estado);
 }
+

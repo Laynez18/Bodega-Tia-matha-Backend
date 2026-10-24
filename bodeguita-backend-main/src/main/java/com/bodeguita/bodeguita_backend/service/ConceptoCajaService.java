@@ -42,7 +42,7 @@ public class ConceptoCajaService {
         if (conceptoCajaRepository.existsByNombreIgnoreCase(request.nombre())) {
             throw new ResponseStatusException(CONFLICT, "El concepto de caja ya esta registrado.");
         }
-        TipoMovimientoCaja tipoMovimiento = tipoMovimientoCajaRepository.findByIdAndEstadoTrue(request.idTipoMovimiento())
+        TipoMovimientoCaja tipoMovimiento = tipoMovimientoCajaRepository.findByIdAndEstado(request.idTipoMovimiento(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Tipo de movimiento no encontrado: " + request.idTipoMovimiento() + "."));
         ConceptoCaja entidad = new ConceptoCaja();
         entidad.setTipoMovimiento(tipoMovimiento);
@@ -59,7 +59,7 @@ public class ConceptoCajaService {
         if (conceptoCajaRepository.existsByNombreIgnoreCaseAndIdNot(request.nombre(), id)) {
             throw new ResponseStatusException(CONFLICT, "El concepto de caja ya esta registrado.");
         }
-        TipoMovimientoCaja tipoMovimiento = tipoMovimientoCajaRepository.findByIdAndEstadoTrue(request.idTipoMovimiento())
+        TipoMovimientoCaja tipoMovimiento = tipoMovimientoCajaRepository.findByIdAndEstado(request.idTipoMovimiento(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Tipo de movimiento no encontrado: " + request.idTipoMovimiento() + "."));
         entidad.setTipoMovimiento(tipoMovimiento);
         entidad.setNombre(request.nombre());
@@ -70,11 +70,11 @@ public class ConceptoCajaService {
 
     @Transactional
     public void desactivar(Long id) {
-        buscarActivo(id).setEstado(Boolean.FALSE);
+        buscarActivo(id).setEstado("0");
     }
 
     private ConceptoCaja buscarActivo(Long id) {
-        return conceptoCajaRepository.findByIdAndEstadoTrue(id)
+        return conceptoCajaRepository.findByIdAndEstado(id, "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Concepto de caja no encontrado: " + id + "."));
     }
 
@@ -89,3 +89,6 @@ public class ConceptoCajaService {
         );
     }
 }
+
+
+

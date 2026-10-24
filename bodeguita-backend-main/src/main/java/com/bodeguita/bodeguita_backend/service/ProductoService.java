@@ -42,7 +42,7 @@ public class ProductoService {
         if (productoRepository.existsByCodigoIgnoreCase(request.codigo())) {
             throw new ResponseStatusException(CONFLICT, "El codigo del producto ya esta registrado.");
         }
-        Categoria categoria = categoriaRepository.findByIdAndEstadoTrue(request.idCategoria())
+        Categoria categoria = categoriaRepository.findByIdAndEstado(request.idCategoria(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Categoria no encontrada: " + request.idCategoria() + "."));
         Producto entidad = new Producto();
         entidad.setCategoria(categoria);
@@ -63,7 +63,7 @@ public class ProductoService {
         if (productoRepository.existsByCodigoIgnoreCaseAndIdNot(request.codigo(), id)) {
             throw new ResponseStatusException(CONFLICT, "El codigo del producto ya esta registrado.");
         }
-        Categoria categoria = categoriaRepository.findByIdAndEstadoTrue(request.idCategoria())
+        Categoria categoria = categoriaRepository.findByIdAndEstado(request.idCategoria(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Categoria no encontrada: " + request.idCategoria() + "."));
         entidad.setCategoria(categoria);
         entidad.setCodigo(request.codigo());
@@ -78,11 +78,11 @@ public class ProductoService {
 
     @Transactional
     public void desactivar(Long id) {
-        buscarActivo(id).setEstado(Boolean.FALSE);
+        buscarActivo(id).setEstado("0");
     }
 
     private Producto buscarActivo(Long id) {
-        return productoRepository.findByIdAndEstadoTrue(id)
+        return productoRepository.findByIdAndEstado(id, "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Producto no encontrado: " + id + "."));
     }
 
@@ -102,3 +102,6 @@ public class ProductoService {
         );
     }
 }
+
+
+

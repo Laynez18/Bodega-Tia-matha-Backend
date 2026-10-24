@@ -50,7 +50,7 @@ public class CreditoService {
 
     @Transactional
     public CreditoDto crear(CreditoRequest request) {
-        Cliente cliente = clienteRepository.findByIdAndEstadoTrue(request.idCliente())
+        Cliente cliente = clienteRepository.findByIdAndEstado(request.idCliente(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Cliente no encontrado: " + request.idCliente() + "."));
         Credito credito = new Credito();
         credito.setCliente(cliente);
@@ -65,7 +65,7 @@ public class CreditoService {
         List<PagoCredito> pagos = request.pagos() == null ? List.of() : request.pagos().stream().map(p -> {
             MetodoPago mp = null;
             if (p.idMetodoPago() != null) {
-                mp = metodoPagoRepository.findByIdAndEstadoTrue(p.idMetodoPago())
+                mp = metodoPagoRepository.findByIdAndEstado(p.idMetodoPago(), "1")
                         .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Metodo de pago no encontrado: " + p.idMetodoPago() + "."));
             }
             PagoCredito pago = new PagoCredito();
@@ -89,7 +89,7 @@ public class CreditoService {
         Credito credito = buscarActivo(idCredito);
         MetodoPago mp = null;
         if (request.idMetodoPago() != null) {
-            mp = metodoPagoRepository.findByIdAndEstadoTrue(request.idMetodoPago())
+            mp = metodoPagoRepository.findByIdAndEstado(request.idMetodoPago(), "1")
                     .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Metodo de pago no encontrado: " + request.idMetodoPago() + "."));
         }
         PagoCredito pago = new PagoCredito();
@@ -106,11 +106,11 @@ public class CreditoService {
 
     @Transactional
     public void desactivar(Long id) {
-        buscarActivo(id).setEstado(Boolean.FALSE);
+        buscarActivo(id).setEstado("0");
     }
 
     private Credito buscarActivo(Long id) {
-        return creditoRepository.findByIdAndEstadoTrue(id)
+        return creditoRepository.findByIdAndEstado(id, "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Credito no encontrado: " + id + "."));
     }
 
@@ -140,3 +140,6 @@ public class CreditoService {
         );
     }
 }
+
+
+

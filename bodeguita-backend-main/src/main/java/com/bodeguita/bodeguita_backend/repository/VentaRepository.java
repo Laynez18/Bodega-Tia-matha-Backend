@@ -11,9 +11,12 @@ import com.bodeguita.bodeguita_backend.entity.Venta;
 
 public interface VentaRepository extends JpaRepository<Venta, Long> {
 
-    @Query("SELECT count(v), coalesce(sum(v.total), 0) FROM Venta v WHERE v.fVenta between :inicio and :fin and v.estado = 'ACTIVO'")
+    Optional<Venta> findByIdAndEstado(Long id, String estado);
+
+    @Query("SELECT count(v), coalesce(sum(v.total), 0) FROM Venta v WHERE v.fVenta between :inicio and :fin and v.estado = '1'")
     List<Object[]> resumenPorFecha(LocalDateTime inicio, LocalDateTime fin);
 
-    @Query("SELECT DATE(v.fVenta), count(v), sum(v.total) FROM Venta v WHERE v.fVenta between :inicio and :fin and v.estado = 'ACTIVO' GROUP BY DATE(v.fVenta) ORDER BY DATE(v.fVenta)")
+    @Query("SELECT DATE(v.fVenta), count(v), sum(v.total) FROM Venta v WHERE v.fVenta between :inicio and :fin and v.estado = '1' GROUP BY DATE(v.fVenta) ORDER BY DATE(v.fVenta)")
     List<Object[]> ventasPorDia(LocalDateTime inicio, LocalDateTime fin);
 }
+

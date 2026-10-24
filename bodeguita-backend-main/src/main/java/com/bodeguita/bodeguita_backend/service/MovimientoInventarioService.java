@@ -38,7 +38,7 @@ public class MovimientoInventarioService {
 
     @Transactional
     public MovimientoInventarioDto crear(MovimientoInventarioRequest request) {
-        Producto producto = productoRepository.findByIdAndEstadoTrue(request.idProducto())
+        Producto producto = productoRepository.findByIdAndEstado(request.idProducto(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Producto no encontrado: " + request.idProducto() + "."));
         MovimientoInventario entidad = new MovimientoInventario();
         entidad.setProducto(producto);
@@ -56,11 +56,11 @@ public class MovimientoInventarioService {
 
     @Transactional
     public void desactivar(Long id) {
-        buscarActivo(id).setEstado(Boolean.FALSE);
+        buscarActivo(id).setEstado("0");
     }
 
     private MovimientoInventario buscarActivo(Long id) {
-        return repository.findByIdAndEstadoTrue(id)
+        return repository.findByIdAndEstado(id, "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Movimiento de inventario no encontrado: " + id + "."));
     }
 
@@ -80,3 +80,6 @@ public class MovimientoInventarioService {
         );
     }
 }
+
+
+

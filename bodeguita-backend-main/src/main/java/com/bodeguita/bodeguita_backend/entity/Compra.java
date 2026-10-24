@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +55,35 @@ public class Compra extends BaseAuditoria {
     @Column(name = "total", precision = 12, scale = 2, nullable = false)
     private BigDecimal total;
 
-    @Column(name = "estado", length = 20, nullable = false)
-    private String estado;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private Usuario usuario;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_almacen", nullable = false)
+    private Almacen almacen;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_metodo_pago")
+    private MetodoPago metodoPago;
+
+    @Column(name = "tipo_documento", length = 20)
+    private String tipoDocumento;
+
+    @Column(name = "t_pagado", precision = 12, scale = 2, nullable = false)
+    private BigDecimal tPagado;
+
+    @Column(name = "saldo", precision = 12, scale = 2, nullable = false)
+    private BigDecimal saldo;
+
+    @Column(name = "es_credito", length = 1, nullable = false)
+    private String esCredito;
+
+    @Column(name = "f_vencimiento")
+    private LocalDate fVencimiento;
+
+    @Column(name = "situacion", length = 1, nullable = false)
+    private String situacion;
 
     @Column(name = "observacion", length = 200)
     private String observacion;

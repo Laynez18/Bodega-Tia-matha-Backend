@@ -58,11 +58,11 @@ public class CategoriaService {
 
     @Transactional
     public void desactivar(Long id) {
-        buscarActivo(id).setEstado(Boolean.FALSE);
+        buscarActivo(id).setEstado("0");
     }
 
     private Categoria buscarActivo(Long id) {
-        return categoriaRepository.findByIdAndEstadoTrue(id)
+        return categoriaRepository.findByIdAndEstado(id, "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Categoria no encontrado: " + id + "."));
     }
 
@@ -74,3 +74,4 @@ public class CategoriaService {
         );
     }
 }
+

@@ -36,7 +36,7 @@ public class TipoIdentidadService {
     public TipoIdentidadDto crear(TipoIdentidadRequest request) {
         TipoIdentidad tipo = new TipoIdentidad();
         actualizar(tipo, request);
-        tipo.setEstado(Boolean.TRUE);
+        tipo.setEstado("1");
         return aDto(tipoIdentidadRepository.save(tipo));
     }
 
@@ -49,7 +49,7 @@ public class TipoIdentidadService {
 
     @Transactional
     public void desactivar(Long idTipoIdentidad) {
-        buscarActivo(idTipoIdentidad).setEstado(Boolean.FALSE);
+        buscarActivo(idTipoIdentidad).setEstado("0");
     }
 
     private TipoIdentidad buscarActivo(Long idTipoIdentidad) {

@@ -11,6 +11,8 @@ import com.bodeguita.bodeguita_backend.entity.Usuario;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
+    Optional<Usuario> findByIdAndEstado(Long id, String estado);
+
     @Query("""
             SELECT DISTINCT usuario FROM Usuario usuario
             JOIN FETCH usuario.tipoUsuario
@@ -18,7 +20,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
             LEFT JOIN FETCH empleado.persona
             LEFT JOIN FETCH usuario.roles usuarioRol
             LEFT JOIN FETCH usuarioRol.rol
-            WHERE usuario.estado = TRUE
+            WHERE usuario.estado = '1'
             ORDER BY usuario.logeo ASC
             """)
     List<Usuario> findAllActivosConRelaciones();
@@ -30,7 +32,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
             LEFT JOIN FETCH empleado.persona
             LEFT JOIN FETCH usuario.roles usuarioRol
             LEFT JOIN FETCH usuarioRol.rol
-            WHERE usuario.id = :idUsuario AND usuario.estado = TRUE
+            WHERE usuario.id = :idUsuario AND usuario.estado = '1'
             """)
     Optional<Usuario> findActivoConRelaciones(@Param("idUsuario") Long idUsuario);
 
@@ -38,3 +40,4 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     boolean existsByLogeoAndIdNot(String logeo, Long id);
 }
+

@@ -60,11 +60,11 @@ public class TipoMovimientoCajaService {
 
     @Transactional
     public void desactivar(Long id) {
-        buscarActivo(id).setEstado(Boolean.FALSE);
+        buscarActivo(id).setEstado("0");
     }
 
     private TipoMovimientoCaja buscarActivo(Long id) {
-        return repository.findByIdAndEstadoTrue(id)
+        return repository.findByIdAndEstado(id, "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Tipo de movimiento no encontrado: " + id + "."));
     }
 
@@ -77,3 +77,4 @@ public class TipoMovimientoCajaService {
         );
     }
 }
+

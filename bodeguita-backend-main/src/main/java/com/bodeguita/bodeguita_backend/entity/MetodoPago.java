@@ -27,6 +27,6 @@ public class MetodoPago {
     @Column(name = "n_metodo_pago", length = 30, nullable = false)
     private String nombre;
 
-    @Column(name = "estado")
-    private Boolean estado = Boolean.TRUE;
+    @Column(name = "estado", length = 1, nullable = false)
+    private String estado = "1";
 }

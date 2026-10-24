@@ -42,7 +42,7 @@ public abstract class BaseAuditoria {
     private LocalDateTime fecModificador;
 
     @Column(name = "estado", length = 1, nullable = false)
-    private Boolean estado = Boolean.TRUE;
+    private String estado = "1";
 
     @PrePersist
     protected void antesDeCrear() {
@@ -50,7 +50,7 @@ public abstract class BaseAuditoria {
             fecCreador = LocalDateTime.now(ZONA_HORARIA_LIMA);
         }
         if (estado == null) {
-            estado = Boolean.TRUE;
+            estado = "1";
         }
         if (usuarioCreador == null) {
             usuarioCreador = ContextoUsuario.logeo();

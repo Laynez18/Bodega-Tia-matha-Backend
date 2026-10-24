@@ -58,11 +58,11 @@ public class MetodoPagoService {
 
     @Transactional
     public void desactivar(Long id) {
-        buscarActivo(id).setEstado(Boolean.FALSE);
+        buscarActivo(id).setEstado("0");
     }
 
     private MetodoPago buscarActivo(Long id) {
-        return repository.findByIdAndEstadoTrue(id)
+        return repository.findByIdAndEstado(id, "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Metodo de pago no encontrado: " + id + "."));
     }
 
@@ -74,3 +74,4 @@ public class MetodoPagoService {
         );
     }
 }
+

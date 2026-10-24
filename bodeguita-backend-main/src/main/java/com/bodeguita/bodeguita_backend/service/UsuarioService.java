@@ -89,7 +89,7 @@ public class UsuarioService {
         usuario.setEmpleado(buscarEmpleado(request.idEmpleado()));
         usuario.setLogeo(logeo);
         usuario.setClave(passwordEncoder.encode(request.clave()));
-        usuario.setEstado(Boolean.TRUE);
+        usuario.setEstado("1");
         usuarioRepository.saveAndFlush(usuario);
         actualizarRoles(usuario, request.idsRol());
         return obtener(usuario.getId());
@@ -115,7 +115,7 @@ public class UsuarioService {
 
     @Transactional
     public void desactivar(Long idUsuario) {
-        buscarActivo(idUsuario).setEstado(Boolean.FALSE);
+        buscarActivo(idUsuario).setEstado("0");
     }
 
     private Usuario buscarActivo(Long idUsuario) {
@@ -160,7 +160,7 @@ public class UsuarioService {
             UsuarioRol existente = asignaciones.get(idRol);
             if (existente != null) {
                 existente.setVigente("1");
-                existente.setEstado(Boolean.TRUE);
+                existente.setEstado("1");
                 continue;
             }
             UsuarioRol nuevo = new UsuarioRol();
@@ -168,7 +168,7 @@ public class UsuarioService {
             nuevo.setRol(rolesActivos.get(idRol));
             nuevo.setFAsignacion(LocalDateTime.now());
             nuevo.setVigente("1");
-            nuevo.setEstado(Boolean.TRUE);
+            nuevo.setEstado("1");
             usuarioRolRepository.save(nuevo);
             usuario.getRoles().add(nuevo);
         }

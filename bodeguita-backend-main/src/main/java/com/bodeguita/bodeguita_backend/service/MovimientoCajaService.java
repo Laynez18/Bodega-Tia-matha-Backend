@@ -57,15 +57,15 @@ public class MovimientoCajaService {
 
     @Transactional
     public MovimientoCajaDto crear(MovimientoCajaRequest request) {
-        AperturaCaja aperturaCaja = aperturaCajaRepository.findByIdAndEstadoTrue(request.idAperturaCaja())
+        AperturaCaja aperturaCaja = aperturaCajaRepository.findByIdAndEstado(request.idAperturaCaja(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Apertura de caja no encontrada: " + request.idAperturaCaja() + "."));
-        TipoMovimientoCaja tipoMovimiento = tipoMovimientoCajaRepository.findByIdAndEstadoTrue(request.idTipoMovimiento())
+        TipoMovimientoCaja tipoMovimiento = tipoMovimientoCajaRepository.findByIdAndEstado(request.idTipoMovimiento(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Tipo de movimiento no encontrado: " + request.idTipoMovimiento() + "."));
-        ConceptoCaja concepto = conceptoCajaRepository.findByIdAndEstadoTrue(request.idConcepto())
+        ConceptoCaja concepto = conceptoCajaRepository.findByIdAndEstado(request.idConcepto(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Concepto de caja no encontrado: " + request.idConcepto() + "."));
-        MetodoPago metodoPago = metodoPagoRepository.findByIdAndEstadoTrue(request.idMetodoPago())
+        MetodoPago metodoPago = metodoPagoRepository.findByIdAndEstado(request.idMetodoPago(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Metodo de pago no encontrado: " + request.idMetodoPago() + "."));
-        Usuario usuario = usuarioRepository.findByIdAndEstadoTrue(request.idUsuario())
+        Usuario usuario = usuarioRepository.findByIdAndEstado(request.idUsuario(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Usuario no encontrado: " + request.idUsuario() + "."));
         MovimientoCaja entidad = new MovimientoCaja();
         entidad.setAperturaCaja(aperturaCaja);
@@ -87,11 +87,11 @@ public class MovimientoCajaService {
 
     @Transactional
     public void desactivar(Long id) {
-        buscarActivo(id).setEstado(Boolean.FALSE);
+        buscarActivo(id).setEstado("0");
     }
 
     private MovimientoCaja buscarActivo(Long id) {
-        return movimientoCajaRepository.findByIdAndEstadoTrue(id)
+        return movimientoCajaRepository.findByIdAndEstado(id, "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Movimiento de caja no encontrado: " + id + "."));
     }
 
@@ -118,3 +118,6 @@ public class MovimientoCajaService {
         );
     }
 }
+
+
+

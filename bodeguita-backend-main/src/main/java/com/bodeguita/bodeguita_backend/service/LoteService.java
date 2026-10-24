@@ -38,7 +38,7 @@ public class LoteService {
 
     @Transactional
     public LoteDto crear(LoteRequest request) {
-        Producto producto = productoRepository.findByIdAndEstadoTrue(request.idProducto())
+        Producto producto = productoRepository.findByIdAndEstado(request.idProducto(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Producto no encontrado: " + request.idProducto() + "."));
         Lote entidad = new Lote();
         entidad.setProducto(producto);
@@ -53,7 +53,7 @@ public class LoteService {
     @Transactional
     public LoteDto actualizar(Long id, LoteRequest request) {
         Lote entidad = buscarActivo(id);
-        Producto producto = productoRepository.findByIdAndEstadoTrue(request.idProducto())
+        Producto producto = productoRepository.findByIdAndEstado(request.idProducto(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Producto no encontrado: " + request.idProducto() + "."));
         entidad.setProducto(producto);
         entidad.setNumeroLote(request.numeroLote());
@@ -65,11 +65,11 @@ public class LoteService {
 
     @Transactional
     public void desactivar(Long id) {
-        buscarActivo(id).setEstado(Boolean.FALSE);
+        buscarActivo(id).setEstado("0");
     }
 
     private Lote buscarActivo(Long id) {
-        return loteRepository.findByIdAndEstadoTrue(id)
+        return loteRepository.findByIdAndEstado(id, "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Lote no encontrado: " + id + "."));
     }
 
@@ -85,3 +85,6 @@ public class LoteService {
         );
     }
 }
+
+
+

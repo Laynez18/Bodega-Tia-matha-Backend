@@ -10,8 +10,11 @@ import com.bodeguita.bodeguita_backend.entity.TipoUsuario;
 
 public interface TipoUsuarioRepository extends JpaRepository<TipoUsuario, Long> {
 
-    @Query("SELECT tipo FROM TipoUsuario tipo WHERE tipo.estado = TRUE ORDER BY tipo.nTipoUsuario ASC")
+    Optional<TipoUsuario> findByIdAndEstado(Long id, String estado);
+
+    @Query("SELECT tipo FROM TipoUsuario tipo WHERE tipo.estado = '1' ORDER BY tipo.nTipoUsuario ASC")
     List<TipoUsuario> findAllActivosOrdenados();
 
     Optional<TipoUsuario> findByIdTipoUsuarioAndEstadoTrue(Long idTipoUsuario);
 }
+

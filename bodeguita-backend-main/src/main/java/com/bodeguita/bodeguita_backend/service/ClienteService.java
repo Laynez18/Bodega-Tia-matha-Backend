@@ -39,7 +39,7 @@ public class ClienteService {
 
     @Transactional
     public ClienteDto crear(ClienteRequest request) {
-        Persona persona = personaRepository.findByIdAndEstadoTrue(request.idPersona())
+        Persona persona = personaRepository.findByIdAndEstado(request.idPersona(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Persona no encontrada: " + request.idPersona() + "."));
         if (clienteRepository.existsByPersonaIdAndEstadoTrue(request.idPersona())) {
             throw new ResponseStatusException(CONFLICT, "La persona ya tiene un cliente registrado.");
@@ -56,7 +56,7 @@ public class ClienteService {
     @Transactional
     public ClienteDto actualizar(Long id, ClienteRequest request) {
         Cliente entidad = buscarActivo(id);
-        Persona persona = personaRepository.findByIdAndEstadoTrue(request.idPersona())
+        Persona persona = personaRepository.findByIdAndEstado(request.idPersona(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Persona no encontrada: " + request.idPersona() + "."));
         entidad.setPersona(persona);
         entidad.setTipoCliente(request.tipoCliente());
@@ -67,11 +67,11 @@ public class ClienteService {
 
     @Transactional
     public void desactivar(Long id) {
-        buscarActivo(id).setEstado(Boolean.FALSE);
+        buscarActivo(id).setEstado("0");
     }
 
     private Cliente buscarActivo(Long id) {
-        return clienteRepository.findByIdAndEstadoTrue(id)
+        return clienteRepository.findByIdAndEstado(id, "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Cliente no encontrado: " + id + "."));
     }
 
@@ -88,3 +88,6 @@ public class ClienteService {
         );
     }
 }
+
+
+

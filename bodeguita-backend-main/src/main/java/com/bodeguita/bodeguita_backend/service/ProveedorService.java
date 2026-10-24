@@ -39,7 +39,7 @@ public class ProveedorService {
 
     @Transactional
     public ProveedorDto crear(ProveedorRequest request) {
-        Persona persona = personaRepository.findByIdAndEstadoTrue(request.idPersona())
+        Persona persona = personaRepository.findByIdAndEstado(request.idPersona(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Persona no encontrada: " + request.idPersona() + "."));
         if (proveedorRepository.existsByPersonaIdAndEstadoTrue(request.idPersona())) {
             throw new ResponseStatusException(CONFLICT, "La persona ya tiene un proveedor registrado.");
@@ -57,7 +57,7 @@ public class ProveedorService {
     @Transactional
     public ProveedorDto actualizar(Long id, ProveedorRequest request) {
         Proveedor entidad = buscarActivo(id);
-        Persona persona = personaRepository.findByIdAndEstadoTrue(request.idPersona())
+        Persona persona = personaRepository.findByIdAndEstado(request.idPersona(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Persona no encontrada: " + request.idPersona() + "."));
         entidad.setPersona(persona);
         entidad.setRazonSocial(request.razonSocial());
@@ -69,11 +69,11 @@ public class ProveedorService {
 
     @Transactional
     public void desactivar(Long id) {
-        buscarActivo(id).setEstado(Boolean.FALSE);
+        buscarActivo(id).setEstado("0");
     }
 
     private Proveedor buscarActivo(Long id) {
-        return proveedorRepository.findByIdAndEstadoTrue(id)
+        return proveedorRepository.findByIdAndEstado(id, "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Proveedor no encontrado: " + id + "."));
     }
 
@@ -91,3 +91,6 @@ public class ProveedorService {
         );
     }
 }
+
+
+

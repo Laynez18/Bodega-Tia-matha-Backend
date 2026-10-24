@@ -58,8 +58,27 @@ public class Venta extends BaseAuditoria {
     @JoinColumn(name = "id_metodo_pago")
     private MetodoPago metodoPago;
 
-    @Column(name = "estado", length = 20, nullable = false)
-    private String estado;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_apertura_caja")
+    private AperturaCaja aperturaCaja;
+
+    @Column(name = "t_pagado", precision = 12, scale = 2, nullable = false)
+    private BigDecimal tPagado;
+
+    @Column(name = "vuelto", precision = 12, scale = 2, nullable = false)
+    private BigDecimal vuelto;
+
+    @Column(name = "es_credito", length = 1, nullable = false)
+    private String esCredito;
+
+    @Column(name = "saldo", precision = 12, scale = 2, nullable = false)
+    private BigDecimal saldo;
+
+    @Column(name = "tipo_documento", length = 20, nullable = false)
+    private String tipoDocumento;
+
+    @Column(name = "situacion", length = 1, nullable = false)
+    private String situacion;
 
     @Column(name = "observacion", length = 200)
     private String observacion;

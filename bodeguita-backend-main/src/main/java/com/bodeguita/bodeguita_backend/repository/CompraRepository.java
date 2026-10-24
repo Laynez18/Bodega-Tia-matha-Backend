@@ -11,6 +11,9 @@ import com.bodeguita.bodeguita_backend.entity.Compra;
 
 public interface CompraRepository extends JpaRepository<Compra, Long> {
 
-    @Query("SELECT count(c), coalesce(sum(c.total), 0) FROM Compra c WHERE c.fCompra between :inicio and :fin and c.estado = 'ACTIVO'")
+    Optional<Compra> findByIdAndEstado(Long id, String estado);
+
+    @Query("SELECT count(c), coalesce(sum(c.total), 0) FROM Compra c WHERE c.fCompra between :inicio and :fin and c.estado = '1'")
     List<Object[]> resumenPorFecha(LocalDateTime inicio, LocalDateTime fin);
 }
+

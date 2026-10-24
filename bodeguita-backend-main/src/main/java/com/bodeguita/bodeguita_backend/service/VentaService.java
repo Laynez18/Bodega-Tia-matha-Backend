@@ -54,7 +54,7 @@ public class VentaService {
 
     @Transactional
     public VentaDto crear(VentaRequest request) {
-        Cliente cliente = clienteRepository.findByIdAndEstadoTrue(request.idCliente())
+        Cliente cliente = clienteRepository.findByIdAndEstado(request.idCliente(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Cliente no encontrado: " + request.idCliente() + "."));
         Venta venta = new Venta();
         venta.setCliente(cliente);
@@ -62,7 +62,7 @@ public class VentaService {
         venta.setFVenta(request.fVenta());
         MetodoPago metodoPago = null;
         if (request.idMetodoPago() != null) {
-            metodoPago = metodoPagoRepository.findByIdAndEstadoTrue(request.idMetodoPago())
+            metodoPago = metodoPagoRepository.findByIdAndEstado(request.idMetodoPago(), "1")
                     .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Metodo de pago no encontrado: " + request.idMetodoPago() + "."));
         }
         venta.setMetodoPago(metodoPago);
@@ -70,7 +70,7 @@ public class VentaService {
         venta.setObservacion(request.observacion());
         BigDecimal subtotal = BigDecimal.ZERO;
         List<DetalleVenta> detalles = request.detalles().stream().map(d -> {
-            Producto producto = productoRepository.findByIdAndEstadoTrue(d.idProducto())
+            Producto producto = productoRepository.findByIdAndEstado(d.idProducto(), "1")
                     .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Producto no encontrado: " + d.idProducto() + "."));
             DetalleVenta dv = new DetalleVenta();
             dv.setVenta(venta);
@@ -100,13 +100,13 @@ public class VentaService {
     @Transactional
     public VentaDto actualizar(Long id, VentaRequest request) {
         Venta entidad = buscarActivo(id);
-        Cliente cliente = clienteRepository.findByIdAndEstadoTrue(request.idCliente())
+        Cliente cliente = clienteRepository.findByIdAndEstado(request.idCliente(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Cliente no encontrado: " + request.idCliente() + "."));
         entidad.setCliente(cliente);
         entidad.setNumeroDocumento(request.numeroDocumento());
         entidad.setFVenta(request.fVenta());
         if (request.idMetodoPago() != null) {
-            MetodoPago metodoPago = metodoPagoRepository.findByIdAndEstadoTrue(request.idMetodoPago())
+            MetodoPago metodoPago = metodoPagoRepository.findByIdAndEstado(request.idMetodoPago(), "1")
                     .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Metodo de pago no encontrado: " + request.idMetodoPago() + "."));
             entidad.setMetodoPago(metodoPago);
         }
@@ -117,11 +117,11 @@ public class VentaService {
 
     @Transactional
     public void desactivar(Long id) {
-        buscarActivo(id).setEstado(Boolean.FALSE);
+        buscarActivo(id).setEstado("0");
     }
 
     private Venta buscarActivo(Long id) {
-        return ventaRepository.findByIdAndEstadoTrue(id)
+        return ventaRepository.findByIdAndEstado(id, "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Venta no encontrada: " + id + "."));
     }
 
@@ -151,3 +151,6 @@ public class VentaService {
         );
     }
 }
+
+
+

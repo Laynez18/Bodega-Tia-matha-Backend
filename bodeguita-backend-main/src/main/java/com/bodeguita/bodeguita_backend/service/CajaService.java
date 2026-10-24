@@ -65,11 +65,11 @@ public class CajaService {
 
     @Transactional
     public void desactivar(Long id) {
-        buscarActivo(id).setEstado(Boolean.FALSE);
+        buscarActivo(id).setEstado("0");
     }
 
     private Caja buscarActivo(Long id) {
-        return cajaRepository.findByIdAndEstadoTrue(id)
+        return cajaRepository.findByIdAndEstado(id, "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Caja no encontrada: " + id + "."));
     }
 
@@ -86,3 +86,4 @@ public class CajaService {
         );
     }
 }
+

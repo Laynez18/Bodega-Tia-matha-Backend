@@ -36,7 +36,7 @@ public class ContratoService {
     public ContratoDto crear(ContratoRequest request) {
         Contrato contrato = new Contrato();
         contrato.setNContrato(request.nContrato().trim());
-        contrato.setEstado(Boolean.TRUE);
+        contrato.setEstado("1");
         return aDto(contratoRepository.save(contrato));
     }
 
@@ -49,7 +49,7 @@ public class ContratoService {
 
     @Transactional
     public void desactivar(Long idContrato) {
-        buscarActivo(idContrato).setEstado(Boolean.FALSE);
+        buscarActivo(idContrato).setEstado("0");
     }
 
     private Contrato buscarActivo(Long idContrato) {

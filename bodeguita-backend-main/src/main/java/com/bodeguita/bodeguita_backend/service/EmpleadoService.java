@@ -62,13 +62,13 @@ public class EmpleadoService {
     public EmpleadoDto crear(EmpleadoRequest request) {
         Persona persona = new Persona();
         actualizarPersona(persona, request.persona());
-        persona.setEstado(Boolean.TRUE);
+        persona.setEstado("1");
         personaRepository.save(persona);
 
         Empleado empleado = new Empleado();
         empleado.setPersona(persona);
         actualizarEmpleado(empleado, request);
-        empleado.setEstado(Boolean.TRUE);
+        empleado.setEstado("1");
         return aDto(empleadoRepository.save(empleado));
     }
 
@@ -82,7 +82,7 @@ public class EmpleadoService {
 
     @Transactional
     public void desactivar(Long idEmpleado) {
-        buscarActivo(idEmpleado).setEstado(Boolean.FALSE);
+        buscarActivo(idEmpleado).setEstado("0");
     }
 
     private Empleado buscarActivo(Long idEmpleado) {
