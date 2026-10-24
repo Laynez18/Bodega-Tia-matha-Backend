@@ -40,7 +40,7 @@ public class MetodoPagoService {
         }
         MetodoPago entidad = new MetodoPago();
         entidad.setNombre(request.nombre());
-        entidad.setEstado(request.estado());
+        entidad.setEstado(request.estado() != null ? (request.estado() ? "1" : "0") : "1");
         entidad = repository.saveAndFlush(entidad);
         return obtener(entidad.getId());
     }
@@ -52,7 +52,7 @@ public class MetodoPagoService {
             throw new ResponseStatusException(CONFLICT, "El metodo de pago ya esta registrado.");
         }
         entidad.setNombre(request.nombre());
-        entidad.setEstado(request.estado());
+        entidad.setEstado(request.estado() != null ? (request.estado() ? "1" : "0") : "1");
         return obtener(entidad.getId());
     }
 
@@ -70,7 +70,7 @@ public class MetodoPagoService {
         return new MetodoPagoDto(
                 entidad.getId(),
                 entidad.getNombre(),
-                entidad.getEstado()
+                "1".equals(entidad.getEstado())
         );
     }
 }

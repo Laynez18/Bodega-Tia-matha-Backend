@@ -10,6 +10,7 @@ public record MovimientoCajaRequest(
         @NotNull Long idTipoMovimiento,
         @NotNull Long idConcepto,
         @NotNull Long idMetodoPago,
+        @NotNull Long idUsuario,
         Long idCompra,
         Long idVenta,
         @Size(max = 30) String numeroOperacion,

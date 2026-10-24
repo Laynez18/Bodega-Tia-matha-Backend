@@ -41,7 +41,7 @@ public class ProveedorService {
     public ProveedorDto crear(ProveedorRequest request) {
         Persona persona = personaRepository.findByIdAndEstado(request.idPersona(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Persona no encontrada: " + request.idPersona() + "."));
-        if (proveedorRepository.existsByPersonaIdAndEstadoTrue(request.idPersona())) {
+        if (proveedorRepository.existsByPersona_IdAndEstadoTrue(request.idPersona())) {
             throw new ResponseStatusException(CONFLICT, "La persona ya tiene un proveedor registrado.");
         }
         Proveedor entidad = new Proveedor();
