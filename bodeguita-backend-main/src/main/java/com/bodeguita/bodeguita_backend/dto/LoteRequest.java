@@ -8,9 +8,9 @@ import java.time.LocalDate;
 
 public record LoteRequest(
         @NotNull Long idProducto,
-        @NotBlank @Size(max = 50) String numeroLote,
+        @NotBlank @Size(max = 30) String nLote,
         @NotNull LocalDate fVencimiento,
-        @NotNull Integer stock,
+        @NotNull BigDecimal stock,
         BigDecimal precioCosto
 ) {
 }

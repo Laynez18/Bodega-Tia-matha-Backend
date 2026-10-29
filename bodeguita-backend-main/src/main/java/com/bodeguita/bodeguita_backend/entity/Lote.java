@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -35,15 +36,15 @@ public class Lote extends BaseAuditoria {
     @JoinColumn(name = "id_producto", nullable = false)
     private Producto producto;
 
-    @Column(name = "numero_lote", length = 50, nullable = false)
-    private String numeroLote;
+    @Column(name = "n_lote", length = 30, nullable = false)
+    private String nLote;
 
     @Column(name = "f_vencimiento", nullable = false)
     private LocalDate fVencimiento;
 
-    @Column(name = "stock", nullable = false)
-    private Integer stock;
+    @Column(name = "stock", precision = 12, scale = 3, nullable = false)
+    private BigDecimal stock;
 
-    @Column(name = "precio_costo", precision = 12, scale = 2)
-    private java.math.BigDecimal precioCosto;
+    @Column(name = "precio_costo", precision = 10, scale = 2)
+    private BigDecimal precioCosto;
 }
