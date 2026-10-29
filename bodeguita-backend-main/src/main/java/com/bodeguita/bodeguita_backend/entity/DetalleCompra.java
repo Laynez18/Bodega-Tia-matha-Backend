@@ -47,7 +47,7 @@ public class DetalleCompra extends BaseAuditoria {
     @Column(name = "precio_unitario", precision = 12, scale = 2, nullable = false)
     private BigDecimal precioUnitario;
 
-    @Column(name = "subtotal", precision = 12, scale = 2, nullable = false)
+    @Column(name = "sub_total", precision = 12, scale = 2, nullable = false)
     private BigDecimal subtotal;
 
     @ManyToOne(fetch = FetchType.LAZY)

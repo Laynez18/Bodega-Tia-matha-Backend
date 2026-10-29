@@ -45,7 +45,7 @@ public class Venta extends BaseAuditoria {
     @Column(name = "f_venta", nullable = false)
     private LocalDateTime fVenta;
 
-    @Column(name = "subtotal", precision = 12, scale = 2, nullable = false)
+    @Column(name = "sub_total", precision = 12, scale = 2, nullable = false)
     private BigDecimal subtotal;
 
     @Column(name = "igv", precision = 12, scale = 2, nullable = false)
