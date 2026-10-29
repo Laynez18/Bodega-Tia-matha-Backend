@@ -8,13 +8,12 @@ public record CompraDto(
         Long id,
         Long idProveedor,
         String nombreProveedor,
-        String numeroDocumento,
+        String documento,
         LocalDateTime fCompra,
         BigDecimal subtotal,
         BigDecimal igv,
         BigDecimal total,
         String estado,
-        String observacion,
         List<DetalleCompraDto> detalles
 ) {
 }

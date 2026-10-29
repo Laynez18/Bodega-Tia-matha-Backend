@@ -36,11 +36,35 @@ public class MovimientoInventario extends BaseAuditoria {
     @JoinColumn(name = "id_producto", nullable = false)
     private Producto producto;
 
-    @Column(name = "tipo_movimiento", length = 20, nullable = false)
-    private String tipoMovimiento;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_almacen", nullable = false)
+    private Almacen almacen;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_tipo_movimiento_inv", nullable = false)
+    private TipoMovimientoInv tipoMovimientoInv;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_lote")
+    private Lote lote;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private Usuario usuario;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_venta")
+    private Venta venta;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_compra")
+    private Compra compra;
 
     @Column(name = "cantidad", nullable = false)
     private Integer cantidad;
+
+    @Column(name = "costo_unitario", precision = 12, scale = 2)
+    private BigDecimal costoUnitario;
 
     @Column(name = "stock_anterior", nullable = false)
     private Integer stockAnterior;
@@ -51,12 +75,9 @@ public class MovimientoInventario extends BaseAuditoria {
     @Column(name = "f_movimiento", nullable = false)
     private LocalDateTime fMovimiento;
 
-    @Column(name = "referencia", length = 50)
-    private String referencia;
+    @Column(name = "documento", length = 50)
+    private String documento;
 
     @Column(name = "observacion", length = 200)
     private String observacion;
-
-    @Column(name = "valor_unitario", precision = 12, scale = 2)
-    private BigDecimal valorUnitario;
 }

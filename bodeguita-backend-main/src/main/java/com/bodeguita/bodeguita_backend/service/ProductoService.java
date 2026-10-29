@@ -39,20 +39,25 @@ public class ProductoService {
 
     @Transactional
     public ProductoDto crear(ProductoRequest request) {
-        if (productoRepository.existsByCodigoIgnoreCase(request.codigo())) {
+        if (productoRepository.existsByCodigoIgnoreCase(request.codigoBarras())) {
             throw new ResponseStatusException(CONFLICT, "El codigo del producto ya esta registrado.");
         }
         Categoria categoria = categoriaRepository.findByIdAndEstado(request.idCategoria(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Categoria no encontrada: " + request.idCategoria() + "."));
         Producto entidad = new Producto();
         entidad.setCategoria(categoria);
-        entidad.setCodigo(request.codigo());
+        entidad.setCodigoBarras(request.codigoBarras());
         entidad.setNombre(request.nombre());
         entidad.setDescripcion(request.descripcion());
+        entidad.setPrecioCompra(request.precioCompra());
         entidad.setPrecioVenta(request.precioVenta());
+        entidad.setPrecioMayoreo(request.precioMayoreo());
         entidad.setStock(request.stock());
         entidad.setStockMinimo(request.stockMinimo());
-        entidad.setUnidadMedida(request.unidadMedida());
+        entidad.setStockMaximo(request.stockMaximo());
+        entidad.setAfectoIgv(request.afectoIgv());
+        entidad.setEsPerecible(request.esPerecible());
+        entidad.setImagen(request.imagen());
         entidad = productoRepository.saveAndFlush(entidad);
         return obtener(entidad.getId());
     }
@@ -60,19 +65,24 @@ public class ProductoService {
     @Transactional
     public ProductoDto actualizar(Long id, ProductoRequest request) {
         Producto entidad = buscarActivo(id);
-        if (productoRepository.existsByCodigoIgnoreCaseAndIdNot(request.codigo(), id)) {
+        if (productoRepository.existsByCodigoIgnoreCaseAndIdNot(request.codigoBarras(), id)) {
             throw new ResponseStatusException(CONFLICT, "El codigo del producto ya esta registrado.");
         }
         Categoria categoria = categoriaRepository.findByIdAndEstado(request.idCategoria(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Categoria no encontrada: " + request.idCategoria() + "."));
         entidad.setCategoria(categoria);
-        entidad.setCodigo(request.codigo());
+        entidad.setCodigoBarras(request.codigoBarras());
         entidad.setNombre(request.nombre());
         entidad.setDescripcion(request.descripcion());
+        entidad.setPrecioCompra(request.precioCompra());
         entidad.setPrecioVenta(request.precioVenta());
+        entidad.setPrecioMayoreo(request.precioMayoreo());
         entidad.setStock(request.stock());
         entidad.setStockMinimo(request.stockMinimo());
-        entidad.setUnidadMedida(request.unidadMedida());
+        entidad.setStockMaximo(request.stockMaximo());
+        entidad.setAfectoIgv(request.afectoIgv());
+        entidad.setEsPerecible(request.esPerecible());
+        entidad.setImagen(request.imagen());
         return obtener(entidad.getId());
     }
 
@@ -92,16 +102,18 @@ public class ProductoService {
                 entidad.getId(),
                 c.getId(),
                 c.getNombre(),
-                entidad.getCodigo(),
+                entidad.getCodigoBarras(),
                 entidad.getNombre(),
                 entidad.getDescripcion(),
+                entidad.getPrecioCompra(),
                 entidad.getPrecioVenta(),
+                entidad.getPrecioMayoreo(),
                 entidad.getStock(),
                 entidad.getStockMinimo(),
-                entidad.getUnidadMedida()
+                entidad.getStockMaximo(),
+                entidad.getAfectoIgv(),
+                entidad.getEsPerecible(),
+                entidad.getImagen()
         );
     }
 }
-
-
-

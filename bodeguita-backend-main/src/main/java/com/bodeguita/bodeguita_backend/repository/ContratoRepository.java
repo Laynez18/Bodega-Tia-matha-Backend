@@ -12,5 +12,6 @@ public interface ContratoRepository extends JpaRepository<Contrato, Long> {
     @Query("SELECT contrato FROM Contrato contrato WHERE contrato.estado = '1' ORDER BY contrato.nContrato ASC")
     List<Contrato> findAllActivosOrdenados();
 
+    @Query("SELECT c FROM Contrato c WHERE c.idContrato = :idContrato AND c.estado = '1'")
     java.util.Optional<Contrato> findByIdContratoAndEstadoTrue(Long idContrato);
 }

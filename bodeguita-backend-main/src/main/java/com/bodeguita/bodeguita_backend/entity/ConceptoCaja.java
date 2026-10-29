@@ -42,8 +42,8 @@ public class ConceptoCaja extends BaseAuditoria {
     private String descripcion;
 
     @Builder.Default
-    @Column(name = "afecta_efectivo", nullable = false)
-    private Boolean afectaEfectivo = Boolean.TRUE;
+    @Column(name = "afecta_efectivo", nullable = false, columnDefinition = "char(1) default '1'")
+    private String afectaEfectivo = "1";
 
     @Column(name = "f_creacion")
     private LocalDateTime fCreacion;

@@ -10,6 +10,6 @@ public record CajaDto(
         String serieTerminal,
         String moneda,
         BigDecimal montoBase,
-        Boolean aperturada
+        String aperturada
 ) {
 }

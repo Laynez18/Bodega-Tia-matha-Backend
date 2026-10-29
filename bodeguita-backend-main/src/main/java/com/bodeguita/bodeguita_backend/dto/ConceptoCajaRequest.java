@@ -8,6 +8,6 @@ public record ConceptoCajaRequest(
         @NotNull Long idTipoMovimiento,
         @NotBlank @Size(max = 60) String nombre,
         @Size(max = 150) String descripcion,
-        Boolean afectaEfectivo
+        String afectaEfectivo
 ) {
 }

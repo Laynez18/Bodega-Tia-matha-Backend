@@ -40,8 +40,8 @@ public class Compra extends BaseAuditoria {
     @JoinColumn(name = "id_proveedor", nullable = false)
     private Proveedor proveedor;
 
-    @Column(name = "numero_documento", length = 30)
-    private String numeroDocumento;
+    @Column(name = "documento", length = 50)
+    private String documento;
 
     @Column(name = "f_compra", nullable = false)
     private LocalDateTime fCompra;
@@ -84,9 +84,6 @@ public class Compra extends BaseAuditoria {
 
     @Column(name = "situacion", length = 1, nullable = false)
     private String situacion;
-
-    @Column(name = "observacion", length = 200)
-    private String observacion;
 
     @Builder.Default
     @OneToMany(mappedBy = "compra")

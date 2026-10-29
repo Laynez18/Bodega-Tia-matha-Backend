@@ -51,8 +51,8 @@ public class Caja extends BaseAuditoria {
     private BigDecimal montoBase;
 
     @Builder.Default
-    @Column(name = "aperturada", nullable = false)
-    private Boolean aperturada = Boolean.FALSE;
+    @Column(name = "aperturada", nullable = false, columnDefinition = "char(1) default '0'")
+    private String aperturada = "0";
 
     @Column(name = "f_creacion")
     private LocalDateTime fCreacion;

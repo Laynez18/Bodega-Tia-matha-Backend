@@ -6,6 +6,6 @@ public record ConceptoCajaDto(
         String nombreTipoMovimiento,
         String nombre,
         String descripcion,
-        Boolean afectaEfectivo
+        String afectaEfectivo
 ) {
 }

@@ -8,10 +8,9 @@ import java.util.List;
 
 public record CompraRequest(
         @NotNull Long idProveedor,
-        @Size(max = 30) String numeroDocumento,
+        @Size(max = 50) String documento,
         LocalDateTime fCompra,
         @Size(max = 20) String estado,
-        @Size(max = 200) String observacion,
         List<DetalleCompraRequest> detalles
 ) {
 }

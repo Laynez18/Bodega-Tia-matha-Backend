@@ -44,7 +44,7 @@ public class DetalleCompra extends BaseAuditoria {
     @Column(name = "cantidad", nullable = false)
     private Integer cantidad;
 
-    @Column(name = "precio_unitario", precision = 12, scale = 2, nullable = false)
+    @Column(name = "costo_unitario", precision = 12, scale = 2, nullable = false)
     private BigDecimal precioUnitario;
 
     @Column(name = "sub_total", precision = 12, scale = 2, nullable = false)

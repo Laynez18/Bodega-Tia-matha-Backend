@@ -10,6 +10,7 @@ import com.bodeguita.bodeguita_backend.entity.UsuarioRol;
 
 public interface UsuarioRolRepository extends JpaRepository<UsuarioRol, Long> {
 
+    @Query("SELECT COUNT(ur) FROM UsuarioRol ur WHERE ur.rol.idRol = :idRol AND ur.vigente = :vigente AND ur.estado = '1'")
     long countByRol_IdRolAndVigenteAndEstadoTrue(Long idRol, String vigente);
 
     @Query("""

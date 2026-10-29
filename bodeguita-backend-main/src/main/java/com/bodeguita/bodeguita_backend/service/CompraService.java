@@ -54,10 +54,9 @@ public class CompraService {
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Proveedor no encontrado: " + request.idProveedor() + "."));
         Compra compra = new Compra();
         compra.setProveedor(proveedor);
-        compra.setNumeroDocumento(request.numeroDocumento());
+        compra.setDocumento(request.documento());
         compra.setFCompra(request.fCompra());
         compra.setEstado(request.estado());
-        compra.setObservacion(request.observacion());
         BigDecimal subtotal = BigDecimal.ZERO;
         BigDecimal igv = BigDecimal.ZERO;
         List<DetalleCompra> detalles = request.detalles().stream().map(d -> {
@@ -94,10 +93,9 @@ public class CompraService {
         Proveedor proveedor = proveedorRepository.findByIdAndEstado(request.idProveedor(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Proveedor no encontrado: " + request.idProveedor() + "."));
         entidad.setProveedor(proveedor);
-        entidad.setNumeroDocumento(request.numeroDocumento());
+        entidad.setDocumento(request.documento());
         entidad.setFCompra(request.fCompra());
         entidad.setEstado(request.estado());
-        entidad.setObservacion(request.observacion());
         return obtener(entidad.getId());
     }
 
@@ -124,17 +122,13 @@ public class CompraService {
                 entidad.getId(),
                 entidad.getProveedor().getId(),
                 entidad.getProveedor().getPersona().getNombre(),
-                entidad.getNumeroDocumento(),
+                entidad.getDocumento(),
                 entidad.getFCompra(),
                 entidad.getSubtotal(),
                 entidad.getIgv(),
                 entidad.getTotal(),
                 entidad.getEstado(),
-                entidad.getObservacion(),
                 detalles
         );
     }
 }
-
-
-

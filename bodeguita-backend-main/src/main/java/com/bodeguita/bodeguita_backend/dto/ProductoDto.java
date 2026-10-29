@@ -6,12 +6,17 @@ public record ProductoDto(
         Long id,
         Long idCategoria,
         String nombreCategoria,
-        String codigo,
+        String codigoBarras,
         String nombre,
         String descripcion,
+        BigDecimal precioCompra,
         BigDecimal precioVenta,
+        BigDecimal precioMayoreo,
         Integer stock,
         Integer stockMinimo,
-        String unidadMedida
+        Integer stockMaximo,
+        String afectoIgv,
+        String esPerecible,
+        String imagen
 ) {
 }

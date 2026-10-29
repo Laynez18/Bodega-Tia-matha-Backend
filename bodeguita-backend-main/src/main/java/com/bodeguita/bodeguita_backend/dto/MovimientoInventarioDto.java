@@ -7,13 +7,13 @@ public record MovimientoInventarioDto(
         Long id,
         Long idProducto,
         String nombreProducto,
-        String tipoMovimiento,
+        String nombreTipoMovimientoInv,
         Integer cantidad,
         Integer stockAnterior,
         Integer stockNuevo,
         LocalDateTime fMovimiento,
-        String referencia,
+        String documento,
         String observacion,
-        BigDecimal valorUnitario
+        BigDecimal costoUnitario
 ) {
 }

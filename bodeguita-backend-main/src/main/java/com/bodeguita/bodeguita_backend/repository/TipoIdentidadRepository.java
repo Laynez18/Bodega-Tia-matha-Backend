@@ -12,5 +12,6 @@ public interface TipoIdentidadRepository extends JpaRepository<TipoIdentidad, Lo
     @Query("SELECT tipo FROM TipoIdentidad tipo WHERE tipo.estado = '1' ORDER BY tipo.nTipoIdentidad ASC")
     List<TipoIdentidad> findAllActivosOrdenados();
 
+    @Query("SELECT t FROM TipoIdentidad t WHERE t.idTipoIdentidad = :idTipoIdentidad AND t.estado = '1'")
     java.util.Optional<TipoIdentidad> findByIdTipoIdentidadAndEstadoTrue(Long idTipoIdentidad);
 }

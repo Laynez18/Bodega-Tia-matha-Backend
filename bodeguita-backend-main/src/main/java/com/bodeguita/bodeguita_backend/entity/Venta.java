@@ -39,9 +39,6 @@ public class Venta extends BaseAuditoria {
     @JoinColumn(name = "id_cliente", nullable = false)
     private Cliente cliente;
 
-    @Column(name = "numero_documento", length = 30)
-    private String numeroDocumento;
-
     @Column(name = "f_venta", nullable = false)
     private LocalDateTime fVenta;
 
@@ -50,6 +47,9 @@ public class Venta extends BaseAuditoria {
 
     @Column(name = "igv", precision = 12, scale = 2, nullable = false)
     private BigDecimal igv;
+
+    @Column(name = "descuento", precision = 12, scale = 2, nullable = false)
+    private BigDecimal descuento;
 
     @Column(name = "total", precision = 12, scale = 2, nullable = false)
     private BigDecimal total;
@@ -79,9 +79,6 @@ public class Venta extends BaseAuditoria {
 
     @Column(name = "situacion", length = 1, nullable = false)
     private String situacion;
-
-    @Column(name = "observacion", length = 200)
-    private String observacion;
 
     @Builder.Default
     @OneToMany(mappedBy = "venta")

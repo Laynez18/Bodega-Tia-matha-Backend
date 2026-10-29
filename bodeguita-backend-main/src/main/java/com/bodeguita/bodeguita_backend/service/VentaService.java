@@ -58,7 +58,6 @@ public class VentaService {
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Cliente no encontrado: " + request.idCliente() + "."));
         Venta venta = new Venta();
         venta.setCliente(cliente);
-        venta.setNumeroDocumento(request.numeroDocumento());
         venta.setFVenta(request.fVenta());
         MetodoPago metodoPago = null;
         if (request.idMetodoPago() != null) {
@@ -67,7 +66,6 @@ public class VentaService {
         }
         venta.setMetodoPago(metodoPago);
         venta.setEstado(request.estado());
-        venta.setObservacion(request.observacion());
         BigDecimal subtotal = BigDecimal.ZERO;
         List<DetalleVenta> detalles = request.detalles().stream().map(d -> {
             Producto producto = productoRepository.findByIdAndEstado(d.idProducto(), "1")
@@ -87,9 +85,11 @@ public class VentaService {
             subtotal = subtotal.add(dv.getSubtotal());
         }
         BigDecimal igv = subtotal.multiply(new BigDecimal("0.18"));
+        BigDecimal descuento = BigDecimal.ZERO;
         venta.setSubtotal(subtotal);
         venta.setIgv(igv);
-        venta.setTotal(subtotal.add(igv));
+        venta.setDescuento(descuento);
+        venta.setTotal(subtotal.add(igv).subtract(descuento));
         venta = ventaRepository.saveAndFlush(venta);
         for (DetalleVenta dv : detalles) {
             dv.setVenta(venta);
@@ -107,7 +107,6 @@ public class VentaService {
         Cliente cliente = clienteRepository.findByIdAndEstado(request.idCliente(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Cliente no encontrado: " + request.idCliente() + "."));
         entidad.setCliente(cliente);
-        entidad.setNumeroDocumento(request.numeroDocumento());
         entidad.setFVenta(request.fVenta());
         if (request.idMetodoPago() != null) {
             MetodoPago metodoPago = metodoPagoRepository.findByIdAndEstado(request.idMetodoPago(), "1")
@@ -115,7 +114,6 @@ public class VentaService {
             entidad.setMetodoPago(metodoPago);
         }
         entidad.setEstado(request.estado());
-        entidad.setObservacion(request.observacion());
         return obtener(entidad.getId());
     }
 
@@ -142,19 +140,15 @@ public class VentaService {
                 entidad.getId(),
                 entidad.getCliente().getId(),
                 entidad.getCliente().getPersona().getNombre(),
-                entidad.getNumeroDocumento(),
                 entidad.getFVenta(),
                 entidad.getSubtotal(),
                 entidad.getIgv(),
+                entidad.getDescuento(),
                 entidad.getTotal(),
                 entidad.getMetodoPago() == null ? null : entidad.getMetodoPago().getId(),
                 entidad.getMetodoPago() == null ? null : entidad.getMetodoPago().getNombre(),
                 entidad.getEstado(),
-                entidad.getObservacion(),
                 detalles
         );
     }
 }
-
-
-

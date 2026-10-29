@@ -8,13 +8,18 @@ import java.time.LocalDateTime;
 
 public record MovimientoInventarioRequest(
         @NotNull Long idProducto,
-        @NotBlank @Size(max = 20) String tipoMovimiento,
+        @NotNull Long idAlmacen,
+        @NotNull Long idTipoMovimientoInv,
+        @NotNull Long idUsuario,
+        Long idLote,
+        Long idVenta,
+        Long idCompra,
         @NotNull Integer cantidad,
         @NotNull Integer stockAnterior,
         @NotNull Integer stockNuevo,
         LocalDateTime fMovimiento,
-        @Size(max = 50) String referencia,
+        @Size(max = 50) String documento,
         @Size(max = 200) String observacion,
-        BigDecimal valorUnitario
+        BigDecimal costoUnitario
 ) {
 }
