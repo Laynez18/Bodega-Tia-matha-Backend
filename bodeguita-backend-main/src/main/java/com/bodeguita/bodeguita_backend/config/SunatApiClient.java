@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 public class SunatApiClient {
@@ -24,7 +23,6 @@ public class SunatApiClient {
 
     private HttpHeaders headers() {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(MediaType.APPLICATION_JSON);
         if (properties.getToken() != null && !properties.getToken().isBlank()) {
             headers.set("Authorization", "Bearer " + properties.getToken());
@@ -36,13 +34,9 @@ public class SunatApiClient {
         if (properties.getUrl() == null || properties.getUrl().isBlank()) {
             throw new IllegalStateException("sunat.api.url no configurada");
         }
-        String url = UriComponentsBuilder.fromUriString(properties.getUrl())
-                .path("/ruc/{ruc}")
-                .buildAndExpand(ruc)
-                .toUriString();
+        String url = properties.getUrl().replaceAll("/+$", "") + properties.getPathRuc() + ruc;
         try {
-            ResponseEntity<RucResponse> res = restTemplate.postForEntity(
-                    url, new HttpEntity<>(headers()), RucResponse.class);
+            ResponseEntity<RucResponse> res = restTemplate.getForEntity(url, RucResponse.class, new HttpEntity<>(headers()));
             return res.getBody();
         } catch (RestClientException e) {
             throw new RuntimeException("Error consultando RUC " + ruc + ": " + e.getMessage(), e);
@@ -53,13 +47,9 @@ public class SunatApiClient {
         if (properties.getUrl() == null || properties.getUrl().isBlank()) {
             throw new IllegalStateException("sunat.api.url no configurada");
         }
-        String url = UriComponentsBuilder.fromUriString(properties.getUrl())
-                .path("/dni/{dni}")
-                .buildAndExpand(dni)
-                .toUriString();
+        String url = properties.getUrl().replaceAll("/+$", "") + properties.getPathDni() + dni;
         try {
-            ResponseEntity<DniResponse> res = restTemplate.postForEntity(
-                    url, new HttpEntity<>(headers()), DniResponse.class);
+            ResponseEntity<DniResponse> res = restTemplate.getForEntity(url, DniResponse.class, new HttpEntity<>(headers()));
             return res.getBody();
         } catch (RestClientException e) {
             throw new RuntimeException("Error consultando DNI " + dni + ": " + e.getMessage(), e);

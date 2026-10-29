@@ -16,6 +16,7 @@ import jakarta.validation.Valid;
 
 import com.bodeguita.bodeguita_backend.dto.EmpresaDto;
 import com.bodeguita.bodeguita_backend.dto.EmpresaRequest;
+import com.bodeguita.bodeguita_backend.dto.RucResponse;
 import com.bodeguita.bodeguita_backend.security.RequierePermiso;
 import com.bodeguita.bodeguita_backend.service.EmpresaService;
 
@@ -43,6 +44,12 @@ public class EmpresaController {
     @PostMapping
     public EmpresaDto crear(@Valid @RequestBody EmpresaRequest request) {
         return empresaService.crear(request);
+    }
+
+    @RequierePermiso("empresa:crear")
+    @PostMapping("/desde-sunat/{ruc}")
+    public EmpresaDto crearDesdeSunat(@PathVariable String ruc) {
+        return empresaService.crearDesdeSunat(ruc);
     }
 
     @RequierePermiso("empresa:editar")

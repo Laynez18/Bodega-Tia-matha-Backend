@@ -11,6 +11,10 @@ public class SunatApiProperties {
     private String token;
     private Integer timeout = 10000;
 
+    // Paths relativos sobre la URL base (ajustar según miapi.cloud)
+    private String pathDni = "/dni/";
+    private String pathRuc = "/ruc/";
+
     public String getUrl() {
         return url;
     }
@@ -33,5 +37,21 @@ public class SunatApiProperties {
 
     public void setTimeout(Integer timeout) {
         this.timeout = timeout;
+    }
+
+    public String getPathDni() {
+        return pathDni;
+    }
+
+    public void setPathDni(String pathDni) {
+        this.pathDni = pathDni;
+    }
+
+    public String getPathRuc() {
+        return pathRuc;
+    }
+
+    public void setPathRuc(String pathRuc) {
+        this.pathRuc = pathRuc;
     }
 }

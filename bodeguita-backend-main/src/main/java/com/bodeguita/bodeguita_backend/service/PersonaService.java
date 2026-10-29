@@ -70,9 +70,9 @@ public class PersonaService {
         DniResponse d = consultaSunatService.consultarDni(dni);
         Persona entidad = new Persona();
         entidad.setNDocumento(dni);
-        entidad.setNombre(d.nombre());
-        entidad.setApPaterno(d.apellidoPaterno());
-        entidad.setApMaterno(d.apellidoMaterno());
+        entidad.setNombre(d.datos().nombre());
+        entidad.setApPaterno(d.datos().apellidoPaterno());
+        entidad.setApMaterno(d.datos().apellidoMaterno());
         return aDto(personaRepository.save(entidad));
     }
 
