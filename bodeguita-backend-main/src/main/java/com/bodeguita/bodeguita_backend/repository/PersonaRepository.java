@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.bodeguita.bodeguita_backend.entity.Persona;
 
@@ -14,7 +15,8 @@ public interface PersonaRepository extends JpaRepository<Persona, Long> {
 
     List<Persona> findByEstadoOrderByNombreAsc(String estado);
 
-    boolean existsByNDocumento(String nDocumento);
+    @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END FROM Persona p WHERE p.nDocumento = :nDocumento")
+    boolean existsByNDocumento(@Param("nDocumento") String nDocumento);
 }
 
 
