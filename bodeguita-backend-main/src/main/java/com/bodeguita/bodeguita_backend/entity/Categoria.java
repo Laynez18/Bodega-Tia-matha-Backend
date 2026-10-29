@@ -22,15 +22,15 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "categoria")
+@Table(name = "categoria_producto")
 public class Categoria extends BaseAuditoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_categoria")
+    @Column(name = "id_categoria_producto")
     private Long id;
 
-    @Column(name = "n_categoria", length = 80, nullable = false)
+    @Column(name = "n_categoria_producto", length = 80, nullable = false)
     private String nombre;
 
     @Column(name = "descripcion", length = 200)

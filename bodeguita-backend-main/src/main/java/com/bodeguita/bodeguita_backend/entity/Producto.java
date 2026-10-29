@@ -32,7 +32,7 @@ public class Producto extends BaseAuditoria {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_categoria", nullable = false)
+    @JoinColumn(name = "id_categoria_producto", nullable = false)
     private Categoria categoria;
 
     @Column(name = "codigo", length = 50, nullable = false)

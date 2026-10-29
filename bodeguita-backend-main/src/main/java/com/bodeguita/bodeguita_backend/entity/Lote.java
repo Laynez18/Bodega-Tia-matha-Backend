@@ -23,7 +23,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "lote")
+@Table(name = "lote_producto")
 public class Lote extends BaseAuditoria {
 
     @Id
