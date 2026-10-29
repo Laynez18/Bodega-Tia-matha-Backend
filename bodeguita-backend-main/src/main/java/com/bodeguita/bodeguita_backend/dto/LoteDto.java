@@ -7,9 +7,12 @@ public record LoteDto(
         Long id,
         Long idProducto,
         String nombreProducto,
+        Long idAlmacen,
         String nLote,
+        LocalDate fProduccion,
         LocalDate fVencimiento,
-        BigDecimal stock,
-        BigDecimal precioCosto
+        BigDecimal cantidadInicial,
+        BigDecimal cantidadActual,
+        BigDecimal costoUnitario
 ) {
 }

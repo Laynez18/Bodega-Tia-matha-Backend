@@ -55,4 +55,7 @@ public class Proveedor extends BaseAuditoria {
 
     @Column(name = "dias_credito")
     private Integer diasCredito;
+
+    @Column(name = "f_registro")
+    private LocalDateTime fRegistro;
 }

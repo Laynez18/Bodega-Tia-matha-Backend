@@ -36,15 +36,25 @@ public class Lote extends BaseAuditoria {
     @JoinColumn(name = "id_producto", nullable = false)
     private Producto producto;
 
-    @Column(name = "n_lote", length = 30, nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_almacen", nullable = false)
+    private Almacen almacen;
+
+    @Column(name = "n_lote", length = 30)
     private String nLote;
 
-    @Column(name = "f_vencimiento", nullable = false)
+    @Column(name = "f_produccion")
+    private LocalDate fProduccion;
+
+    @Column(name = "f_vencimiento")
     private LocalDate fVencimiento;
 
-    @Column(name = "stock", precision = 12, scale = 3, nullable = false)
-    private BigDecimal stock;
+    @Column(name = "cantidad_inicial", precision = 12, scale = 3, nullable = false)
+    private BigDecimal cantidadInicial;
 
-    @Column(name = "precio_costo", precision = 10, scale = 2)
-    private BigDecimal precioCosto;
+    @Column(name = "cantidad_actual", precision = 12, scale = 3, nullable = false)
+    private BigDecimal cantidadActual;
+
+    @Column(name = "costo_unitario", precision = 10, scale = 2)
+    private BigDecimal costoUnitario;
 }

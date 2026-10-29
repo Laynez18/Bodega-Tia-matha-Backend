@@ -10,6 +10,7 @@ import com.bodeguita.bodeguita_backend.entity.Lote;
 import com.bodeguita.bodeguita_backend.entity.Producto;
 import com.bodeguita.bodeguita_backend.repository.LoteRepository;
 import com.bodeguita.bodeguita_backend.repository.ProductoRepository;
+import com.bodeguita.bodeguita_backend.repository.AlmacenRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,10 +23,12 @@ public class LoteService {
 
     private final LoteRepository loteRepository;
     private final ProductoRepository productoRepository;
+    private final AlmacenRepository almacenRepository;
 
-    public LoteService(LoteRepository loteRepository, ProductoRepository productoRepository) {
+    public LoteService(LoteRepository loteRepository, ProductoRepository productoRepository, AlmacenRepository almacenRepository) {
         this.loteRepository = loteRepository;
         this.productoRepository = productoRepository;
+        this.almacenRepository = almacenRepository;
     }
 
     public List<LoteDto> listar() {
@@ -40,12 +43,17 @@ public class LoteService {
     public LoteDto crear(LoteRequest request) {
         Producto producto = productoRepository.findByIdAndEstado(request.idProducto(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Producto no encontrado: " + request.idProducto() + "."));
+        Almacen almacen = almacenRepository.findByIdAndEstado(request.idAlmacen(), "1")
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Almacen no encontrado: " + request.idAlmacen() + "."));
         Lote entidad = new Lote();
         entidad.setProducto(producto);
+        entidad.setAlmacen(almacen);
         entidad.setNLote(request.nLote());
+        entidad.setFProduccion(request.fProduccion());
         entidad.setFVencimiento(request.fVencimiento());
-        entidad.setStock(request.stock());
-        entidad.setPrecioCosto(request.precioCosto());
+        entidad.setCantidadInicial(request.cantidadInicial());
+        entidad.setCantidadActual(request.cantidadActual());
+        entidad.setCostoUnitario(request.costoUnitario());
         entidad = loteRepository.saveAndFlush(entidad);
         return obtener(entidad.getId());
     }
@@ -55,11 +63,16 @@ public class LoteService {
         Lote entidad = buscarActivo(id);
         Producto producto = productoRepository.findByIdAndEstado(request.idProducto(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Producto no encontrado: " + request.idProducto() + "."));
+        Almacen almacen = almacenRepository.findByIdAndEstado(request.idAlmacen(), "1")
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Almacen no encontrado: " + request.idAlmacen() + "."));
         entidad.setProducto(producto);
+        entidad.setAlmacen(almacen);
         entidad.setNLote(request.nLote());
+        entidad.setFProduccion(request.fProduccion());
         entidad.setFVencimiento(request.fVencimiento());
-        entidad.setStock(request.stock());
-        entidad.setPrecioCosto(request.precioCosto());
+        entidad.setCantidadInicial(request.cantidadInicial());
+        entidad.setCantidadActual(request.cantidadActual());
+        entidad.setCostoUnitario(request.costoUnitario());
         return obtener(entidad.getId());
     }
 
@@ -78,10 +91,13 @@ public class LoteService {
                 entidad.getId(),
                 entidad.getProducto().getId(),
                 entidad.getProducto().getNombre(),
+                entidad.getAlmacen().getId(),
                 entidad.getNLote(),
+                entidad.getFProduccion(),
                 entidad.getFVencimiento(),
-                entidad.getStock(),
-                entidad.getPrecioCosto()
+                entidad.getCantidadInicial(),
+                entidad.getCantidadActual(),
+                entidad.getCostoUnitario()
         );
     }
 }
