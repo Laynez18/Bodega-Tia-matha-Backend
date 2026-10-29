@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bodeguita.bodeguita_backend.dto.DniResponse;
 import com.bodeguita.bodeguita_backend.dto.PersonaDto;
+import com.bodeguita.bodeguita_backend.dto.RucResponse;
+import com.bodeguita.bodeguita_backend.security.Publico;
 import com.bodeguita.bodeguita_backend.security.RequierePermiso;
+import com.bodeguita.bodeguita_backend.security.SinCsrf;
 import com.bodeguita.bodeguita_backend.service.PersonaService;
 
 @RestController
@@ -29,15 +32,29 @@ public class PersonaController {
         return personaService.listar();
     }
 
-    @RequierePermiso("persona:crear")
+    @Publico
+    @SinCsrf
     @GetMapping("/consultar-dni/{dni}")
     public DniResponse consultarDni(@PathVariable String dni) {
         return personaService.consultarDni(dni);
+    }
+
+    @Publico
+    @SinCsrf
+    @GetMapping("/consultar-ruc/{ruc}")
+    public RucResponse consultarRuc(@PathVariable String ruc) {
+        return personaService.consultarRuc(ruc);
     }
 
     @RequierePermiso("persona:crear")
     @PostMapping("/desde-dni/{dni}")
     public PersonaDto crearDesdeDni(@PathVariable String dni) {
         return personaService.crearDesdeDni(dni, null, null);
+    }
+
+    @RequierePermiso("persona:crear")
+    @PostMapping("/desde-ruc/{ruc}")
+    public PersonaDto crearDesdeRuc(@PathVariable String ruc) {
+        return personaService.crearDesdeRuc(ruc, null, null);
     }
 }

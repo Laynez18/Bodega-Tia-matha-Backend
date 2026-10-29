@@ -1,6 +1,7 @@
 package com.bodeguita.bodeguita_backend.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,5 +14,8 @@ public interface TipoIdentidadRepository extends JpaRepository<TipoIdentidad, Lo
     List<TipoIdentidad> findAllActivosOrdenados();
 
     @Query("SELECT t FROM TipoIdentidad t WHERE t.idTipoIdentidad = :idTipoIdentidad AND t.estado = '1'")
-    java.util.Optional<TipoIdentidad> findByIdTipoIdentidadAndEstadoTrue(Long idTipoIdentidad);
+    Optional<TipoIdentidad> findByIdTipoIdentidadAndEstadoTrue(Long idTipoIdentidad);
+
+    @Query("SELECT t FROM TipoIdentidad t WHERE t.idTipoIdentidad = :id AND t.estado = :estado")
+    Optional<TipoIdentidad> findByIdAndEstado(Long id, String estado);
 }
