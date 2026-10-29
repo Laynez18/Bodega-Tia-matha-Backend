@@ -64,7 +64,6 @@ public class CompraService {
             Producto producto = productoRepository.findByIdAndEstado(d.idProducto(), "1")
                     .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Producto no encontrado: " + d.idProducto() + "."));
             DetalleCompra dc = new DetalleCompra();
-            dc.setCompra(compra);
             dc.setProducto(producto);
             dc.setCantidad(d.cantidad());
             dc.setPrecioUnitario(d.precioUnitario());
@@ -80,6 +79,7 @@ public class CompraService {
         compra.setTotal(subtotal.add(igv));
         compra = compraRepository.saveAndFlush(compra);
         for (DetalleCompra dc : detalles) {
+            dc.setCompra(compra);
             detalleCompraRepository.save(dc);
             Producto producto = dc.getProducto();
             producto.setStock(producto.getStock() + dc.getCantidad());
