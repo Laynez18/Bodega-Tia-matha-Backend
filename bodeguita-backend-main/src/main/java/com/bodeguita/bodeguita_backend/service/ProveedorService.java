@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.bodeguita.bodeguita_backend.dto.ProveedorDto;
+import com.bodeguita.bodeguita_backend.dto.ProveedorRequest;
 import com.bodeguita.bodeguita_backend.entity.Empresa;
 import com.bodeguita.bodeguita_backend.entity.Proveedor;
 import com.bodeguita.bodeguita_backend.entity.Persona;

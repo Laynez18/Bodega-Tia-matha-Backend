@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.0</version>
+		<version>3.5.0</version>
 		<relativePath />
 	</parent>
 
@@ -43,13 +43,11 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.7.3</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.38</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -68,8 +66,7 @@
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
-<artifactId>spring-boot-maven-plugin</artifactId>
-			<version>3.2.0</version>
+			<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
