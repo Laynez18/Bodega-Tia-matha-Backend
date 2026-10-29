@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @Component
 public class SunatApiClient {
 
@@ -23,7 +25,7 @@ public class SunatApiClient {
 
     private HttpHeaders headers() {
         HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(MediaType.APPLICATION_JSON);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         if (properties.getToken() != null && !properties.getToken().isBlank()) {
             headers.set("Authorization", "Bearer " + properties.getToken());
         }
