@@ -4,10 +4,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.bodeguita.bodeguita_backend.dto.ProveedorDto;
-import com.bodeguita.bodeguita_backend.dto.ProveedorRequest;
+import com.bodeguita.bodeguita_backend.entity.Empresa;
 import com.bodeguita.bodeguita_backend.entity.Proveedor;
 import com.bodeguita.bodeguita_backend.entity.Persona;
+import com.bodeguita.bodeguita_backend.repository.EmpresaRepository;
 import com.bodeguita.bodeguita_backend.repository.ProveedorRepository;
 import com.bodeguita.bodeguita_backend.repository.PersonaRepository;
 
@@ -23,10 +23,13 @@ public class ProveedorService {
 
     private final ProveedorRepository proveedorRepository;
     private final PersonaRepository personaRepository;
+    private final EmpresaRepository empresaRepository;
 
-    public ProveedorService(ProveedorRepository proveedorRepository, PersonaRepository personaRepository) {
+    public ProveedorService(ProveedorRepository proveedorRepository, PersonaRepository personaRepository,
+            EmpresaRepository empresaRepository) {
         this.proveedorRepository = proveedorRepository;
         this.personaRepository = personaRepository;
+        this.empresaRepository = empresaRepository;
     }
 
     public List<ProveedorDto> listar() {
@@ -44,12 +47,19 @@ public class ProveedorService {
         if (proveedorRepository.existsByPersona_IdAndEstadoTrue(request.idPersona())) {
             throw new ResponseStatusException(CONFLICT, "La persona ya tiene un proveedor registrado.");
         }
+        Empresa empresa = null;
+        if (request.idEmpresa() != null) {
+            empresa = empresaRepository.findByIdAndEstado(request.idEmpresa(), "1")
+                    .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Empresa no encontrada: " + request.idEmpresa() + "."));
+        }
         Proveedor entidad = new Proveedor();
+        entidad.setEmpresa(empresa);
         entidad.setPersona(persona);
-        entidad.setRazonSocial(request.razonSocial());
-        entidad.setTelefono(request.telefono());
-        entidad.setEmail(request.email());
-        entidad.setDireccion(request.direccion());
+        entidad.setCodigoProveedor(request.codigoProveedor());
+        entidad.setContacto(request.contacto());
+        entidad.setTelefonoContacto(request.telefonoContacto());
+        entidad.setEmailContacto(request.emailContacto());
+        entidad.setDiasCredito(request.diasCredito());
         entidad = proveedorRepository.saveAndFlush(entidad);
         return obtener(entidad.getId());
     }
@@ -59,11 +69,18 @@ public class ProveedorService {
         Proveedor entidad = buscarActivo(id);
         Persona persona = personaRepository.findByIdAndEstado(request.idPersona(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Persona no encontrada: " + request.idPersona() + "."));
+        Empresa empresa = null;
+        if (request.idEmpresa() != null) {
+            empresa = empresaRepository.findByIdAndEstado(request.idEmpresa(), "1")
+                    .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Empresa no encontrada: " + request.idEmpresa() + "."));
+        }
+        entidad.setEmpresa(empresa);
         entidad.setPersona(persona);
-        entidad.setRazonSocial(request.razonSocial());
-        entidad.setTelefono(request.telefono());
-        entidad.setEmail(request.email());
-        entidad.setDireccion(request.direccion());
+        entidad.setCodigoProveedor(request.codigoProveedor());
+        entidad.setContacto(request.contacto());
+        entidad.setTelefonoContacto(request.telefonoContacto());
+        entidad.setEmailContacto(request.emailContacto());
+        entidad.setDiasCredito(request.diasCredito());
         return obtener(entidad.getId());
     }
 
@@ -84,10 +101,12 @@ public class ProveedorService {
                 p.getIdPersona(),
                 p.getNombre() + " " + (p.getApPaterno() == null ? "" : p.getApPaterno()) + " " + (p.getApMaterno() == null ? "" : p.getApMaterno()),
                 p.getNDocumento(),
-                entidad.getRazonSocial(),
-                entidad.getTelefono(),
-                entidad.getEmail(),
-                entidad.getDireccion()
+                entidad.getEmpresa() != null ? entidad.getEmpresa().getId() : null,
+                entidad.getCodigoProveedor(),
+                entidad.getContacto(),
+                entidad.getTelefonoContacto(),
+                entidad.getEmailContacto(),
+                entidad.getDiasCredito()
         );
     }
 }

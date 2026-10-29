@@ -18,7 +18,7 @@ public interface EmpleadoRepository extends JpaRepository<Empleado, Long> {
             LEFT JOIN FETCH persona.distrito
             LEFT JOIN FETCH empleado.contrato
             LEFT JOIN FETCH empleado.cargo
-            WHERE empleado.estado = TRUE
+            WHERE empleado.estado = '1'
             ORDER BY persona.nombre ASC, persona.apPaterno ASC, persona.apMaterno ASC
             """)
     List<Empleado> findAllActivosConRelaciones();
@@ -30,7 +30,7 @@ public interface EmpleadoRepository extends JpaRepository<Empleado, Long> {
             LEFT JOIN FETCH persona.distrito
             LEFT JOIN FETCH empleado.contrato
             LEFT JOIN FETCH empleado.cargo
-            WHERE empleado.idEmpleado = :idEmpleado AND empleado.estado = TRUE
+            WHERE empleado.idEmpleado = :idEmpleado AND empleado.estado = '1'
             """)
     Optional<Empleado> findActivoConRelaciones(@Param("idEmpleado") Long idEmpleado);
 }

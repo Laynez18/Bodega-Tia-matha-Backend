@@ -1,14 +1,19 @@
 package com.bodeguita.bodeguita_backend.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public record ClienteDto(
         Long id,
         Long idPersona,
         String nombrePersona,
         String nDocumento,
+        Long idEmpresa,
+        String codigoCliente,
         String tipoCliente,
         BigDecimal limiteCredito,
-        String observacion
+        BigDecimal saldoDeuda,
+        Integer puntos,
+        LocalDateTime fRegistro
 ) {
 }

@@ -9,7 +9,7 @@ import com.bodeguita.bodeguita_backend.entity.Contrato;
 
 public interface ContratoRepository extends JpaRepository<Contrato, Long> {
 
-    @Query("SELECT contrato FROM Contrato contrato WHERE contrato.estado = TRUE ORDER BY contrato.nContrato ASC")
+    @Query("SELECT contrato FROM Contrato contrato WHERE contrato.estado = '1' ORDER BY contrato.nContrato ASC")
     List<Contrato> findAllActivosOrdenados();
 
     java.util.Optional<Contrato> findByIdContratoAndEstadoTrue(Long idContrato);

@@ -9,7 +9,7 @@ import com.bodeguita.bodeguita_backend.entity.Cargo;
 
 public interface CargoRepository extends JpaRepository<Cargo, Long> {
 
-    @Query("SELECT cargo FROM Cargo cargo WHERE cargo.estado = TRUE ORDER BY cargo.nCargo ASC")
+    @Query("SELECT cargo FROM Cargo cargo WHERE cargo.estado = '1' ORDER BY cargo.nCargo ASC")
     List<Cargo> findAllActivosOrdenados();
 
     java.util.Optional<Cargo> findByIdCargoAndEstadoTrue(Long idCargo);

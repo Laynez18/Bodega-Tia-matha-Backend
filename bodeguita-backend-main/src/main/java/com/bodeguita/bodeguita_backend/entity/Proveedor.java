@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -29,19 +33,26 @@ public class Proveedor extends BaseAuditoria {
     @Column(name = "id_proveedor")
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_empresa")
+    private Empresa empresa;
+
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_persona", nullable = false)
     private Persona persona;
 
-    @Column(name = "razon_social", length = 120)
-    private String razonSocial;
+    @Column(name = "codigo_proveedor", length = 20)
+    private String codigoProveedor;
 
-    @Column(name = "telefono", length = 15)
-    private String telefono;
+    @Column(name = "contacto", length = 100)
+    private String contacto;
 
-    @Column(name = "email", length = 100)
-    private String email;
+    @Column(name = "telefono_contacto", length = 15)
+    private String telefonoContacto;
 
-    @Column(name = "direccion", length = 200)
-    private String direccion;
+    @Column(name = "email_contacto", length = 100)
+    private String emailContacto;
+
+    @Column(name = "dias_credito")
+    private Integer diasCredito;
 }

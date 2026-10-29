@@ -10,13 +10,13 @@ import com.bodeguita.bodeguita_backend.entity.Rol;
 
 public interface RolRepository extends JpaRepository<Rol, Long> {
 
-    @Query("SELECT rol FROM Rol rol WHERE rol.estado = TRUE ORDER BY rol.nRol ASC")
+    @Query("SELECT rol FROM Rol rol WHERE rol.estado = '1' ORDER BY rol.nRol ASC")
     List<Rol> findAllActivosOrdenados();
 
     @Query("SELECT rol FROM Rol rol ORDER BY rol.nRol ASC")
     List<Rol> findAllOrdenados();
 
-    @Query("SELECT rol FROM Rol rol WHERE rol.idRol = :idRol AND rol.estado = TRUE")
+    @Query("SELECT rol FROM Rol rol WHERE rol.idRol = :idRol AND rol.estado = '1'")
     Optional<Rol> findActivoPorId(Long idRol);
 
     @Query("SELECT COUNT(rol) > 0 FROM Rol rol WHERE rol.nRol = :nRol")

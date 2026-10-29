@@ -9,7 +9,7 @@ import com.bodeguita.bodeguita_backend.entity.TipoIdentidad;
 
 public interface TipoIdentidadRepository extends JpaRepository<TipoIdentidad, Long> {
 
-    @Query("SELECT tipo FROM TipoIdentidad tipo WHERE tipo.estado = TRUE ORDER BY tipo.nTipoIdentidad ASC")
+    @Query("SELECT tipo FROM TipoIdentidad tipo WHERE tipo.estado = '1' ORDER BY tipo.nTipoIdentidad ASC")
     List<TipoIdentidad> findAllActivosOrdenados();
 
     java.util.Optional<TipoIdentidad> findByIdTipoIdentidadAndEstadoTrue(Long idTipoIdentidad);
