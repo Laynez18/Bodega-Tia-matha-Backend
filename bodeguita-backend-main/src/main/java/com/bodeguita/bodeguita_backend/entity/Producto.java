@@ -35,32 +35,32 @@ public class Producto extends BaseAuditoria {
     @JoinColumn(name = "id_categoria_producto", nullable = false)
     private Categoria categoria;
 
-    @Column(name = "codigo_barras", length = 50, nullable = false)
+    @Column(name = "codigo_barras", length = 30, nullable = false)
     private String codigoBarras;
 
-    @Column(name = "n_producto", length = 120, nullable = false)
+    @Column(name = "n_producto", length = 50, nullable = false)
     private String nombre;
 
-    @Column(name = "detalle", length = 300)
+    @Column(name = "detalle", length = 100)
     private String descripcion;
 
-    @Column(name = "p_compra", precision = 12, scale = 2, nullable = false)
+    @Column(name = "p_compra", precision = 10, scale = 2, nullable = false)
     private BigDecimal precioCompra;
 
-    @Column(name = "p_venta", precision = 12, scale = 2, nullable = false)
+    @Column(name = "p_venta", precision = 10, scale = 2, nullable = false)
     private BigDecimal precioVenta;
 
-    @Column(name = "p_mayoreo", precision = 12, scale = 2)
+    @Column(name = "p_mayoreo", precision = 10, scale = 2)
     private BigDecimal precioMayoreo;
 
-    @Column(name = "stock_actual", nullable = false)
-    private Integer stock;
+    @Column(name = "stock_actual", precision = 12, scale = 3, nullable = false)
+    private BigDecimal stock;
 
-    @Column(name = "stock_minimo")
-    private Integer stockMinimo;
+    @Column(name = "stock_minimo", precision = 12, scale = 3)
+    private BigDecimal stockMinimo;
 
-    @Column(name = "stock_maximo")
-    private Integer stockMaximo;
+    @Column(name = "stock_maximo", precision = 12, scale = 3)
+    private BigDecimal stockMaximo;
 
     @Column(name = "afecto_igv", length = 1, nullable = false)
     private String afectoIgv;

@@ -58,4 +58,7 @@ public class Cliente extends BaseAuditoria {
 
     @Column(name = "f_registro")
     private LocalDateTime fRegistro;
+
+    @Column(name = "observacion", length = 200)
+    private String observacion;
 }

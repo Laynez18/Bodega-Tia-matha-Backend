@@ -70,7 +70,8 @@ public class VentaService {
         List<DetalleVenta> detalles = request.detalles().stream().map(d -> {
             Producto producto = productoRepository.findByIdAndEstado(d.idProducto(), "1")
                     .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Producto no encontrado: " + d.idProducto() + "."));
-            if (producto.getStock() == null || producto.getStock() < d.cantidad()) {
+            BigDecimal cantidad = BigDecimal.valueOf(d.cantidad());
+            if (producto.getStock() == null || producto.getStock().compareTo(cantidad) < 0) {
                 throw new ResponseStatusException(org.springframework.http.HttpStatus.BAD_REQUEST,
                         "Stock insuficiente para el producto: " + producto.getNombre() + " (disponible: " + producto.getStock() + ")");
             }
@@ -78,7 +79,7 @@ public class VentaService {
             dv.setProducto(producto);
             dv.setCantidad(d.cantidad());
             dv.setPrecioUnitario(d.precioUnitario());
-            dv.setSubtotal(d.precioUnitario().multiply(BigDecimal.valueOf(d.cantidad())));
+            dv.setSubtotal(d.precioUnitario().multiply(cantidad));
             return dv;
         }).collect(Collectors.toList());
         for (DetalleVenta dv : detalles) {
@@ -95,7 +96,7 @@ public class VentaService {
             dv.setVenta(venta);
             detalleVentaRepository.save(dv);
             Producto producto = dv.getProducto();
-            producto.setStock(producto.getStock() - dv.getCantidad());
+            producto.setStock(producto.getStock().subtract(BigDecimal.valueOf(dv.getCantidad())));
             productoRepository.save(producto);
         }
         return obtener(venta.getId());

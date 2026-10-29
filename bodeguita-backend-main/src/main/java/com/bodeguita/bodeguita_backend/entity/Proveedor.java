@@ -44,13 +44,13 @@ public class Proveedor extends BaseAuditoria {
     @Column(name = "codigo_proveedor", length = 20)
     private String codigoProveedor;
 
-    @Column(name = "contacto", length = 100)
+    @Column(name = "contacto", length = 80)
     private String contacto;
 
     @Column(name = "telefono_contacto", length = 15)
     private String telefonoContacto;
 
-    @Column(name = "email_contacto", length = 100)
+    @Column(name = "email_contacto", length = 50)
     private String emailContacto;
 
     @Column(name = "dias_credito")

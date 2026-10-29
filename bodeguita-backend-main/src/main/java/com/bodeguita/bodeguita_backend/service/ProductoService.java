@@ -11,6 +11,7 @@ import com.bodeguita.bodeguita_backend.entity.Producto;
 import com.bodeguita.bodeguita_backend.repository.CategoriaRepository;
 import com.bodeguita.bodeguita_backend.repository.ProductoRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,9 +53,9 @@ public class ProductoService {
         entidad.setPrecioCompra(request.precioCompra());
         entidad.setPrecioVenta(request.precioVenta());
         entidad.setPrecioMayoreo(request.precioMayoreo());
-        entidad.setStock(request.stock());
-        entidad.setStockMinimo(request.stockMinimo());
-        entidad.setStockMaximo(request.stockMaximo());
+        entidad.setStock(BigDecimal.valueOf(request.stock()));
+        entidad.setStockMinimo(BigDecimal.valueOf(request.stockMinimo()));
+        entidad.setStockMaximo(BigDecimal.valueOf(request.stockMaximo()));
         entidad.setAfectoIgv(request.afectoIgv());
         entidad.setEsPerecible(request.esPerecible());
         entidad.setImagen(request.imagen());
@@ -77,9 +78,9 @@ public class ProductoService {
         entidad.setPrecioCompra(request.precioCompra());
         entidad.setPrecioVenta(request.precioVenta());
         entidad.setPrecioMayoreo(request.precioMayoreo());
-        entidad.setStock(request.stock());
-        entidad.setStockMinimo(request.stockMinimo());
-        entidad.setStockMaximo(request.stockMaximo());
+        entidad.setStock(BigDecimal.valueOf(request.stock()));
+        entidad.setStockMinimo(BigDecimal.valueOf(request.stockMinimo()));
+        entidad.setStockMaximo(BigDecimal.valueOf(request.stockMaximo()));
         entidad.setAfectoIgv(request.afectoIgv());
         entidad.setEsPerecible(request.esPerecible());
         entidad.setImagen(request.imagen());
@@ -108,9 +109,9 @@ public class ProductoService {
                 entidad.getPrecioCompra(),
                 entidad.getPrecioVenta(),
                 entidad.getPrecioMayoreo(),
-                entidad.getStock(),
-                entidad.getStockMinimo(),
-                entidad.getStockMaximo(),
+                entidad.getStock().intValue(),
+                entidad.getStockMinimo().intValue(),
+                entidad.getStockMaximo().intValue(),
                 entidad.getAfectoIgv(),
                 entidad.getEsPerecible(),
                 entidad.getImagen()

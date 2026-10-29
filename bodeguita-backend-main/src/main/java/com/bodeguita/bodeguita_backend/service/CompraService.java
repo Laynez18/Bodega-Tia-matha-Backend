@@ -81,7 +81,7 @@ public class CompraService {
             dc.setCompra(compra);
             detalleCompraRepository.save(dc);
             Producto producto = dc.getProducto();
-            producto.setStock(producto.getStock() + dc.getCantidad());
+            producto.setStock(producto.getStock().add(BigDecimal.valueOf(dc.getCantidad())));
             productoRepository.save(producto);
         }
         return obtener(compra.getId());

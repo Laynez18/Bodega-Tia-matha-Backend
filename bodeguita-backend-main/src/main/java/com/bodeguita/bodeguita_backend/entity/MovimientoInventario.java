@@ -60,22 +60,22 @@ public class MovimientoInventario extends BaseAuditoria {
     @JoinColumn(name = "id_compra")
     private Compra compra;
 
-    @Column(name = "cantidad", nullable = false)
-    private Integer cantidad;
+    @Column(name = "cantidad", precision = 12, scale = 3, nullable = false)
+    private BigDecimal cantidad;
 
-    @Column(name = "costo_unitario", precision = 12, scale = 2)
+    @Column(name = "costo_unitario", precision = 10, scale = 2)
     private BigDecimal costoUnitario;
 
-    @Column(name = "stock_anterior", nullable = false)
-    private Integer stockAnterior;
+    @Column(name = "stock_anterior", precision = 12, scale = 3, nullable = false)
+    private BigDecimal stockAnterior;
 
-    @Column(name = "stock_nuevo", nullable = false)
-    private Integer stockNuevo;
+    @Column(name = "stock_nuevo", precision = 12, scale = 3, nullable = false)
+    private BigDecimal stockNuevo;
 
     @Column(name = "f_movimiento", nullable = false)
     private LocalDateTime fMovimiento;
 
-    @Column(name = "documento", length = 50)
+    @Column(name = "documento", length = 30)
     private String documento;
 
     @Column(name = "observacion", length = 200)

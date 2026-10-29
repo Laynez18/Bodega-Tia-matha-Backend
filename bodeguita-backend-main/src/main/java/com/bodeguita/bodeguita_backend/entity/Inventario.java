@@ -39,10 +39,10 @@ public class Inventario extends BaseAuditoria {
     @JoinColumn(name = "id_almacen", nullable = false)
     private Almacen almacen;
 
-    @Column(name = "stock", precision = 12, scale = 2, nullable = false)
+    @Column(name = "stock", precision = 12, scale = 3, nullable = false)
     private BigDecimal stock;
 
-    @Column(name = "stock_reservado", precision = 12, scale = 2, nullable = false)
+    @Column(name = "stock_reservado", precision = 12, scale = 3, nullable = false)
     private BigDecimal stockReservado;
 
     @Column(name = "ubicacion_fisica", length = 100)

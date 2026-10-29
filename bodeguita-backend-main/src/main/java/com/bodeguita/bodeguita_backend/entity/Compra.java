@@ -43,6 +43,9 @@ public class Compra extends BaseAuditoria {
     @Column(name = "documento", length = 50)
     private String documento;
 
+    @Column(name = "numero_documento", length = 30)
+    private String numeroDocumento;
+
     @Column(name = "f_compra", nullable = false)
     private LocalDateTime fCompra;
 

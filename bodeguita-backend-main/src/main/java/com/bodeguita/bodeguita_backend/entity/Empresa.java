@@ -26,15 +26,15 @@ public class Empresa extends BaseAuditoria {
     @Column(name = "id_empresa")
     private Long id;
 
-    @Column(name = "ruc", length = 20, nullable = false)
+    @Column(name = "ruc", length = 11, nullable = false)
     private String ruc;
 
-    @Column(name = "razon_social", length = 200, nullable = false)
+    @Column(name = "razon_social", length = 140, nullable = false)
     private String razonSocial;
 
-    @Column(name = "direccion", length = 200)
+    @Column(name = "direccion", length = 150)
     private String direccion;
 
-    @Column(name = "telefono", length = 20)
+    @Column(name = "telefono", length = 8)
     private String telefono;
 }

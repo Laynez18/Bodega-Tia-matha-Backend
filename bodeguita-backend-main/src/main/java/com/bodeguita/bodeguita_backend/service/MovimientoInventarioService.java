@@ -23,6 +23,7 @@ import com.bodeguita.bodeguita_backend.repository.UsuarioRepository;
 import com.bodeguita.bodeguita_backend.repository.VentaRepository;
 import com.bodeguita.bodeguita_backend.repository.CompraRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -82,9 +83,9 @@ public class MovimientoInventarioService {
         entidad.setProducto(producto);
         entidad.setAlmacen(almacen);
         entidad.setTipoMovimientoInv(tipoMovimientoInv);
-        entidad.setCantidad(request.cantidad());
-        entidad.setStockAnterior(request.stockAnterior());
-        entidad.setStockNuevo(request.stockNuevo());
+        entidad.setCantidad(BigDecimal.valueOf(request.cantidad()));
+        entidad.setStockAnterior(BigDecimal.valueOf(request.stockAnterior()));
+        entidad.setStockNuevo(BigDecimal.valueOf(request.stockNuevo()));
         entidad.setFMovimiento(request.fMovimiento());
         entidad.setDocumento(request.documento());
         entidad.setObservacion(request.observacion());
@@ -124,9 +125,9 @@ public class MovimientoInventarioService {
                 entidad.getProducto().getId(),
                 entidad.getProducto().getNombre(),
                 entidad.getTipoMovimientoInv().getNombre(),
-                entidad.getCantidad(),
-                entidad.getStockAnterior(),
-                entidad.getStockNuevo(),
+                entidad.getCantidad().intValue(),
+                entidad.getStockAnterior().intValue(),
+                entidad.getStockNuevo().intValue(),
                 entidad.getFMovimiento(),
                 entidad.getDocumento(),
                 entidad.getObservacion(),

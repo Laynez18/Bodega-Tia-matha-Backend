@@ -37,7 +37,7 @@ public class PresentacionProducto extends BaseAuditoria {
     @JoinColumn(name = "id_unidad_medida", nullable = false)
     private UnidadMedida unidadMedida;
 
-    @Column(name = "factor_conversion", precision = 10, scale = 4, nullable = false)
+    @Column(name = "factor_conversion", precision = 12, scale = 3, nullable = false)
     private java.math.BigDecimal factorConversion;
 
     @Column(name = "es_unidad_base", length = 1, nullable = false)
