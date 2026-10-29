@@ -42,7 +42,7 @@ public class DistritoService {
         Provincia provincia = provinciaRepository.findByIdAndEstado(request.idProvincia(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Provincia no encontrada: " + request.idProvincia() + "."));
         entidad.setProvincia(provincia);
-        entidad.setdDistrito(request.dDistrito());
+        entidad.setDDistrito(request.dDistrito());
         return aDto(distritoRepository.save(entidad));
     }
 
@@ -52,7 +52,7 @@ public class DistritoService {
         Provincia provincia = provinciaRepository.findByIdAndEstado(request.idProvincia(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Provincia no encontrada: " + request.idProvincia() + "."));
         existente.setProvincia(provincia);
-        existente.setdDistrito(request.dDistrito());
+        existente.setDDistrito(request.dDistrito());
         return aDto(distritoRepository.save(existente));
     }
 
@@ -70,7 +70,7 @@ public class DistritoService {
         return new DistritoDto(
                 entidad.getIdDistrito(),
                 entidad.getProvincia() != null ? entidad.getProvincia().getId() : null,
-                entidad.getdDistrito(),
+                entidad.getDDistrito(),
                 entidad.getEstado()
         );
     }

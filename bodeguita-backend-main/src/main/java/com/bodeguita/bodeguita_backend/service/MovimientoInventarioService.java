@@ -46,7 +46,7 @@ public class MovimientoInventarioService {
         entidad.setCantidad(request.cantidad());
         entidad.setStockAnterior(request.stockAnterior());
         entidad.setStockNuevo(request.stockNuevo());
-        entidad.setfMovimiento(request.fMovimiento());
+        entidad.setFMovimiento(request.fMovimiento());
         entidad.setReferencia(request.referencia());
         entidad.setObservacion(request.observacion());
         entidad.setValorUnitario(request.valorUnitario());
@@ -73,7 +73,7 @@ public class MovimientoInventarioService {
                 entidad.getCantidad(),
                 entidad.getStockAnterior(),
                 entidad.getStockNuevo(),
-                entidad.getfMovimiento(),
+                entidad.getFMovimiento(),
                 entidad.getReferencia(),
                 entidad.getObservacion(),
                 entidad.getValorUnitario()

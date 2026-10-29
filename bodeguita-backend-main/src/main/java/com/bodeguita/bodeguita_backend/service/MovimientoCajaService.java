@@ -80,7 +80,7 @@ public class MovimientoCajaService {
         entidad.setDescripcion(request.descripcion());
         entidad.setMonto(request.monto());
         entidad.setAfectaEfectivo(request.afectaEfectivo());
-        entidad.setfMovimiento(request.fMovimiento());
+        entidad.setFMovimiento(request.fMovimiento());
         entidad = movimientoCajaRepository.saveAndFlush(entidad);
         return obtener(entidad.getId());
     }
@@ -114,7 +114,7 @@ public class MovimientoCajaService {
                 entidad.getDescripcion(),
                 entidad.getMonto(),
                 entidad.getAfectaEfectivo(),
-                entidad.getfMovimiento()
+                entidad.getFMovimiento()
         );
     }
 }

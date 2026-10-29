@@ -8,6 +8,7 @@ import com.bodeguita.bodeguita_backend.entity.Cliente;
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     Optional<Cliente> findByIdAndEstado(Long id, String estado);
     boolean existsByPersona_IdAndEstadoTrue(Long idPersona);
+    boolean existsByPersonaIdAndEstadoTrue(Long idPersona);
 }
 
 

@@ -35,14 +35,14 @@ public class TipoUsuarioService {
     @Transactional
     public TipoUsuarioDto crear(TipoUsuarioRequest request) {
         TipoUsuario entidad = new TipoUsuario();
-        entidad.setnTipoUsuario(request.nTipoUsuario());
+        entidad.setNTipoUsuario(request.nTipoUsuario());
         return aDto(tipoUsuarioRepository.save(entidad));
     }
 
     @Transactional
     public TipoUsuarioDto actualizar(Long id, TipoUsuarioRequest request) {
         TipoUsuario existente = buscarActivo(id);
-        existente.setnTipoUsuario(request.nTipoUsuario());
+        existente.setNTipoUsuario(request.nTipoUsuario());
         return aDto(tipoUsuarioRepository.save(existente));
     }
 
@@ -57,6 +57,6 @@ public class TipoUsuarioService {
     }
 
     private TipoUsuarioDto aDto(TipoUsuario entidad) {
-        return new TipoUsuarioDto(entidad.getIdTipoUsuario(), entidad.getnTipoUsuario());
+        return new TipoUsuarioDto(entidad.getIdTipoUsuario(), entidad.getNTipoUsuario());
     }
 }

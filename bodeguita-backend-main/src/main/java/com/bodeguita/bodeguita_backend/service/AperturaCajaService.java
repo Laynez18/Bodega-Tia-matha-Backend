@@ -51,7 +51,7 @@ public class AperturaCajaService {
         entidad.setCaja(caja);
         entidad.setUsuario(usuario);
         entidad.setNumeroTurno(request.numeroTurno());
-        entidad.setfApertura(request.fApertura());
+        entidad.setFApertura(request.fApertura());
         entidad.setMontoInicial(request.montoInicial());
         entidad.setObservacion(request.observacion());
         entidad = aperturaCajaRepository.saveAndFlush(entidad);
@@ -76,8 +76,8 @@ public class AperturaCajaService {
                 entidad.getUsuario().getId(),
                 entidad.getUsuario().getLogeo(),
                 entidad.getNumeroTurno(),
-                entidad.getfApertura(),
-                entidad.getfCierre(),
+                entidad.getFApertura(),
+                entidad.getFCierre(),
                 entidad.getMontoInicial(),
                 entidad.getTotalIngresos(),
                 entidad.getTotalEgresos(),

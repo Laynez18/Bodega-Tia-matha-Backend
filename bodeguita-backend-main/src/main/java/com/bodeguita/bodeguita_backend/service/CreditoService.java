@@ -57,8 +57,8 @@ public class CreditoService {
         credito.setNumeroDocumento(request.numeroDocumento());
         credito.setMonto(request.monto());
         credito.setSaldo(request.monto());
-        credito.setfEmision(request.fEmision());
-        credito.setfVencimiento(request.fVencimiento());
+        credito.setFEmision(request.fEmision());
+        credito.setFVencimiento(request.fVencimiento());
         credito.setEstado(request.estado());
         credito.setObservacion(request.observacion());
         credito = creditoRepository.saveAndFlush(credito);
@@ -71,7 +71,7 @@ public class CreditoService {
             PagoCredito pago = new PagoCredito();
             pago.setCredito(credito);
             pago.setMonto(p.monto());
-            pago.setfPago(p.fPago());
+            pago.setFPago(p.fPago());
             pago.setMetodoPago(mp);
             pago.setNumeroOperacion(p.numeroOperacion());
             pago.setObservacion(p.observacion());
@@ -95,7 +95,7 @@ public class CreditoService {
         PagoCredito pago = new PagoCredito();
         pago.setCredito(credito);
         pago.setMonto(request.monto());
-        pago.setfPago(request.fPago());
+        pago.setFPago(request.fPago());
         pago.setMetodoPago(mp);
         pago.setNumeroOperacion(request.numeroOperacion());
         pago.setObservacion(request.observacion());
@@ -119,7 +119,7 @@ public class CreditoService {
                 p.getId(),
                 p.getCredito().getId(),
                 p.getMonto(),
-                p.getfPago(),
+                p.getFPago(),
                 p.getMetodoPago() == null ? null : p.getMetodoPago().getId(),
                 p.getMetodoPago() == null ? null : p.getMetodoPago().getNombre(),
                 p.getNumeroOperacion(),
@@ -132,8 +132,8 @@ public class CreditoService {
                 entidad.getNumeroDocumento(),
                 entidad.getMonto(),
                 entidad.getSaldo(),
-                entidad.getfEmision(),
-                entidad.getfVencimiento(),
+                entidad.getFEmision(),
+                entidad.getFVencimiento(),
                 entidad.getEstado(),
                 entidad.getObservacion(),
                 pagos

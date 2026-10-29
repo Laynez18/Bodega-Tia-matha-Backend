@@ -41,7 +41,7 @@ public class ClienteService {
     public ClienteDto crear(ClienteRequest request) {
         Persona persona = personaRepository.findByIdAndEstado(request.idPersona(), "1")
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Persona no encontrada: " + request.idPersona() + "."));
-        if (clienteRepository.existsByPersonaIdAndEstadoTrue(request.idPersona())) {
+        if (clienteRepository.existsByPersona_IdAndEstadoTrue(request.idPersona())) {
             throw new ResponseStatusException(CONFLICT, "La persona ya tiene un cliente registrado.");
         }
         Cliente entidad = new Cliente();

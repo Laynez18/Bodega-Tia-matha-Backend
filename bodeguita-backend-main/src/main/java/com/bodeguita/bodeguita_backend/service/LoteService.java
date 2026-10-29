@@ -43,7 +43,7 @@ public class LoteService {
         Lote entidad = new Lote();
         entidad.setProducto(producto);
         entidad.setNumeroLote(request.numeroLote());
-        entidad.setfVencimiento(request.fVencimiento());
+        entidad.setFVencimiento(request.fVencimiento());
         entidad.setStock(request.stock());
         entidad.setPrecioCosto(request.precioCosto());
         entidad = loteRepository.saveAndFlush(entidad);
@@ -57,7 +57,7 @@ public class LoteService {
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Producto no encontrado: " + request.idProducto() + "."));
         entidad.setProducto(producto);
         entidad.setNumeroLote(request.numeroLote());
-        entidad.setfVencimiento(request.fVencimiento());
+        entidad.setFVencimiento(request.fVencimiento());
         entidad.setStock(request.stock());
         entidad.setPrecioCosto(request.precioCosto());
         return obtener(entidad.getId());
@@ -79,7 +79,7 @@ public class LoteService {
                 entidad.getProducto().getId(),
                 entidad.getProducto().getNombre(),
                 entidad.getNumeroLote(),
-                entidad.getfVencimiento(),
+                entidad.getFVencimiento(),
                 entidad.getStock(),
                 entidad.getPrecioCosto()
         );

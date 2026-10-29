@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 public record AperturaCajaRequest(
         @NotNull Long idCaja,
+        @NotNull Long idUsuario,
         @NotBlank @Size(max = 20) String numeroTurno,
         LocalDateTime fApertura,
         @NotNull BigDecimal montoInicial,
