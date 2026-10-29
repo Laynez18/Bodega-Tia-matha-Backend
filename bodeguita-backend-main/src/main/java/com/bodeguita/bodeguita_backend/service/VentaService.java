@@ -77,7 +77,6 @@ public class VentaService {
                         "Stock insuficiente para el producto: " + producto.getNombre() + " (disponible: " + producto.getStock() + ")");
             }
             DetalleVenta dv = new DetalleVenta();
-            dv.setVenta(venta);
             dv.setProducto(producto);
             dv.setCantidad(d.cantidad());
             dv.setPrecioUnitario(d.precioUnitario());
@@ -93,6 +92,7 @@ public class VentaService {
         venta.setTotal(subtotal.add(igv));
         venta = ventaRepository.saveAndFlush(venta);
         for (DetalleVenta dv : detalles) {
+            dv.setVenta(venta);
             detalleVentaRepository.save(dv);
             Producto producto = dv.getProducto();
             producto.setStock(producto.getStock() - dv.getCantidad());

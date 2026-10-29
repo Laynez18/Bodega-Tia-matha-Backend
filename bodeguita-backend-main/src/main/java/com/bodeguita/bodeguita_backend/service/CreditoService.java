@@ -69,7 +69,6 @@ public class CreditoService {
                         .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Metodo de pago no encontrado: " + p.idMetodoPago() + "."));
             }
             PagoCredito pago = new PagoCredito();
-            pago.setCredito(credito);
             pago.setMonto(p.monto());
             pago.setFPago(p.fPago());
             pago.setMetodoPago(mp);
@@ -78,6 +77,7 @@ public class CreditoService {
             return pago;
         }).collect(Collectors.toList());
         for (PagoCredito pago : pagos) {
+            pago.setCredito(credito);
             pagoCreditoRepository.save(pago);
             credito.setSaldo(credito.getSaldo().subtract(pago.getMonto()));
         }
