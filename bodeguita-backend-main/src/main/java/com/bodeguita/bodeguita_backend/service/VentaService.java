@@ -77,7 +77,7 @@ public class VentaService {
             }
             DetalleVenta dv = new DetalleVenta();
             dv.setProducto(producto);
-            dv.setCantidad(d.cantidad());
+            dv.setCantidad(BigDecimal.valueOf(d.cantidad()));
             dv.setPrecioUnitario(d.precioUnitario());
             dv.setSubtotal(d.precioUnitario().multiply(cantidad));
             return dv;
@@ -96,7 +96,7 @@ public class VentaService {
             dv.setVenta(venta);
             detalleVentaRepository.save(dv);
             Producto producto = dv.getProducto();
-            producto.setStock(producto.getStock().subtract(BigDecimal.valueOf(dv.getCantidad())));
+            producto.setStock(producto.getStock().subtract(dv.getCantidad()));
             productoRepository.save(producto);
         }
         return obtener(venta.getId());
@@ -133,7 +133,7 @@ public class VentaService {
                 dv.getId(),
                 dv.getProducto().getId(),
                 dv.getProducto().getNombre(),
-                dv.getCantidad(),
+                dv.getCantidad().intValue(),
                 dv.getPrecioUnitario(),
                 dv.getSubtotal()
         )).collect(Collectors.toList());

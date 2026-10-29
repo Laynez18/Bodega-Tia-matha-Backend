@@ -39,8 +39,8 @@ public class DetalleVenta extends BaseAuditoria {
     @JoinColumn(name = "id_producto", nullable = false)
     private Producto producto;
 
-    @Column(name = "cantidad", nullable = false)
-    private Integer cantidad;
+    @Column(name = "cantidad", precision = 12, scale = 3, nullable = false)
+    private BigDecimal cantidad;
 
     @Column(name = "precio_unitario", precision = 12, scale = 2, nullable = false)
     private BigDecimal precioUnitario;
