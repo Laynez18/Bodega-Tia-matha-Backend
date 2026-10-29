@@ -6,6 +6,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.bodeguita.bodeguita_backend.dto.LoteDto;
 import com.bodeguita.bodeguita_backend.dto.LoteRequest;
+import com.bodeguita.bodeguita_backend.entity.Almacen;
 import com.bodeguita.bodeguita_backend.entity.Lote;
 import com.bodeguita.bodeguita_backend.entity.Producto;
 import com.bodeguita.bodeguita_backend.repository.LoteRepository;
