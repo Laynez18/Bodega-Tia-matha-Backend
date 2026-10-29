@@ -29,7 +29,7 @@ public class MovimientoInventario extends BaseAuditoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_movimiento_inventario")
+    @Column(name = "id_movimiento_inv")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

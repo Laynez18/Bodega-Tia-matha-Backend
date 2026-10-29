@@ -6,6 +6,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.bodeguita.bodeguita_backend.dto.EmpresaDto;
 import com.bodeguita.bodeguita_backend.dto.EmpresaRequest;
+import com.bodeguita.bodeguita_backend.dto.RucResponse;
 import com.bodeguita.bodeguita_backend.entity.Empresa;
 import com.bodeguita.bodeguita_backend.repository.EmpresaRepository;
 
@@ -19,9 +20,11 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class EmpresaService {
 
     private final EmpresaRepository empresaRepository;
+    private final ConsultaSunatService consultaSunatService;
 
-    public EmpresaService(EmpresaRepository empresaRepository) {
+    public EmpresaService(EmpresaRepository empresaRepository, ConsultaSunatService consultaSunatService) {
         this.empresaRepository = empresaRepository;
+        this.consultaSunatService = consultaSunatService;
     }
 
     public List<EmpresaDto> listar() {
@@ -39,6 +42,20 @@ public class EmpresaService {
         entidad.setRazonSocial(request.razonSocial());
         entidad.setDireccion(request.direccion());
         entidad.setTelefono(request.telefono());
+        return aDto(empresaRepository.save(entidad));
+    }
+
+    @Transactional
+    public EmpresaDto crearDesdeSunat(String ruc) {
+        if (empresaRepository.existsByRuc(ruc)) {
+            throw new ResponseStatusException(org.springframework.http.HttpStatus.CONFLICT, "La empresa con RUC " + ruc + " ya existe.");
+        }
+        RucResponse r = consultaSunatService.consultarRuc(ruc);
+        Empresa entidad = new Empresa();
+        entidad.setRuc(r.ruc());
+        entidad.setRazonSocial(r.razonSocial() != null ? r.razonSocial() : r.nombreComercial());
+        entidad.setDireccion(r.direccion());
+        entidad.setTelefono(null);
         return aDto(empresaRepository.save(entidad));
     }
 

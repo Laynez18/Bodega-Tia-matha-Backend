@@ -13,6 +13,8 @@ public interface PersonaRepository extends JpaRepository<Persona, Long> {
     Optional<Persona> findByIdAndEstado(Long id, String estado);
 
     List<Persona> findByEstadoOrderByNombreAsc(String estado);
+
+    boolean existsByNDocumento(String nDocumento);
 }
 
 

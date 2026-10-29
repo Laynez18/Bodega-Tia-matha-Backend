@@ -7,6 +7,7 @@ import com.bodeguita.bodeguita_backend.entity.Empresa;
 
 public interface EmpresaRepository extends JpaRepository<Empresa, Long> {
     Optional<Empresa> findByIdAndEstado(Long id, String estado);
+    boolean existsByRuc(String ruc);
 }
 
 
