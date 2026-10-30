@@ -4,11 +4,14 @@ import com.bodeguita.bodeguita_backend.dto.DniResponse;
 import com.bodeguita.bodeguita_backend.dto.RucResponse;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -19,7 +22,10 @@ public class SunatApiClient {
     private final SunatApiProperties properties;
 
     public SunatApiClient(SunatApiProperties properties) {
-        this.restTemplate = new RestTemplate();
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        factory.setConnectTimeout(properties.getTimeout());
+        factory.setReadTimeout(properties.getTimeout());
+        this.restTemplate = new RestTemplate(factory);
         this.properties = properties;
     }
 
@@ -41,7 +47,7 @@ public class SunatApiClient {
             ResponseEntity<RucResponse> res = restTemplate.getForEntity(url, RucResponse.class, new HttpEntity<>(headers()));
             return res.getBody();
         } catch (RestClientException e) {
-            throw new RuntimeException("Error consultando RUC " + ruc + ": " + e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error consultando RUC " + ruc + ": " + e.getMessage(), e);
         }
     }
 
@@ -54,7 +60,7 @@ public class SunatApiClient {
             ResponseEntity<DniResponse> res = restTemplate.getForEntity(url, DniResponse.class, new HttpEntity<>(headers()));
             return res.getBody();
         } catch (RestClientException e) {
-            throw new RuntimeException("Error consultando DNI " + dni + ": " + e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error consultando DNI " + dni + ": " + e.getMessage(), e);
         }
     }
 }
