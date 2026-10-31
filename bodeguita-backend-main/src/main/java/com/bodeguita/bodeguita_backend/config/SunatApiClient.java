@@ -41,10 +41,6 @@ public class SunatApiClient {
     private HttpHeaders headers() {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        headers.set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36");
-        headers.set("Origin", "https://api.factiliza.com");
-        headers.set("Referer", "https://api.factiliza.com/");
-        headers.set("Accept-Language", "es-ES,es;q=0.9");
         String tokenRaw = properties.getToken();
         String token = tokenRaw != null ? tokenRaw.trim() : null;
         if (token != null && !token.isBlank()) {
