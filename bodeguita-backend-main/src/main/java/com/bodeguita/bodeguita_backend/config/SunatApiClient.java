@@ -2,6 +2,8 @@ package com.bodeguita.bodeguita_backend.config;
 
 import com.bodeguita.bodeguita_backend.dto.DniResponse;
 import com.bodeguita.bodeguita_backend.dto.RucResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,8 @@ import java.util.List;
 
 @Component
 public class SunatApiClient {
+
+    private static final Logger log = LoggerFactory.getLogger(SunatApiClient.class);
 
     private final RestTemplate restTemplate;
     private final SunatApiProperties properties;
@@ -42,6 +46,7 @@ public class SunatApiClient {
         if (properties.getUrl() == null || properties.getUrl().isBlank()) {
             throw new IllegalStateException("sunat.api.url no configurada");
         }
+        log.debug("SUNAT RUC -> url={}, tokenPresente={}", properties.getUrl(), properties.getToken() != null && !properties.getToken().isBlank());
         String url = properties.getUrl().replaceAll("/+$", "") + properties.getPathRuc() + ruc;
         try {
             ResponseEntity<RucResponse> res = restTemplate.getForEntity(url, RucResponse.class, new HttpEntity<>(headers()));
@@ -55,6 +60,7 @@ public class SunatApiClient {
         if (properties.getUrl() == null || properties.getUrl().isBlank()) {
             throw new IllegalStateException("sunat.api.url no configurada");
         }
+        log.debug("SUNAT DNI -> url={}, tokenPresente={}", properties.getUrl(), properties.getToken() != null && !properties.getToken().isBlank());
         String url = properties.getUrl().replaceAll("/+$", "") + properties.getPathDni() + dni;
         try {
             ResponseEntity<DniResponse> res = restTemplate.getForEntity(url, DniResponse.class, new HttpEntity<>(headers()));
