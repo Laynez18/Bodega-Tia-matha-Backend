@@ -31,13 +31,22 @@ public class SunatApiClient {
         factory.setReadTimeout(properties.getTimeout());
         this.restTemplate = new RestTemplate(factory);
         this.properties = properties;
+        String token = properties.getToken();
+        log.info("SUNAT init -> urlPresente={}, tokenPresente={}, timeout={}",
+                properties.getUrl() != null && !properties.getUrl().isBlank(),
+                token != null && !token.isBlank(),
+                properties.getTimeout());
     }
 
     private HttpHeaders headers() {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        if (properties.getToken() != null && !properties.getToken().isBlank()) {
-            headers.set("Authorization", "Bearer " + properties.getToken());
+        String token = properties.getToken();
+        if (token != null && !token.isBlank()) {
+            headers.set("Authorization", "Bearer " + token);
+            log.debug("SUNAT headers -> Authorization: Bearer presente");
+        } else {
+            log.warn("SUNAT headers -> Authorization: AUSENTE (token nulo o vacio)");
         }
         return headers;
     }
