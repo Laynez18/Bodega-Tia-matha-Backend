@@ -1,11 +1,18 @@
 package com.bodeguita.bodeguita_backend.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.bodeguita.bodeguita_backend.entity.Auditoria;
 
 public interface AuditoriaRepository extends JpaRepository<Auditoria, Long> {
-    List<Auditoria> findByEstadoOrderByfEventoDesc(String estado);
-    List<Auditoria> findByEstadoAndUsuario_IdUsuarioOrderByfEventoDesc(String estado, Long idUsuario);
+
+    @Query("SELECT a FROM Auditoria a WHERE a.estado = :estado ORDER BY a.fEvento DESC")
+    List<Auditoria> findByEstadoOrderByfEventoDesc(@Param("estado") String estado);
+
+    @Query("SELECT a FROM Auditoria a WHERE a.estado = :estado AND a.usuario.idUsuario = :idUsuario ORDER BY a.fEvento DESC")
+    List<Auditoria> findByEstadoAndUsuario_IdUsuarioOrderByfEventoDesc(@Param("estado") String estado, @Param("idUsuario") Long idUsuario);
 }
