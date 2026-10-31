@@ -12,11 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.IOException;
 import java.util.List;
 
 @Component
@@ -65,8 +63,7 @@ public class SunatApiClient {
             ResponseEntity<RucResponse> res = restTemplate.getForEntity(url, RucResponse.class, new HttpEntity<>(headers()));
             return res.getBody();
         } catch (RestClientException e) {
-            String cuerpo = extraerCuerpoError(e, url);
-            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error consultando RUC " + ruc + ": " + e.getMessage() + (cuerpo != null ? " | Cuerpo: " + cuerpo : ""), e);
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error consultando RUC " + ruc + ": " + e.getMessage(), e);
         }
     }
 
@@ -80,25 +77,7 @@ public class SunatApiClient {
             ResponseEntity<DniResponse> res = restTemplate.getForEntity(url, DniResponse.class, new HttpEntity<>(headers()));
             return res.getBody();
         } catch (RestClientException e) {
-            String cuerpo = extraerCuerpoError(e, url);
-            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error consultando DNI " + dni + ": " + e.getMessage() + (cuerpo != null ? " | Cuerpo: " + cuerpo : ""), e);
-        }
-    }
-
-    private String extraerCuerpoError(RestClientException e, String url) {
-        try {
-            HttpHeaders h = headers();
-            ResponseEntity<String> res = restTemplate.execute(url, org.springframework.http.HttpMethod.GET,
-                    new HttpEntity<>(h), new ResponseExtractor<ResponseEntity<String>>() {
-                        @Override
-                        public ResponseEntity<String> extractData(org.springframework.http.client.ClientHttpResponse response) throws IOException {
-                            String body = new String(response.getBody().readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
-                            return new ResponseEntity<>(body, response.getHeaders(), response.getStatusCode());
-                        }
-                    });
-            return res.getBody();
-        } catch (RestClientException ex) {
-            return null;
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error consultando DNI " + dni + ": " + e.getMessage(), e);
         }
     }
 }
