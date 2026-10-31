@@ -21,14 +21,14 @@ public class AuditoriaService {
     }
 
     public List<AuditoriaDto> listar() {
-        return auditoriaRepository.findByEstadoOrderByFEventoDesc("1")
+        return auditoriaRepository.findByEstadoOrderByfEventoDesc("1")
                 .stream()
                 .map(this::aDto)
                 .collect(Collectors.toList());
     }
 
     public List<AuditoriaDto> listarPorUsuario(Long idUsuario) {
-        return auditoriaRepository.findByEstadoAndUsuario_IdUsuarioOrderByFEventoDesc("1", idUsuario)
+        return auditoriaRepository.findByEstadoAndUsuario_IdUsuarioOrderByfEventoDesc("1", idUsuario)
                 .stream()
                 .map(this::aDto)
                 .collect(Collectors.toList());
