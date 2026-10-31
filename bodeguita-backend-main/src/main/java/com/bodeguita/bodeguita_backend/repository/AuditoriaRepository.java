@@ -11,8 +11,8 @@ import com.bodeguita.bodeguita_backend.entity.Auditoria;
 public interface AuditoriaRepository extends JpaRepository<Auditoria, Long> {
 
     @Query("SELECT a FROM Auditoria a WHERE a.estado = :estado ORDER BY a.fEvento DESC")
-    List<Auditoria> findByEstadoOrderByfEventoDesc(@Param("estado") String estado);
+    List<Auditoria> listarActivos(@Param("estado") String estado);
 
     @Query("SELECT a FROM Auditoria a WHERE a.estado = :estado AND a.usuario.idUsuario = :idUsuario ORDER BY a.fEvento DESC")
-    List<Auditoria> findByEstadoAndUsuario_IdUsuarioOrderByfEventoDesc(@Param("estado") String estado, @Param("idUsuario") Long idUsuario);
+    List<Auditoria> listarActivosPorUsuario(@Param("estado") String estado, @Param("idUsuario") Long idUsuario);
 }
