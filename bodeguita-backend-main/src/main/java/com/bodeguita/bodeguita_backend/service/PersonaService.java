@@ -104,7 +104,7 @@ public class PersonaService {
                     .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Distrito no encontrado: " + idDistrito + ".")));
         }
         entidad.setNDocumento(dni);
-        entidad.setNombre(d.datos().nombre());
+        entidad.setNombre(d.datos().nombres());
         entidad.setApPaterno(d.datos().apellidoPaterno());
         entidad.setApMaterno(d.datos().apellidoMaterno());
         return aDto(personaRepository.save(entidad));
