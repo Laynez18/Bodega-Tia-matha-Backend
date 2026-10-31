@@ -2,24 +2,27 @@ package com.bodeguita.bodeguita_backend.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 public record RucResponse(
+        @JsonProperty("status") Integer status,
         @JsonProperty("success") boolean success,
-        @JsonProperty("datos") DatosRuc datos
+        @JsonProperty("message") String message,
+        @JsonProperty("data") DatosRuc datos
 ) {
     public record DatosRuc(
-            @JsonProperty("ruc") String ruc,
-            @JsonProperty("razon_social") String razonSocial,
+            @JsonProperty("numero") String numero,
+            @JsonProperty("nombre_o_razon_social") String razonSocial,
+            @JsonProperty("tipo_contribuyente") String tipoContribuyente,
             @JsonProperty("estado") String estado,
             @JsonProperty("condicion") String condicion,
-            @JsonProperty("domiciliado") Domiciliado domiciliado
+            @JsonProperty("departamento") String departamento,
+            @JsonProperty("provincia") String provincia,
+            @JsonProperty("distrito") String distrito,
+            @JsonProperty("direccion") String direccion,
+            @JsonProperty("direccion_completa") String direccionCompleta,
+            @JsonProperty("ubigeo_sunat") String ubigeoSunat,
+            @JsonProperty("ubigeo") List<String> ubigeo
     ) {
-        public record Domiciliado(
-                @JsonProperty("direccion") String direccion,
-                @JsonProperty("distrito") String distrito,
-                @JsonProperty("provincia") String provincia,
-                @JsonProperty("departamento") String departamento,
-                @JsonProperty("ubigeo") String ubigeo
-        ) {
-        }
     }
 }
