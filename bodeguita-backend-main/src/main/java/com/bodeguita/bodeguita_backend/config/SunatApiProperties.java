@@ -4,16 +4,16 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "sunat.api")
+@ConfigurationProperties(prefix = "factiliza.api")
 public class SunatApiProperties {
 
     private String url;
     private String token;
     private Integer timeout = 10000;
 
-    // Paths relativos sobre la URL base (ajustar según miapi.cloud)
-    private String pathDni = "/dni/";
-    private String pathRuc = "/ruc/";
+    // Paths relativos sobre la URL base (ajustar según factiliza.com)
+    private String pathDni = "/dni/info/";
+    private String pathRuc = "/ruc/info/";
 
     public String getUrl() {
         return url;
