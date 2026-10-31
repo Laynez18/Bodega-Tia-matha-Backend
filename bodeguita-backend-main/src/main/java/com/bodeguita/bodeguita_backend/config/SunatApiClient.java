@@ -51,8 +51,6 @@ public class SunatApiClient {
         }
         return headers;
     }
-        return headers;
-    }
 
     public RucResponse consultarRuc(String ruc) {
         if (properties.getUrl() == null || properties.getUrl().isBlank()) {
