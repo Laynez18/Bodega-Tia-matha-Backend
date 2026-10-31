@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.bodeguita.bodeguita_backend.dto.AperturaCajaCierreRequest;
 import com.bodeguita.bodeguita_backend.dto.AperturaCajaDto;
 import com.bodeguita.bodeguita_backend.dto.AperturaCajaRequest;
 import com.bodeguita.bodeguita_backend.entity.AperturaCaja;
@@ -62,6 +63,18 @@ public class AperturaCajaService {
     public void desactivar(Long id) {
         buscarActivo(id).setEstado("0");
     }
+
+    @Transactional
+    public AperturaCajaDto cerrar(Long id, AperturaCajaCierreRequest request) {
+        AperturaCaja entidad = buscarActivo(id);
+        entidad.setMontoDeclarado(request.montoDeclarado());
+        entidad.setObservacion(request.observacion());
+        entidad.setSituacion(request.situacion());
+        entidad.setFCierre(java.time.LocalDateTime.now());
+        aperturaCajaRepository.save(entidad);
+        return obtener(id);
+    }
+
 
     private AperturaCaja buscarActivo(Long id) {
         return aperturaCajaRepository.findByIdAndEstado(id, "1")
