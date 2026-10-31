@@ -104,9 +104,9 @@ public class PersonaService {
                     .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Distrito no encontrado: " + idDistrito + ".")));
         }
         entidad.setNDocumento(dni);
-        entidad.setNombre(d.data().nombres());
-        entidad.setApPaterno(d.data().apellidoPaterno());
-        entidad.setApMaterno(d.data().apellidoMaterno());
+        entidad.setNombre(d.datos().nombres());
+        entidad.setApPaterno(d.datos().apellidoPaterno());
+        entidad.setApMaterno(d.datos().apellidoMaterno());
         return aDto(personaRepository.save(entidad));
     }
 
@@ -132,7 +132,7 @@ public class PersonaService {
                     .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Distrito no encontrado: " + idDistrito + ".")));
         }
         entidad.setNDocumento(ruc);
-        entidad.setNombre(r.data().razonSocial());
+        entidad.setNombre(r.datos().razonSocial());
         return aDto(personaRepository.save(entidad));
     }
 
