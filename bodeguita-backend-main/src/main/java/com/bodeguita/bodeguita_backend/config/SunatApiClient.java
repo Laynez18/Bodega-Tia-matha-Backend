@@ -43,11 +43,14 @@ public class SunatApiClient {
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         String token = properties.getToken();
         if (token != null && !token.isBlank()) {
+            String masked = token.length() > 8 ? token.substring(0, 4) + "..." + token.substring(token.length() - 4) : token;
             headers.set("Authorization", "Bearer " + token);
-            log.debug("SUNAT headers -> Authorization: Bearer presente");
+            log.info("SUNAT headers -> Authorization: Bearer [{}]", masked);
         } else {
             log.warn("SUNAT headers -> Authorization: AUSENTE (token nulo o vacio)");
         }
+        return headers;
+    }
         return headers;
     }
 
