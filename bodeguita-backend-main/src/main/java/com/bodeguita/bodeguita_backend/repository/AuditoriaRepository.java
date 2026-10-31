@@ -6,6 +6,6 @@ import java.util.List;
 import com.bodeguita.bodeguita_backend.entity.Auditoria;
 
 public interface AuditoriaRepository extends JpaRepository<Auditoria, Long> {
-    List<Auditoria> findByEstadoOrderByFEventoDesc(String estado);
-    List<Auditoria> findByEstadoAndUsuario_IdUsuarioOrderByFEventoDesc(String estado, Long idUsuario);
+    List<Auditoria> findByEstadoOrderByfEventoDesc(String estado);
+    List<Auditoria> findByEstadoAndUsuario_IdUsuarioOrderByfEventoDesc(String estado, Long idUsuario);
 }
