@@ -52,9 +52,9 @@ public class EmpresaService {
         }
         RucResponse r = consultaSunatService.consultarRuc(ruc);
         Empresa entidad = new Empresa();
-        entidad.setRuc(r.datos().ruc());
+        entidad.setRuc(r.datos().numero());
         entidad.setRazonSocial(r.datos().razonSocial() != null ? r.datos().razonSocial() : "");
-        entidad.setDireccion(r.datos().domiciliado() != null ? r.datos().domiciliado().direccion() : null);
+        entidad.setDireccion(r.datos().direccion() != null ? r.datos().direccion() : null);
         entidad.setTelefono(null);
         return aDto(empresaRepository.save(entidad));
     }
